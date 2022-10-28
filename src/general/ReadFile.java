@@ -24,17 +24,23 @@ public class ReadFile {
 	public int timeBloc;
 	public int timePrescription;
 
+	/**
+	 * Constructor read file.
+	 */
 	public ReadFile() {
 		readDataFile();
 		readTimeFile();
 	}
 	
+	/**
+	 * The method readDataFile reads a csv file.
+	 */
 	public void readDataFile() {
 		try {
 			File fileDir = new File("src/ressources/data.csv");
 			BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(fileDir), "UTF8"));
 			
-			//1 e ligne
+			//1st line
 			in.readLine();
 			
 			String ligne = in.readLine();
@@ -52,6 +58,9 @@ public class ReadFile {
 		}
 	}
 	
+	/**
+	 * The method readTimeFile reads a csv file.
+	 */
 	public void readTimeFile() {
 		try {
 			File fileDir = new File("src/ressources/time.csv");
@@ -76,11 +85,12 @@ public class ReadFile {
 		}
 	}
 	
+	/**
 	public static void main(String args[]) {
 		ReadFile test= new ReadFile();
 		System.out.println("Nb bedrooms : "+test.nbBedrooms+" nb scanner : "+test.nbScanner+" nb blocs : "+test.nbBloc+" nbReceptionist : "+test.nbReceptionist);
 		System.out.println("timeReception : "+test.timeReception+" timeScanner : "+test.timeScanner+" timeAnalysis : "+test.timeAnalysis+" timeBloc : "+test.timeBloc+" timePrescription : "+test.timePrescription);
 
 	}
-		
+	**/	
 }
