@@ -1,4 +1,4 @@
-package back;
+package general;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -16,6 +16,7 @@ public class ReadFile {
 	public int nbBedrooms;
 	public int nbScanner;
 	public int nbBloc;
+	public int nbReceptionist;
 	
 	public int timeReception;
 	public int timeScanner;
@@ -42,6 +43,7 @@ public class ReadFile {
 			this.nbBedrooms = Integer.parseInt(data[0]);
 			this.nbScanner = Integer.parseInt(data[1]);
 			this.nbBloc = Integer.parseInt(data[2]);
+			this.nbReceptionist = Integer.parseInt(data[3]);
 			
 			in.close();
 			
@@ -76,8 +78,8 @@ public class ReadFile {
 	
 	public static void main(String args[]) {
 		ReadFile test= new ReadFile();
-		System.out.println("Nb bedrooms : "+test.nbBedrooms+" nb scanner : "+test.nbScanner+" nb blocs : "+test.nbBloc);
-		System.out.println("timeReception : "+test.timeReception+" timeScanner : "+test.timeScanner+" timeAnalysis : "+test.timeAnalysis+" timeBloc : "+test.timeBloc+" timePrescription"+test.timePrescription);
+		System.out.println("Nb bedrooms : "+test.nbBedrooms+" nb scanner : "+test.nbScanner+" nb blocs : "+test.nbBloc+" nbReceptionist : "+test.nbReceptionist);
+		System.out.println("timeReception : "+test.timeReception+" timeScanner : "+test.timeScanner+" timeAnalysis : "+test.timeAnalysis+" timeBloc : "+test.timeBloc+" timePrescription : "+test.timePrescription);
 
 	}
 		

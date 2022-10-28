@@ -2,11 +2,11 @@ package back;
 
 import java.util.ArrayList;
 
-public class Bedroom extends Room {
+public class PatientArrival {
 	
-	private Patient actualPatient;
+	private ArrayList<Patient> patient;
 
-	public Bedroom() {
+	public PatientArrival() {
 		// TODO Auto-generated constructor stub
 	}
 
