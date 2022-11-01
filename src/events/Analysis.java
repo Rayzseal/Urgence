@@ -1,6 +1,8 @@
-package back;
+package events;
 
 import java.util.ArrayList;
+
+import back.Patient;
 
 public class Analysis {
 	

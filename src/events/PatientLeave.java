@@ -1,4 +1,4 @@
-package back;
+package events;
 
 public class PatientLeave {
 

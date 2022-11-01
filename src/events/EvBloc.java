@@ -1,15 +1,15 @@
-package back;
+package events;
 
 import java.util.ArrayList;
 
-public class BedroomResearch {
+import back.Patient;
+
+public class EvBloc {
 	
 	private ArrayList<Patient> patientA;
 	private ArrayList<Patient> patientB;
-	private ArrayList<Patient> patientC;
-	private ArrayList<Patient> patientD;
 
-	public BedroomResearch() {
+	public EvBloc() {
 		// TODO Auto-generated constructor stub
 	}
 

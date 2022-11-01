@@ -2,12 +2,22 @@ package back;
 
 import java.util.ArrayList;
 
+/**
+ * Creates a bedromm.
+ * @author chloe
+ *
+ */
 public class Bedroom extends Room {
-	
-	private Patient actualPatient;
+		
+	private static int no = 0;
 
 	public Bedroom() {
-		// TODO Auto-generated constructor stub
+		this.setName("Bedroom no°"+no);
+		no++;
+		//By default, there's no patient associated to the bedroom.
+		this.setActualPatient(null);
 	}
+	
+	
 
 }
