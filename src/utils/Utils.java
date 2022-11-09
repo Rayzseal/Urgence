@@ -11,7 +11,7 @@ public class Utils {
 		// TODO Auto-generated constructor stub
 	}
 	
-	//TODO TEST
+	//TODO TEST + retirer patient
 	/**
 	 * Selects the highest priority patient from multiple lists. 
 	 * @param listA Highest priority list.

@@ -3,6 +3,7 @@ package back;
 import java.util.ArrayList;
 import java.util.Random;
 
+import utils.ReadFile;
 import utils.SortPatientArrival;
 
 public class Main {
@@ -42,18 +43,20 @@ public class Main {
 			"Lewis", "Lopez", "Martin", "Miller", "O'connor", "O'Neil" };
 	
 	public Main() {
-		this.bedrooms = new ArrayList<>();
-		this.blocs = new ArrayList<>();
-		this.scanners = new ArrayList<>();
-		this.receptionists = new ArrayList<>();
-		this.patients = new ArrayList<>();
 		generateLists();
 		generatePatients();
+		addReadFile();
 		
 		this.patients.sort(new SortPatientArrival());
 	}
 	
 	public void generateLists() {
+		this.bedrooms = new ArrayList<>();
+		this.blocs = new ArrayList<>();
+		this.scanners = new ArrayList<>();
+		this.receptionists = new ArrayList<>();
+		this.patients = new ArrayList<>();
+		
 		for (int i = 0; i < nbOfBedrooms; i++) 
 			bedrooms.add(new Bedroom());
 		
@@ -80,7 +83,7 @@ public class Main {
 			 * To make sure we don't generate a value > than the number of seconds per day. 
 			 * Even if the probability of this is very small, it can occurs. 
 			 * Since nextGaussian have theoretically nor maximum or minimum. 
-			 * In other words, 70% of values will be between standardDeviation +/- ohourPeakArrivals.
+			 * In other words, 70% of values will be between standardDeviation +/- hourPeakArrivals.
 			**/ 
 			while (millisDelay > nbSecondsPerDay) {
 				val = r.nextGaussian() * this.standardDeviation + this.hourPeakArrivals;
@@ -94,6 +97,18 @@ public class Main {
 			
 			this.patients.add(p);
 		}
+	}
+	
+	public void addReadFile() {
+		ReadFile f = new ReadFile();
+		this.nbOfBedrooms = f.nbBedrooms;
+		this.nbOfAvailableBedrooms = f.nbBedrooms;
+		this.nbOfBlocs = f.nbBloc;
+		this.nbOfAvailableBlocs = f.nbBloc;
+		this.nbOfReceptionists = f.nbReceptionist;
+		this.nbOfAvailableReceptionists = f.nbReceptionist;
+		this.nbOfScanners = f.nbScanner;
+		this.nbOfAvailableScanners = f.nbScanner;
 	}
 	
 	public void showList(ArrayList<?> list) {
