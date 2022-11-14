@@ -12,15 +12,23 @@ public class Patient {
 	
 	private int waitInSeconds;
 	private int GlobalWaitInSeconds;
+	
+	private State state;
 
 	public Patient() {
-		// TODO Auto-generated constructor stub
+		name= null;
+		surname = null;
+		arrivalDate = 0;
+		state = State.WAITING;
 	}
-	
+
 	public Patient(String name, String surname, int arrivalDate) {
 		this.name = name;
 		this.surname = surname;
 		this.arrivalDate = arrivalDate;
+		waitInSeconds = 0;
+		GlobalWaitInSeconds = 0;
+		state = State.WAITING;
 	}
 
 	public String getName() {
@@ -69,6 +77,14 @@ public class Patient {
 
 	public void setArrivalDate(int arrivalDate) {
 		this.arrivalDate = arrivalDate;
+	}
+	
+	public State getState() {
+		return state;
+	}
+
+	public void setState(State state) {
+		this.state = state;
 	}
 	
 	

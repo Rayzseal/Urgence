@@ -6,6 +6,14 @@ import java.lang.IllegalArgumentException;
 import back.Patient;
 
 public class Utils {
+	
+	public static String[] names = { "Olivia", "Amelia", "Isla", "Ava", "Mia", "Ivy", "Lily", "Oliver", "George",
+			"Arthur", "Noah", "Muhammad", "Leo", "Oscar", "Harry", "Archie", "Jack", "Liam", "Jackson", "Aiden",
+			"Grayson", "Lucas", "Emily", "Ashley", "Alyssa" };
+
+	public static String[] surnames = { "Anderson", "Brown", "Byrne", "Clark", "Cooper", "Davies", "Evans", "Garcia",
+			"Gonzalez", "Green", "Hall", "Harris", "Hernandez", "Hughes", "Jackson", "Johnson", "Jones", "Lam", "Lee",
+			"Lewis", "Lopez", "Martin", "Miller", "O'connor", "O'Neil" };
 
 	public Utils() {
 		// TODO Auto-generated constructor stub
@@ -38,6 +46,12 @@ public class Utils {
 			return "00:"+min+":"+sec;
 		else
 			return "00:00:"+sec;
+	}
+	
+
+	public static void showList(ArrayList<?> list) {
+		for (int i = 0; i < list.size(); i++)
+			System.out.println(list.get(i).toString());
 	}
 
 }
