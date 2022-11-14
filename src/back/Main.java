@@ -33,6 +33,11 @@ public class Main {
 	private ArrayList<Receptionist> receptionists;
 	
 	private ArrayList<Patient> patients;
+	private ArrayList<Patient> patientsActive;
+	private ArrayList<Patient> patientsOver;
+	
+	private int time;
+	private int reduceTime;
 	
 	public static String[] names = { "Olivia", "Amelia", "Isla", "Ava", "Mia", "Ivy", "Lily", "Oliver", "George",
 			"Arthur", "Noah", "Muhammad", "Leo", "Oscar", "Harry", "Archie", "Jack", "Liam", "Jackson", "Aiden",
@@ -56,6 +61,8 @@ public class Main {
 		this.scanners = new ArrayList<>();
 		this.receptionists = new ArrayList<>();
 		this.patients = new ArrayList<>();
+		this.patientsActive = new ArrayList<>();
+		this.patientsOver = new ArrayList<>();
 		
 		for (int i = 0; i < nbOfBedrooms; i++) 
 			bedrooms.add(new Bedroom());
@@ -71,6 +78,9 @@ public class Main {
 	}
 	
 	public void generatePatients() {
+		this.time = 0;
+		this.reduceTime = 300	;
+		
 		int nbSecondsPerDay = 86400;
 		
 		for (int i = 0; i < nbOfPatients; i++) {
@@ -121,6 +131,42 @@ public class Main {
 		Main m = new Main();
 		
 		m.showList(m.patients);
+		System.out.println("------------------");
+		System.out.println("BEGIN");
+		System.out.println("------------------");
+		
+		
+		//While we still have patients to arrive or patients in treatment we wait, when every patients has been treated we stop.  
+		while(m.patients.size()!=0 || m.patientsActive.size()!=0) {
+			try {
+				// 1000 == 1 seconde / reduceTime 
+				// with reduceTime = an accelerator 
+				Thread.sleep(1000/m.reduceTime);
+				m.time++;
+				
+				System.out.println("Time : "+m.time);
+				
+				if (m.patients.get(0).getArrivalDate()==m.time) {
+					//Start patient 
+					System.out.println("Arrivée patient : "+m.patients.get(0));
+					
+					//Add to "over" list & remove patients from waiting list
+					m.patientsActive.add(m.patients.get(0));
+					m.patients.remove(m.patients.get(0));
+					
+					//If patient active = terminate state then add to patientOver & remove from patientActive
+					
+				}
+				
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			
+		}
+		
+		
 	}
 
 }
