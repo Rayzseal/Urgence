@@ -34,23 +34,21 @@ public class Scheduler {
 				/*
 				 * if(data.getTime()%5000==0) System.out.println("Time : "+ data.getTime());
 				 */
-				if (data.getPatients().size() > 0) {
-					if (data.getPatients().get(0).getArrivalDate() == data.getTime()) { // Faire un while -> pb si 2
-																						// patients arrive meme heure ?
-						// Start patient
-						System.out.println("Arrivée patient : " + data.getPatients().get(0));
+				while (data.getPatients().size() > 0 && data.getPatients().get(0).getArrivalDate() == data.getTime()) { 
+					// Faire un while -> pb si 2
+					// patients arrive meme heure ?
+					// Start patient
+					System.out.println("Arrivée patient : " + data.getPatients().get(0));
 
-						// Add to "over" list & remove patients from waiting list
-						data.getPatientsActive().add(data.getPatients().get(0));
+					// Add to "over" list & remove patients from waiting list
+					data.getPatientsActive().add(data.getPatients().get(0));
 
-						new Thread(new PatientArrival(data, data.getPatients().get(0))).start();
+					new Thread(new PatientArrival(data, data.getPatients().get(0))).start();
 
-						data.getPatients().remove(data.getPatients().get(0));
+					data.getPatients().remove(data.getPatients().get(0));
 
-						// If patient active = terminate state then add to patientOver & remove from
-						// patientActive
-
-					}
+					// If patient active = terminate state then add to patientOver & remove from
+					// patientActive
 				}
 
 			} catch (InterruptedException e) {

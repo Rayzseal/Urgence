@@ -26,12 +26,13 @@ public class PatientArrival implements Runnable {
 			synchronized (this) {
 				data.setNbOfAvailableReceptionists(data.getNbOfAvailableReceptionists()-1);
 		    }
-			System.out.println(patient.toString() + " en acceuil.");
 			EndPatientArrival endPatientArrival = new EndPatientArrival(data, patient);
 			endPatientArrival.run();
 		}
 		else {
-			data.getWaitListArrival().add(patient);
+			synchronized (this) {
+				data.getWaitListArrival().add(patient);
+		    }
 			System.out.println(" Wating list : "+data.getWaitListArrival());
 		}
 		
