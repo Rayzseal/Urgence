@@ -6,7 +6,7 @@ import java.util.ArrayList;
  * Class containing all the necessary methods to create a new waiting list.
  *
  */
-public class WaitingList {
+public class WaitingList extends ArrayList<Patient>{
 
 	private ArrayList<Patient> waitingList;
 
@@ -115,5 +115,13 @@ public class WaitingList {
 		}
 		return null;
 	}
+	/*
+	public int size() {
+		return waitingList.size();
+	}
+	
+	public Patient get(int index) {
+		return waitingList.get(index);
+	}*/
 
 }

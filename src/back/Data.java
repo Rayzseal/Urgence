@@ -47,6 +47,12 @@ public class Data {
 	private int time;
 	private int reduceTime;
 	
+	private int timeReception;
+	private int timeScanner;
+	private int timeAnalysis;
+	private int timeBloc;
+	private int timePrescription;
+	
 	
 	public Data() {
 		addReadFile();
@@ -58,6 +64,90 @@ public class Data {
 	}
 	
 	
+	public void generateLists() {
+		this.bedrooms = new ArrayList<>();
+		this.blocs = new ArrayList<>();
+		this.scanners = new ArrayList<>();
+		this.receptionists = new ArrayList<>();
+		this.patients = new ArrayList<>();
+		this.patientsActive = new ArrayList<>();
+		this.patientsOver = new ArrayList<>();
+		
+		for (int i = 0; i < nbOfBedrooms; i++) 
+			bedrooms.add(new Bedroom());
+		
+		for (int i = 0; i < nbOfBlocs; i++) 
+			blocs.add(new Bloc());
+		
+		for (int i = 0; i < nbOfScanners; i++)
+			scanners.add(new Scanner());
+		
+		for (int i = 0; i < nbOfReceptionists; i++)
+			receptionists.add(new Receptionist());
+	}
+	
+	public void generatePatients() {
+		this.time = 0;
+		this.reduceTime = 300	;
+		
+		int nbSecondsPerDay = 86400;
+		
+		for (int i = 0; i < nbOfPatients; i++) {
+			Random r = new Random();
+			
+			double val = r.nextGaussian() * this.standardDeviation + this.hourPeakArrivals;
+			int millisDelay = (int) Math.round(val);
+			
+			/**
+			 * To make sure we don't generate a value > than the number of seconds per day. 
+			 * Even if the probability of this is very small, it can occurs. 
+			 * Since nextGaussian have theoretically nor maximum or minimum. 
+			 * In other words, 70% of values will be between standardDeviation +/- hourPeakArrivals.
+			**/ 
+			while (millisDelay > nbSecondsPerDay) {
+				val = r.nextGaussian() * this.standardDeviation + this.hourPeakArrivals;
+				millisDelay = (int) Math.round(val);
+			}
+						
+			int nbName = (int) (Math.random() * Utils.names.length);
+			int nbSur = (int) (Math.random() * Utils.surnames.length);
+
+			Patient p = new Patient(Utils.names[nbName], Utils.surnames[nbSur],millisDelay);
+			
+			this.patients.add(p);
+		}
+	}
+	
+	public void generateWaitingList(){
+		waitListArrival = new WaitingList();
+		waitListA = new WaitingList();
+		waitListB = new WaitingList();
+		waitListC = new WaitingList();
+		waitListD = new WaitingList();
+	}
+	
+	public void addReadFile() {
+		ReadFile f = new ReadFile();
+		this.nbOfBedrooms = f.nbBedrooms;
+		this.nbOfAvailableBedrooms = f.nbBedrooms;
+		this.nbOfBlocs = f.nbBloc;
+		this.nbOfAvailableBlocs = f.nbBloc;
+		this.nbOfReceptionists = f.nbReceptionist;
+		this.nbOfAvailableReceptionists = f.nbReceptionist;
+		this.nbOfScanners = f.nbScanner;
+		this.nbOfAvailableScanners = f.nbScanner;
+		
+		this.timeReception = f.timeReception;
+		this.timeAnalysis = f.timeAnalysis;
+		this.timeBloc = f.timeBloc;
+		this.timeScanner = f.timeScanner;
+		this.timePrescription = f.timePrescription;
+	}
+	
+	/**
+	 * setter and getter of class Data
+	 * @return
+	 */
 	public int getNbOfBedrooms() {
 		return nbOfBedrooms;
 	}
@@ -308,78 +398,52 @@ public class Data {
 	}
 
 
-	public void generateLists() {
-		this.bedrooms = new ArrayList<>();
-		this.blocs = new ArrayList<>();
-		this.scanners = new ArrayList<>();
-		this.receptionists = new ArrayList<>();
-		this.patients = new ArrayList<>();
-		this.patientsActive = new ArrayList<>();
-		this.patientsOver = new ArrayList<>();
-		
-		for (int i = 0; i < nbOfBedrooms; i++) 
-			bedrooms.add(new Bedroom());
-		
-		for (int i = 0; i < nbOfBlocs; i++) 
-			blocs.add(new Bloc());
-		
-		for (int i = 0; i < nbOfScanners; i++)
-			scanners.add(new Scanner());
-		
-		for (int i = 0; i < nbOfReceptionists; i++)
-			receptionists.add(new Receptionist());
-	}
-	
-	public void generatePatients() {
-		this.time = 0;
-		this.reduceTime = 300	;
-		
-		int nbSecondsPerDay = 86400;
-		
-		for (int i = 0; i < nbOfPatients; i++) {
-			Random r = new Random();
-			
-			double val = r.nextGaussian() * this.standardDeviation + this.hourPeakArrivals;
-			int millisDelay = (int) Math.round(val);
-			
-			/**
-			 * To make sure we don't generate a value > than the number of seconds per day. 
-			 * Even if the probability of this is very small, it can occurs. 
-			 * Since nextGaussian have theoretically nor maximum or minimum. 
-			 * In other words, 70% of values will be between standardDeviation +/- hourPeakArrivals.
-			**/ 
-			while (millisDelay > nbSecondsPerDay) {
-				val = r.nextGaussian() * this.standardDeviation + this.hourPeakArrivals;
-				millisDelay = (int) Math.round(val);
-			}
-						
-			int nbName = (int) (Math.random() * Utils.names.length);
-			int nbSur = (int) (Math.random() * Utils.surnames.length);
-
-			Patient p = new Patient(Utils.names[nbName], Utils.surnames[nbSur],millisDelay);
-			
-			this.patients.add(p);
-		}
-	}
-	
-	public void generateWaitingList(){
-		waitListArrival = new WaitingList();
-		waitListA = new WaitingList();
-		waitListB = new WaitingList();
-		waitListC = new WaitingList();
-		waitListD = new WaitingList();
-	}
-	
-	public void addReadFile() {
-		ReadFile f = new ReadFile();
-		this.nbOfBedrooms = f.nbBedrooms;
-		this.nbOfAvailableBedrooms = f.nbBedrooms;
-		this.nbOfBlocs = f.nbBloc;
-		this.nbOfAvailableBlocs = f.nbBloc;
-		this.nbOfReceptionists = f.nbReceptionist;
-		this.nbOfAvailableReceptionists = f.nbReceptionist;
-		this.nbOfScanners = f.nbScanner;
-		this.nbOfAvailableScanners = f.nbScanner;
+	public int getTimeReception() {
+		return timeReception;
 	}
 
+
+	public void setTimeReception(int timeReception) {
+		this.timeReception = timeReception;
+	}
+
+
+	public int getTimeScanner() {
+		return timeScanner;
+	}
+
+
+	public void setTimeScanner(int timeScanner) {
+		this.timeScanner = timeScanner;
+	}
+
+
+	public int getTimeAnalysis() {
+		return timeAnalysis;
+	}
+
+
+	public void setTimeAnalysis(int timeAnalysis) {
+		this.timeAnalysis = timeAnalysis;
+	}
+
+
+	public int getTimeBloc() {
+		return timeBloc;
+	}
+
+
+	public void setTimeBloc(int timeBloc) {
+		this.timeBloc = timeBloc;
+	}
+
+
+	public int getTimePrescription() {
+		return timePrescription;
+	}
+
+
+	public void setTimePrescription(int timePrescription) {
+		this.timePrescription = timePrescription;
+	}
 }

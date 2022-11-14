@@ -1,9 +1,11 @@
 package utils;
 
 import java.util.ArrayList;
-import java.lang.IllegalArgumentException;
 
+import back.Data;
+import back.Gravity;
 import back.Patient;
+import events.PatientLeave;
 
 public class Utils {
 	
@@ -52,6 +54,29 @@ public class Utils {
 	public static void showList(ArrayList<?> list) {
 		for (int i = 0; i < list.size(); i++)
 			System.out.println(list.get(i).toString());
+	}
+	
+	public static void pathChoice(Data data, Patient p) {
+		switch(p.getGravity()){
+		   
+	       case A: 
+	           System.out.println("Bonjour");
+	           break;
+	   
+	       case B:
+	           System.out.println("Hello");
+	           break;
+	   
+	       case C:
+	           System.out.println("Buenos dias");
+	           break;
+	       case D:
+	           //TODO parcours D
+	    	   //for now
+	    	   PatientLeave pl = new PatientLeave(data, p);
+	    	   pl.run();
+	           break;
+	   }
 	}
 
 }
