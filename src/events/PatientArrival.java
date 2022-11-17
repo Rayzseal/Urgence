@@ -3,8 +3,10 @@ package events;
 import java.util.ArrayList;
 
 import back.Data;
+import back.ExtensionList;
 import back.Patient;
 import back.Receptionist;
+import back.Room;
 import back.State;
 
 public class PatientArrival implements Runnable {
@@ -22,18 +24,21 @@ public class PatientArrival implements Runnable {
 
 	@Override
 	public void run() {
-		if(data.getNbOfAvailableReceptionists() > 0) {
-			synchronized (this) {
-				data.setNbOfAvailableReceptionists(data.getNbOfAvailableReceptionists()-1);
+		int receptionistAvailable = ExtensionList.objectAvailable(data.getReceptionists());
+		if(receptionistAvailable >= 0) {  //TODO
+			synchronized (data.getReceptionists()) {
+				data.getReceptionists().get(receptionistAvailable).setState(State.OCCUPIED);;
+				//data.setNbOfAvailableReceptionists(data.getReceptionists().size()-1);
 		    }
-			EndPatientArrival endPatientArrival = new EndPatientArrival(data, patient);
+			EndPatientArrival endPatientArrival = new EndPatientArrival(data, patient, receptionistAvailable);
 			endPatientArrival.run();
 		}
 		else {
-			synchronized (this) {
+			synchronized (data.getWaitListArrival()) {
 				data.getWaitListArrival().add(patient);
+
+				//System.out.println(" Wating list : "+data.getWaitListArrival());
 		    }
-			System.out.println(" Wating list : "+data.getWaitListArrival());
 		}
 		
 	}

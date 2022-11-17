@@ -1,47 +1,30 @@
 package back;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Class containing all the necessary methods to create a new waiting list.
  *
  */
-public class WaitingList extends ArrayList<Patient>{
-
-	private ArrayList<Patient> waitingList;
+public class ExtensionList extends ArrayList<Object>{
 
 	/**
 	 * Constructor of WaitingList, creates an ArrayList.
 	 */
-	public WaitingList() {
-		waitingList = new ArrayList<>();
+	public ExtensionList() {
 	}
-
+	
 	/**
-	 * Add a patient if is not already in the list and if the patient is not null.
 	 * 
-	 * @param p Patient to be added to the list.
+	 * -1 if no objcts are available and an index in the list of the first object available
 	 */
-	public void addList(Patient p) {
-		if (!this.waitingList.contains(p) && p != null) {
-			this.waitingList.add(p);
-			p.setState(State.WAITING);
+	public static int objectAvailable(ArrayList<?> list) {
+		for(int i = 0 ; i<list.size(); i++){
+			if(((Room) list.get(i)).getState()== State.AVAILABLE)
+				return i;	
 		}
-
-		else
-			throw new IllegalArgumentException("Patient is already in the list or null");
-	}
-
-	/**
-	 * Remove a patient from a list if he isn't null.
-	 * 
-	 * @param p Patient to be removed from the list.
-	 */
-	public void removeList(Patient p) {
-		if (this.waitingList.contains(p) && p != null)
-			this.waitingList.remove(p);
-		else
-			throw new IllegalArgumentException("Patient is not in the list or null");
+		return -1;
 	}
 
 	// TODO TEST
@@ -53,7 +36,7 @@ public class WaitingList extends ArrayList<Patient>{
 	 * @return Next patient to be selected or null if no patient has been selected
 	 *         (empty list).
 	 */
-	public Patient selectPatientFromArrayList(ArrayList<Patient> listA, ArrayList<Patient> listB) {
+	public static Patient selectPatientFromArrayList(ArrayList<Patient> listA, ArrayList<Patient> listB) {
 		if (listA == null || listB == null)
 			throw new IllegalArgumentException("None of the lists should be null");
 
@@ -115,13 +98,5 @@ public class WaitingList extends ArrayList<Patient>{
 		}
 		return null;
 	}
-	/*
-	public int size() {
-		return waitingList.size();
-	}
-	
-	public Patient get(int index) {
-		return waitingList.get(index);
-	}*/
 
 }

@@ -5,10 +5,10 @@ package back;
  * @author chloe
  *
  */
-public class Receptionist {
+public class Receptionist extends Room{
 
 	public Receptionist() {
-		// TODO Auto-generated constructor stub
+		super();
 	}
 
 }

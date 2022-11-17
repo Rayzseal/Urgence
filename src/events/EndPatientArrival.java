@@ -10,15 +10,20 @@ import utils.Utils;
 public class EndPatientArrival implements Runnable{
 	private Patient patient;
 	private Data data;
+	private Receptionist receptionist;
+	private int receptionistAvailable;
 	
 	public EndPatientArrival() {
 		patient = null;
 		data = null;
+		receptionist = null;
 	}
 	
-	public EndPatientArrival(Data d, Patient p) {
+	public EndPatientArrival(Data d, Patient p, int rAvailable) {
 		data = d;
 		patient = p;
+		receptionistAvailable = rAvailable;
+		receptionist = data.getReceptionists().get(receptionistAvailable);
 	}
 	
 	@Override
@@ -36,12 +41,13 @@ public class EndPatientArrival implements Runnable{
 			
 			if(data.getWaitListArrival().size() > 0) {
 				//System.out.println("test thread : " + Thread.activeCount());
-				patient = data.getWaitListArrival().get(0);
+				patient = (Patient) data.getWaitListArrival().get(0);
 				data.getWaitListArrival().remove(patient);
-				new Thread(new EndPatientArrival(data, patient)).start();
+				new Thread(new EndPatientArrival(data, patient, receptionistAvailable)).start();
 			}else {
-				synchronized (this) {
-					data.setNbOfAvailableReceptionists(data.getNbOfAvailableReceptionists()+1);
+				synchronized (data.getReceptionists()) {
+					//data.setNbOfAvailableReceptionists(data.getNbOfAvailableReceptionists()+1);
+					data.getReceptionists().get(receptionistAvailable).setState(State.AVAILABLE);;
 			    }
 			}
 				

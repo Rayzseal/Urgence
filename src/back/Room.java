@@ -5,9 +5,11 @@ public class Room {
 	private String name;
 	
 	private Patient actualPatient;
+	
+	private State state;
 
 	public Room() {
-		// TODO Auto-generated constructor stub
+		state = State.AVAILABLE;
 	}
 
 	public String getName() {
@@ -25,8 +27,14 @@ public class Room {
 	public void setActualPatient(Patient actualPatient) {
 		this.actualPatient = actualPatient;
 	}
-	
-	
+
+	public State getState() {
+		return state;
+	}
+
+	public void setState(State state) {
+		this.state = state;
+	}
 	
 	
 
