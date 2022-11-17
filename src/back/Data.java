@@ -1,7 +1,6 @@
 package back;
 
 import java.util.ArrayList;
-import java.util.ArrayList;
 import java.util.Random;
 import java.util.Vector;
 
@@ -41,11 +40,12 @@ public class Data {
 	private ArrayList<Patient> patientsOver;
 
 	private ArrayList<Patient> waitListArrival;
-	private ArrayList<Patient> waitListBedroom;
-	private ArrayList<Patient> waitListAnalysis;
-	private ArrayList<Patient> waitListBloc;
-	private ArrayList<Patient> waitListPrescription;
-	private ArrayList<Patient> waitListScanner;
+	
+	private WaitingList waitListBedroom;
+	private WaitingList waitListAnalysis;
+	private WaitingList waitListBloc;
+	private WaitingList waitListPrescription;
+	private WaitingList waitListScanner;
 
 	private int time;
 	private int reduceTime;
@@ -121,7 +121,7 @@ public class Data {
 
 	public void generateWaitingList() {
 		waitListArrival = new ArrayList<Patient>();
-		waitListBedroom = new ArrayList<Patient>();
+		waitListBedroom = new WaitingList();
 	}
 
 	public void addReadFile() {
@@ -263,43 +263,43 @@ public class Data {
 		this.waitListArrival = waitListArrival;
 	}
 
-	public ArrayList<Patient> getWaitListBedroom() {
+	public WaitingList getWaitListBedroom() {
 		return waitListBedroom;
 	}
 
-	public void setWaitListBedroom(ArrayList<Patient> waitListBedroom) {
+	public void setWaitListBedroom(WaitingList waitListBedroom) {
 		this.waitListBedroom = waitListBedroom;
 	}
 
-	public ArrayList<Patient> getWaitListAnalysis() {
+	public WaitingList getWaitListAnalysis() {
 		return waitListAnalysis;
 	}
 
-	public void setWaitListAnalysis(ArrayList<Patient> waitListAnalysis) {
+	public void setWaitListAnalysis(WaitingList waitListAnalysis) {
 		this.waitListAnalysis = waitListAnalysis;
 	}
 
-	public ArrayList<Patient> getWaitListBloc() {
+	public WaitingList getWaitListBloc() {
 		return waitListBloc;
 	}
 
-	public void setWaitListBloc(ArrayList<Patient> waitListBloc) {
+	public void setWaitListBloc(WaitingList waitListBloc) {
 		this.waitListBloc = waitListBloc;
 	}
 
-	public ArrayList<Patient> getWaitListPrescription() {
+	public WaitingList getWaitListPrescription() {
 		return waitListPrescription;
 	}
 
-	public void setWaitListPrescription(ArrayList<Patient> waitListPrescription) {
+	public void setWaitListPrescription(WaitingList waitListPrescription) {
 		this.waitListPrescription = waitListPrescription;
 	}
 
-	public ArrayList<Patient> getWaitListScanner() {
+	public WaitingList getWaitListScanner() {
 		return waitListScanner;
 	}
 
-	public void setWaitListScanner(ArrayList<Patient> waitListScanner) {
+	public void setWaitListScanner(WaitingList waitListScanner) {
 		this.waitListScanner = waitListScanner;
 	}
 

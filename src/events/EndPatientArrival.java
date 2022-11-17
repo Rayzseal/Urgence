@@ -37,17 +37,20 @@ public class EndPatientArrival implements Runnable{
 			System.out.println(patient.toString() + "fin d'arrivée");
 			
 			patient.setState(State.AVAILABLE);
-			Utils.pathChoice(data, patient); //TODO mettre dans une chambre
+			new Thread(new BedroomResearch(data, patient)).start();
+			//BedroomResearch bedroomResearch = new BedroomResearch(data, patient);
+			//bedroomResearch.run();
 			
 			if(data.getWaitListArrival().size() > 0) {
 				//System.out.println("test thread : " + Thread.activeCount());
-				patient = (Patient) data.getWaitListArrival().get(0);
+				patient = data.getWaitListArrival().get(0);
 				data.getWaitListArrival().remove(patient);
-				new Thread(new EndPatientArrival(data, patient, receptionistAvailable)).start();
+				//new Thread(new EndPatientArrival(data, patient, receptionistAvailable)).start();
+				EndPatientArrival arrival = new EndPatientArrival(data, patient, receptionistAvailable);
+				arrival.run();
 			}else {
 				synchronized (data.getReceptionists()) {
-					//data.setNbOfAvailableReceptionists(data.getNbOfAvailableReceptionists()+1);
-					data.getReceptionists().get(receptionistAvailable).setState(State.AVAILABLE);;
+					data.getReceptionists().get(receptionistAvailable).setState(State.AVAILABLE);
 			    }
 			}
 				

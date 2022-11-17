@@ -8,6 +8,8 @@ public class Patient {
 	
 	private Gravity gravity;
 	
+	private Bedroom bedroom;
+	
 	private int arrivalDate;
 	
 	private int waitInSeconds;
@@ -20,6 +22,7 @@ public class Patient {
 		surname = null;
 		arrivalDate = 0;
 		state = State.WAITING;
+		bedroom = null;
 	}
 
 	public Patient(String name, String surname, int arrivalDate) {
@@ -87,7 +90,13 @@ public class Patient {
 		this.state = state;
 	}
 	
-	
+	public Bedroom getBedroom() {
+		return bedroom;
+	}
+
+	public void setBedroom(Bedroom bedroom) {
+		this.bedroom = bedroom;
+	}
 
 	@Override
 	public String toString() {

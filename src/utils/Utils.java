@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import back.Data;
 import back.Gravity;
 import back.Patient;
+import back.Room;
+import back.State;
 import events.PatientLeave;
 
 public class Utils {
@@ -73,10 +75,28 @@ public class Utils {
 	       case D:
 	           //TODO parcours D
 	    	   //for now
+	    	   try {
+				Thread.sleep(10000/5000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 	    	   PatientLeave pl = new PatientLeave(data, p);
 	    	   pl.run();
 	           break;
 	   }
+	}
+	
+	/**
+	 * 
+	 * -1 if no objcts are available and an index in the list of the first object available
+	 */
+	public static int objectAvailable(ArrayList<?> list) {
+		for(int i = 0 ; i<list.size(); i++){
+			if(((Room) list.get(i)).getState()== State.AVAILABLE)
+				return i;	
+		}
+		return -1;
 	}
 
 }
