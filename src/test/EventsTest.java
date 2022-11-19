@@ -17,7 +17,7 @@ public class EventsTest {
 
 	@Test
 	 public void testPaths() {
-		Scheduler s = new Scheduler();
+		Scheduler s = new Scheduler(5);
 		s.run();
 		int nbCorrectPath = 0;
 		s.getData().getPatientsOver();
@@ -58,7 +58,6 @@ public class EventsTest {
 		int nbCorrectPath = 0;
 		s.getData().getPatientsOver();
 		for(Patient p : s.getData().getPatientsOver()) {
-			// ARRIVAL, RECEPTION, BEDROOM, PRESCRIPTION, OUT
 	    	   if(p.getListState().containsValue(State.ARRIVAL)) {
 	    		   nbCorrectPath++;
 	    	   }
@@ -66,6 +65,20 @@ public class EventsTest {
 		System.out.println(nbCorrectPath);
 		assertEquals(nbCorrectPath, s.getData().getNbOfPatients());
    }
+	@Test
+	 public void testReception() {
+		Scheduler s = new Scheduler();
+		s.run();
+		int nbCorrectPath = 0;
+		s.getData().getPatientsOver();
+		for(Patient p : s.getData().getPatientsOver()) {
+	    	   if(p.getListState().containsValue(State.RECEPTION)) {
+	    		   nbCorrectPath++;
+	    	   }
+		}
+		System.out.println(nbCorrectPath);
+		assertEquals(nbCorrectPath, s.getData().getNbOfPatients());
+  }
 	
 
 }

@@ -50,8 +50,13 @@ public class Data {
 	private int timeAnalysis;
 	private int timeBloc;
 	private int timePrescription;
-
+	
 	public Data() {
+		generateData();
+	}
+
+	public Data(int nbPatient) {
+		nbOfPatients = nbPatient;
 		generateData();
 	}
 	
@@ -59,7 +64,7 @@ public class Data {
 		this.reduceTime = 300;
 		DataFile dataFile = new DataFile();
 		generateLists(dataFile);
-		generatePatients(nbOfPatients);
+		generatePatients();
 		generateWaitingList();
 
 		this.patients.sort(new SortPatientArrival());
@@ -90,12 +95,12 @@ public class Data {
 			doctors.add(new Doctor());
 	}
 
-	public void generatePatients(int nbPatients) {
+	public void generatePatients() {
 		this.time = 0;
 		
 		int nbSecondsPerDay = 86400;
 
-		for (int i = 0; i < nbPatients; i++) {
+		for (int i = 0; i < nbOfPatients; i++) {
 			Random r = new Random();
 
 			double val = r.nextGaussian() * this.standardDeviation + this.hourPeakArrivals;

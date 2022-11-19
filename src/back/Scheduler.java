@@ -16,6 +16,13 @@ public class Scheduler {
 		// with reduceTime = an accelerator
 		data.setReduceTime(100);
 	}
+	
+	public Scheduler(int nbPatient) {
+		data = new Data(nbPatient);
+		// 1000 == 1 seconde / reduceTime
+		// with reduceTime = an accelerator
+		data.setReduceTime(100);
+	}
 
 	public void scheduler() {
 		// Utils.showList(data.getPatients());
@@ -39,14 +46,20 @@ public class Scheduler {
 					//System.out.println("Arrivée patient : " + data.getPatients().get(0) + Utils.globalWaitingTime(data.getTime()));
 
 					// Add to "over" list & remove patients from waiting list
-					Patient patient = data.getPatients().get(0);
-					synchronized (data.getPatientsActive()) {
-						data.getPatientsActive().add(data.getPatients().get(0));
+					Patient patient;
+					synchronized (data.getPatients()) {
+						patient = data.getPatients().get(0);
+						synchronized (data.getPatientsActive()) {
+							data.getPatientsActive().add(data.getPatients().get(0));
+						}
+						synchronized (data.getPatientsActive()) {
+							data.getPatients().remove(patient);
+						}
 					}
-					synchronized (data.getPatientsActive()) {
-						data.getPatients().remove(patient);
-					}
-					new Thread(new PatientArrival(data, patient)).start();
+					
+					if(patient != null)
+						patient.setState(State.ARRIVAL, data.getTime());
+						new Thread(new PatientArrival(data, patient)).start();
 				}
 
 			} catch (InterruptedException e) {

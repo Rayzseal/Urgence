@@ -27,7 +27,10 @@ public class EndPatientArrival implements Runnable{
 	public void run() {
 		try {
 			//System.out.println(patient.toString() + " en acceuil.");
-			patient.setState(State.RECEPTION, data.getTime());
+			synchronized (data.getPatientsActive()) {
+				patient.setState(State.RECEPTION, data.getTime());
+			}
+			
 			Thread.sleep(data.getTimeReception()/data.getReduceTime()); 
 			
 			//TODO assigne gravité

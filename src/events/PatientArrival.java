@@ -27,7 +27,7 @@ public class PatientArrival implements Runnable {
 	public void run() {
 		//patient.setState(State.ARRIVAL, data.getTime());
 		synchronized (patient) {
-			patient.setState(State.ARRIVAL, data.getTime());
+			//patient.setState(State.ARRIVAL, data.getTime());
 		}
 		
 		int receptionistAvailable = Utils.objectAvailable(data.getReceptionists());
@@ -42,8 +42,10 @@ public class PatientArrival implements Runnable {
 		else {
 			synchronized (data.getWaitListArrival()) {
 				data.getWaitListArrival().add(patient);
-				patient.setState(State.WAITING, data.getTime());
 		    }
+			synchronized (patient) {
+				patient.setState(State.WAITING, data.getTime());
+			}
 		}
 		
 	}
