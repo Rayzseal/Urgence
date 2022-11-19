@@ -2,12 +2,14 @@ package utils;
 
 import java.util.ArrayList;
 
-import back.Data;
 import back.Gravity;
 import back.Patient;
 import back.Room;
 import back.State;
+import events.EvBloc;
+import events.EvScanner;
 import events.PatientLeave;
+import events.Prescription;
 
 public class Utils {
 	
@@ -29,62 +31,46 @@ public class Utils {
 	 * @param secondsTime Number of seconds to get a time from
 	 * @return A string with the total waiting time in format days/hours/minutes
 	 */
-	public String globalWaitingTime(int secondsTime) {
+	public static String globalWaitingTime(int secondsTime) {
 		if (secondsTime<=0)
 			throw new IllegalArgumentException("The given argument must be > 0.");
 		
-		int sec,hour,min,day=0;
+		int sec=0,hour=0,min=0,day=0;
 		
-		min = secondsTime%60;	
-		hour = min%60;
-		day = hour%60;
-		sec = secondsTime - 60*min;
-		min -=hour*60;
-		hour -=day*60;
+		day = (int) secondsTime /(24*3600);
+		secondsTime -= hour*24*3600;
+		
+		
+		hour = (int) secondsTime/3600;
+		secondsTime -= hour*3600;
+		if(hour==24)
+			hour = 0;
+		
+		min = (int) secondsTime/60;
+		secondsTime -= min*60;
+		
+		sec = secondsTime;
+		
+		String str = " ";
 		
 		if (day>0)
-			return day+"day(s) "+hour+":"+min+":"+sec;
+			str += day+"day(s) ";
+			//return day+"day(s) "+hour+":"+min+":"+sec;
 		if (hour>0)
-			return hour+":"+min+":"+sec;
+			if(hour <10)
+				str+="0";
+			str+=hour+":";
 		if (min>0)
-			return "00:"+min+":"+sec;
-		else
-			return "00:00:"+sec;
+			if(min<10)
+				str+="0";
+			str+=min+":";
+		return str + sec;
 	}
 	
 
 	public static void showList(ArrayList<?> list) {
 		for (int i = 0; i < list.size(); i++)
 			System.out.println(list.get(i).toString());
-	}
-	
-	public static void pathChoice(Data data, Patient p) {
-		switch(p.getGravity()){
-		   
-	       case A: 
-	           System.out.println("Bonjour");
-	           break;
-	   
-	       case B:
-	           System.out.println("Hello");
-	           break;
-	   
-	       case C:
-	           System.out.println("Buenos dias");
-	           break;
-	       case D:
-	           //TODO parcours D
-	    	   //for now
-	    	   try {
-				Thread.sleep(10000/5000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-	    	   PatientLeave pl = new PatientLeave(data, p);
-	    	   pl.run();
-	           break;
-	   }
 	}
 	
 	/**

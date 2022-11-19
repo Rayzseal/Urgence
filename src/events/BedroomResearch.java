@@ -2,9 +2,10 @@ package events;
 
 import java.util.ArrayList;
 
-import back.Data;
 import back.Patient;
 import back.State;
+import utils.Data;
+import utils.EventsUtils;
 import utils.Utils;
 
 public class BedroomResearch implements Runnable{
@@ -20,17 +21,18 @@ public class BedroomResearch implements Runnable{
 	@Override
 	public void run() {
 		int bedAvailable = Utils.objectAvailable(data.getBedrooms());
-		if(bedAvailable >= 0) {  //TODO
+		if(bedAvailable >= 0) { 
 			synchronized (data.getReceptionists()) {
 				data.getBedrooms().get(bedAvailable).setState(State.OCCUPIED);
 		    }
 			patient.setBedroom(data.getBedrooms().get(bedAvailable));
-			System.out.println(patient+ " a trouvé une chambre");
-			Utils.pathChoice(data, patient);
+			patient.setState(State.BEDROOM, data.getTime());
+			patient.setState(State.AVAILABLE, data.getTime());
+			EventsUtils.pathChoice(data, patient);
 		}
 		else {
 			synchronized (data.getWaitListArrival()) {
-				data.getWaitListBedroom().add(patient);
+				data.getWaitListBedroom().add(patient, data.getTime());
 		    }
 		}
 		

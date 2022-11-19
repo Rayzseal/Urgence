@@ -24,7 +24,8 @@ public class WaitingList{
 		listD = new ArrayList<Patient>();
 	}
 	
-	public void add(Patient p ) {
+	public void add(Patient p, int time) {
+		p.setState(State.WAITING, time);
 		switch(p.getGravity()){
 		   
 	       case A: 
@@ -48,7 +49,8 @@ public class WaitingList{
 		return listA.size()+listB.size()+listC.size()+listD.size();
 	}
 	
-	public void remove(Patient p) {
+	public void remove(Patient p, int time) {
+		p.setState(State.AVAILABLE, time);
 		switch(p.getGravity()){
 	       case A: 
 	    	   listA.remove(p);

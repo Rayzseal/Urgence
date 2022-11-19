@@ -1,5 +1,12 @@
 package back;
 
+import java.util.ArrayList;
+import java.util.TreeMap;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import utils.Utils;
+
 public class Patient {
 	
 	private String name;
@@ -16,16 +23,22 @@ public class Patient {
 	private int GlobalWaitInSeconds;
 	
 	private State state;
+	
+	private Map<Integer, State> listState;
 
 	public Patient() {
+		listState = new TreeMap<>();
 		name= null;
 		surname = null;
 		arrivalDate = 0;
+		//setState(State.WAITING);
 		state = State.WAITING;
 		bedroom = null;
+		
 	}
 
 	public Patient(String name, String surname, int arrivalDate) {
+		listState = new TreeMap<>();
 		this.name = name;
 		this.surname = surname;
 		this.arrivalDate = arrivalDate;
@@ -52,6 +65,13 @@ public class Patient {
 
 	public Gravity getGravity() {
 		return gravity;
+	}
+	public Map<Integer, State> getListState() {
+		return listState;
+	}
+
+	public void setListState(TreeMap<Integer, State> listState) {
+		this.listState = listState;
 	}
 
 	public void setName(String name) {
@@ -86,8 +106,9 @@ public class Patient {
 		return state;
 	}
 
-	public void setState(State state) {
+	public void setState(State state, int time) {
 		this.state = state;
+		listState.put(time, state);
 	}
 	
 	public Bedroom getBedroom() {
@@ -100,7 +121,13 @@ public class Patient {
 
 	@Override
 	public String toString() {
-		return "Patient [name=" + name + ", surname=" + surname + ", arrivalDate=" + arrivalDate + "]";
+		String str = "Patient "+name+" "+surname+" : ";
+		for(Entry<Integer, State> i : listState.entrySet()){
+			//int time = i.getKey();
+			str += Utils.globalWaitingTime(i.getKey()) + " " + i.getValue()+" | ";
+		}
+		return str;
+		//return "Patient [name=" + name + ", surname=" + surname + ", arrivalDate=" + arrivalDate + "]";
 	}
 
 	public void addWaitingTime() {

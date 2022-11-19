@@ -1,29 +1,23 @@
-package back;
+package utils;
 
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Vector;
 
+import back.Bedroom;
+import back.Bloc;
+import back.Doctor;
+import back.Patient;
+import back.Receptionist;
+import back.Scanner;
+import back.WaitingList;
 import events.PatientArrival;
-import utils.ReadFile;
-import utils.SortPatientArrival;
-import utils.Utils;
 
 public class Data {
-
-	private int nbOfBedrooms;
-	// private int nbOfAvailableBedrooms;
-
-	private int nbOfBlocs;
-	// private int nbOfAvailableBlocs;
-
-	private int nbOfScanners;
-	// private int nbOfAvailableScanners;
-
-	private int nbOfReceptionists;
-	// private int nbOfAvailableReceptionists;
-
+	
 	private int nbOfPatients = 50;
+	
+	
 
 	// --- Gaussian values --- //
 	// value in seconds
@@ -34,6 +28,7 @@ public class Data {
 	private ArrayList<Bloc> blocs;
 	private ArrayList<Scanner> scanners;
 	private ArrayList<Receptionist> receptionists;
+	private ArrayList<Doctor> doctors;
 
 	private ArrayList<Patient> patients;
 	private ArrayList<Patient> patientsActive;
@@ -57,43 +52,50 @@ public class Data {
 	private int timePrescription;
 
 	public Data() {
-		addReadFile();
-		generateLists();
-		generatePatients();
+		generateData();
+	}
+	
+	public void generateData() {
+		this.reduceTime = 300;
+		DataFile dataFile = new DataFile();
+		generateLists(dataFile);
+		generatePatients(nbOfPatients);
 		generateWaitingList();
 
 		this.patients.sort(new SortPatientArrival());
 	}
 
-	public void generateLists() {
+	public void generateLists(DataFile dataFile) {
 		this.bedrooms = new ArrayList<>();
 		this.blocs = new ArrayList<>();
 		this.scanners = new ArrayList<>();
 		this.receptionists = new ArrayList<>();
+		this.doctors = new ArrayList<>();
 		this.patients = new ArrayList<>();
 		this.patientsActive = new ArrayList<>();
 		this.patientsOver = new ArrayList<>();
 
-		for (int i = 0; i < nbOfBedrooms; i++)
+		for (int i = 0; i < dataFile.getNbBedrooms(); i++)
 			bedrooms.add(new Bedroom());
 
-		for (int i = 0; i < nbOfBlocs; i++)
+		for (int i = 0; i < dataFile.getNbBloc(); i++)
 			blocs.add(new Bloc());
 
-		for (int i = 0; i < nbOfScanners; i++)
+		for (int i = 0; i < dataFile.getNbScanner(); i++)
 			scanners.add(new Scanner());
 
-		for (int i = 0; i < nbOfReceptionists; i++)
+		for (int i = 0; i < dataFile.getNbReceptionist(); i++)
 			receptionists.add(new Receptionist());
+		for (int i = 0; i < dataFile.getNbDoctor(); i++)
+			doctors.add(new Doctor());
 	}
 
-	public void generatePatients() {
+	public void generatePatients(int nbPatients) {
 		this.time = 0;
-		this.reduceTime = 300;
-
+		
 		int nbSecondsPerDay = 86400;
 
-		for (int i = 0; i < nbOfPatients; i++) {
+		for (int i = 0; i < nbPatients; i++) {
 			Random r = new Random();
 
 			double val = r.nextGaussian() * this.standardDeviation + this.hourPeakArrivals;
@@ -122,24 +124,7 @@ public class Data {
 	public void generateWaitingList() {
 		waitListArrival = new ArrayList<Patient>();
 		waitListBedroom = new WaitingList();
-	}
-
-	public void addReadFile() {
-		ReadFile f = new ReadFile();
-		this.nbOfBedrooms = f.nbBedrooms;
-		// this.nbOfAvailableBedrooms = f.nbBedrooms;
-		this.nbOfBlocs = f.nbBloc;
-		// this.nbOfAvailableBlocs = f.nbBloc;
-		this.nbOfReceptionists = f.nbReceptionist;
-		// this.nbOfAvailableReceptionists = f.nbReceptionist;
-		this.nbOfScanners = f.nbScanner;
-		// this.nbOfAvailableScanners = f.nbScanner;
-
-		this.timeReception = f.timeReception;
-		this.timeAnalysis = f.timeAnalysis;
-		this.timeBloc = f.timeBloc;
-		this.timeScanner = f.timeScanner;
-		this.timePrescription = f.timePrescription;
+		waitListPrescription = new WaitingList();
 	}
 
 	/**
@@ -147,33 +132,6 @@ public class Data {
 	 * 
 	 * @return
 	 */
-	public int getNbOfBedrooms() {
-		return nbOfBedrooms;
-	}
-
-	public int getNbOfBlocs() {
-		return nbOfBlocs;
-	}
-
-	public void setNbOfBlocs(int nbOfBlocs) {
-		this.nbOfBlocs = nbOfBlocs;
-	}
-
-	public int getNbOfScanners() {
-		return nbOfScanners;
-	}
-
-	public void setNbOfScanners(int nbOfScanners) {
-		this.nbOfScanners = nbOfScanners;
-	}
-
-	public int getNbOfReceptionists() {
-		return nbOfReceptionists;
-	}
-
-	public void setNbOfReceptionists(int nbOfReceptionists) {
-		this.nbOfReceptionists = nbOfReceptionists;
-	}
 
 	public int getNbOfPatients() {
 		return nbOfPatients;
@@ -359,8 +317,12 @@ public class Data {
 		this.timePrescription = timePrescription;
 	}
 
-	public void setNbOfBedrooms(int nbOfBedrooms) {
-		this.nbOfBedrooms = nbOfBedrooms;
+	public ArrayList<Doctor> getDoctors() {
+		return doctors;
 	}
 
+	public void setDoctors(ArrayList<Doctor> doctors) {
+		this.doctors = doctors;
+	}
+	
 }

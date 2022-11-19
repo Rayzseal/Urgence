@@ -1,9 +1,9 @@
 package events;
 
-import back.Data;
 import back.Gravity;
 import back.Patient;
 import back.State;
+import utils.Data;
 
 public class PatientLeave implements Runnable {
 	private Patient patient;
@@ -22,23 +22,27 @@ public class PatientLeave implements Runnable {
 	public void run() {
 
 		synchronized (data.getBedrooms()) {
-			if(patient.getBedroom() != null) {
+			if (patient.getBedroom() != null) {
 				patient.getBedroom().setState(State.AVAILABLE);
 				patient.setBedroom(null);
 			}
-			patient.setState(State.OUT);
-			System.out.println(patient.toString() + " quitte l'hotpital.");
-			data.getPatientsActive().remove(patient);
-			synchronized (data.getWaitListBedroom()) {
-				if (data.getWaitListBedroom().size() > 0) {
-					patient = (Patient) data.getWaitListBedroom().selectPatientFromArrayList();
-					data.getWaitListBedroom().remove(patient);//verif temps
-					new Thread(new BedroomResearch(data, patient)).start();
+			patient.setState(State.OUT, data.getTime());
+			System.out.println(patient.toString());
+			synchronized (data.getPatientsActive()) {
+				data.getPatientsActive().remove(patient);
+			}
+			synchronized (data.getPatientsOver()) {
+				data.getPatientsOver().add(patient);
+			}
+
+			if (data.getWaitListBedroom().size() > 0) {
+				patient = data.getWaitListBedroom().selectPatientFromArrayList();
+				synchronized (data.getWaitListBedroom()) {					
+					data.getWaitListBedroom().remove(patient, data.getTime());
 				}
+				new Thread(new BedroomResearch(data, patient)).start();
 			}
 		}
-
-		
 
 	}
 
