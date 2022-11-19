@@ -1,8 +1,7 @@
 package test;
 
 import static org.junit.Assert.assertEquals;
-
-import org.junit.jupiter.api.Test;
+import org.junit.*;
 
 import back.Patient;
 import back.Scheduler;

@@ -1,9 +1,12 @@
 package hud;
 
+import back.Scheduler;
+
 public class MainApp {
 
-	public MainApp() {
-		// TODO Auto-generated constructor stub
+	public static void main(String[] args) {
+		Scheduler s = new Scheduler();
+		s.run();
 	}
 
 }
