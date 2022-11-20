@@ -16,7 +16,7 @@ public class EventsTest {
 
 	@Test
 	 public void testPaths() {
-		Scheduler s = new Scheduler(5);
+		Scheduler s = new Scheduler(50);
 		s.run();
 		int nbCorrectPath = 0;
 		s.getData().getPatientsOver();
@@ -36,13 +36,14 @@ public class EventsTest {
 		           break;
 		       case D:
 		           // ARRIVAL, RECEPTION, BEDROOM, PRESCRIPTION, OUT
-		    	   if(p.getListState().containsValue(State.ARRIVAL) && 
-		    	   p.getListState().containsValue(State.RECEPTION) &&
-		    	   p.getListState().containsValue(State.BEDROOM) &&
-		    	   p.getListState().containsValue(State.PRESCRIPTION) &&
-		    	   p.getListState().containsValue(State.OUT)) {
+		    	   if(p.getListState().containsKey(State.ARRIVAL) && 
+		    	   p.getListState().containsKey(State.RECEPTION) &&
+		    	   p.getListState().containsKey(State.BEDROOM) &&
+		    	   p.getListState().containsKey(State.PRESCRIPTION) &&
+		    	   p.getListState().containsKey(State.OUT)) {
 		    		   nbCorrectPath++;
-		    	   }
+		    	   }else
+		    		   System.out.println(p);
 		           break;
 		   }
 		}
@@ -52,14 +53,15 @@ public class EventsTest {
 	
 	@Test
 	 public void testArrival() {
-		Scheduler s = new Scheduler();
+		Scheduler s = new Scheduler(50);
 		s.run();
 		int nbCorrectPath = 0;
 		s.getData().getPatientsOver();
 		for(Patient p : s.getData().getPatientsOver()) {
-	    	   if(p.getListState().containsValue(State.ARRIVAL)) {
+	    	   if(p.getListState().containsKey(State.ARRIVAL)) {
 	    		   nbCorrectPath++;
-	    	   }
+	    	   }else
+	    		   System.out.println(p);
 		}
 		System.out.println(nbCorrectPath);
 		assertEquals(nbCorrectPath, s.getData().getNbOfPatients());
@@ -71,9 +73,10 @@ public class EventsTest {
 		int nbCorrectPath = 0;
 		s.getData().getPatientsOver();
 		for(Patient p : s.getData().getPatientsOver()) {
-	    	   if(p.getListState().containsValue(State.RECEPTION)) {
+	    	   if(p.getListState().containsKey(State.RECEPTION)) {
 	    		   nbCorrectPath++;
-	    	   }
+	    	   }else
+	    		   System.out.println(p);
 		}
 		System.out.println(nbCorrectPath);
 		assertEquals(nbCorrectPath, s.getData().getNbOfPatients());

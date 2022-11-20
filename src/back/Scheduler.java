@@ -12,19 +12,17 @@ public class Scheduler {
 
 	public Scheduler() {
 		data = new Data();
-		// 1000 == 1 seconde / reduceTime
-		// with reduceTime = an accelerator
-		data.setReduceTime(100);
 	}
-	
+
 	public Scheduler(int nbPatient) {
 		data = new Data(nbPatient);
-		// 1000 == 1 seconde / reduceTime
-		// with reduceTime = an accelerator
-		data.setReduceTime(100);
 	}
 
 	public void scheduler() {
+		// 1000 == 1 seconde / reduceTime
+		// with reduceTime = an accelerator
+		data.setReduceTime(2000);
+
 		// Utils.showList(data.getPatients());
 		System.out.println("------------------");
 		System.out.println("BEGIN");
@@ -34,16 +32,18 @@ public class Scheduler {
 		// every patients has been treated we stop.
 		while (data.getPatients().size() > 0 || data.getPatientsActive().size() != 0) {
 			try {
-				//Thread.sleep(1000 / data.getReduceTime());
-				Thread.sleep(1 / data.getReduceTime());
+				// Thread.sleep(1000 / data.getReduceTime());
+				Thread.sleep(1000 / data.getReduceTime());
 				data.setTime(data.getTime() + 1);
 
-				//System.out.println("Time : "+ Utils.globalWaitingTime(data.getTime()));
-				 //if(data.getTime()%5000==0) System.out.println("Time : "+ Utils.globalWaitingTime(data.getTime()));
-				 
-				while (data.getPatients().size() > 0 && data.getPatients().get(0).getArrivalDate() == data.getTime()) { 
+				// System.out.println("Time : "+ Utils.globalWaitingTime(data.getTime()));
+				/*if (data.getTime() % 5000 == 0)
+					System.out.println("Time : " + Utils.globalWaitingTime(data.getTime()));
+				*/
+				while (data.getPatients().size() > 0 && data.getPatients().get(0).getArrivalDate() == data.getTime()) {
 					// Start patient
-					//System.out.println("Arrivée patient : " + data.getPatients().get(0) + Utils.globalWaitingTime(data.getTime()));
+					// System.out.println("Arrivée patient : " + data.getPatients().get(0) +
+					// Utils.globalWaitingTime(data.getTime()));
 
 					// Add to "over" list & remove patients from waiting list
 					Patient patient;
@@ -56,9 +56,8 @@ public class Scheduler {
 							data.getPatients().remove(patient);
 						}
 					}
-					
-					if(patient != null)
-						patient.setState(State.ARRIVAL, data.getTime());
+
+					if (patient != null)
 						new Thread(new PatientArrival(data, patient)).start();
 				}
 
@@ -83,5 +82,5 @@ public class Scheduler {
 	public void setData(Data data) {
 		this.data = data;
 	}
-	
+
 }

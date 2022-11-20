@@ -24,14 +24,13 @@ public class Patient {
 	
 	private State state;
 	
-	private Map<Integer, State> listState;
+	private Map<State, Integer> listState;
 
 	public Patient() {
 		listState = new TreeMap<>();
 		name= null;
 		surname = null;
 		arrivalDate = 0;
-		//setState(State.WAITING);
 		state = State.WAITING;
 		bedroom = null;
 		
@@ -66,11 +65,11 @@ public class Patient {
 	public Gravity getGravity() {
 		return gravity;
 	}
-	public Map<Integer, State> getListState() {
+	public Map<State, Integer> getListState() {
 		return listState;
 	}
 
-	public void setListState(TreeMap<Integer, State> listState) {
+	public void setListState(TreeMap<State, Integer> listState) {
 		this.listState = listState;
 	}
 
@@ -108,7 +107,6 @@ public class Patient {
 
 	public void setState(State state, int time) {
 		this.state = state;
-		listState.put(time, state);
 	}
 	
 	public Bedroom getBedroom() {
@@ -122,9 +120,9 @@ public class Patient {
 	@Override
 	public String toString() {
 		String str = "Patient "+name+" "+surname+" : ";
-		for(Entry<Integer, State> i : listState.entrySet()){
+		for(Entry<State, Integer> i : listState.entrySet()){
 			//int time = i.getKey();
-			str += Utils.globalWaitingTime(i.getKey()) + " " + i.getValue()+" | ";
+			str += Utils.globalWaitingTime(i.getValue()) + " " + i.getKey()+" | ";
 		}
 		return str;
 		//return "Patient [name=" + name + ", surname=" + surname + ", arrivalDate=" + arrivalDate + "]";

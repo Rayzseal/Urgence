@@ -26,8 +26,9 @@ public class PatientLeave implements Runnable {
 				patient.getBedroom().setState(State.AVAILABLE);
 				patient.setBedroom(null);
 			}
-			patient.setState(State.OUT, data.getTime());
-			System.out.println(patient.toString());
+			patient.getListState().put(State.OUT, data.getTime());
+			//patient.setState(State.OUT, data.getTime());
+			
 			synchronized (data.getPatientsActive()) {
 				data.getPatientsActive().remove(patient);
 			}
