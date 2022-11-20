@@ -3,7 +3,9 @@ package events;
 import java.util.ArrayList;
 
 import back.Patient;
+import back.State;
 import utils.Data;
+import utils.Utils;
 
 public class EvBloc implements Runnable{
 	Patient patient;
@@ -20,7 +22,20 @@ public class EvBloc implements Runnable{
 
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
+		int blocAvailable = Utils.objectAvailable(data.getBlocs());
+		if(blocAvailable >= 0) { 
+			synchronized (data.getBlocs()) {
+				data.getBlocs().get(blocAvailable).setState(State.OCCUPIED);
+		    }
+			EndBloc e = new EndBloc(data, patient, blocAvailable);
+			e.run();
+		}
+		else {
+			synchronized (data.getWaitListBloc()) {
+				data.getWaitListBloc().add(patient, data.getTime());
+
+		    }
+		}
 		
 	}
 	

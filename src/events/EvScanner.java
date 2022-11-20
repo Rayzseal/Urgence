@@ -1,7 +1,9 @@
 package events;
 
 import back.Patient;
+import back.State;
 import utils.Data;
+import utils.Utils;
 
 public class EvScanner implements Runnable{
 	Patient patient;
@@ -18,7 +20,20 @@ public class EvScanner implements Runnable{
 
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
+		int scannerAvailable = Utils.objectAvailable(data.getScanners());
+		if(scannerAvailable >= 0) { 
+			synchronized (data.getScanners()) {
+				data.getScanners().get(scannerAvailable).setState(State.OCCUPIED);
+		    }
+			EndScanner e = new EndScanner(data, patient, scannerAvailable);
+			e.run();
+		}
+		else {
+			synchronized (data.getWaitListScanner()) {
+				data.getWaitListScanner().add(patient, data.getTime());
+
+		    }
+		}
 		
 	}
 

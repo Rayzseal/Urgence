@@ -5,6 +5,7 @@ import back.Patient;
 import back.Receptionist;
 import back.State;
 import utils.Data;
+import utils.EventsUtils;
 import utils.Utils;
 
 public class EndPatientArrival implements Runnable{
@@ -31,7 +32,10 @@ public class EndPatientArrival implements Runnable{
 			Thread.sleep(data.getTimeReception()/data.getReduceTime()); 
 			
 			//TODO assigne gravité
-			patient.setGravity(Gravity.D); // TODEL for now
+			//
+			
+			//patient.setGravity(Gravity.D); // TODEL for now
+			patient.setGravity(EventsUtils.setGravity());
 			
 			patient.setState(State.AVAILABLE, data.getTime());
 			new Thread(new BedroomResearch(data, patient)).start();

@@ -149,7 +149,7 @@ public class Patient {
 
 	@Override
 	public String toString() {
-		String str = "Patient " + name + " " + surname + " : ";
+		String str = "Patient " + "(parcours "+ gravity + ") "+ name + " " + surname +" : ";
 		for (Entry<State, Integer> i : listState.entrySet()) {
 			// int time = i.getKey();
 			str += Utils.globalWaitingTime(i.getValue()) + " " + i.getKey() + " | ";

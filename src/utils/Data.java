@@ -130,6 +130,9 @@ public class Data {
 		waitListArrival = new ArrayList<Patient>();
 		waitListBedroom = new WaitingList();
 		waitListPrescription = new WaitingList();
+		waitListAnalysis = new WaitingList();
+		waitListBloc = new WaitingList();;
+		waitListScanner = new WaitingList();
 	}
 
 	/**
