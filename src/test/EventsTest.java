@@ -24,26 +24,43 @@ public class EventsTest {
 			switch(p.getGravity()){
 			   
 		       case A: 
-		    	   
+		    	 //BEDROOM, BLOC, PRESCRIPTION, OUT
+		    	   if(p.getListState().containsKey(State.BEDROOM) &&
+		    			   p.getListState().containsKey(State.BLOC) &&
+				    	   p.getListState().containsKey(State.PRESCRIPTION) &&
+				    	   p.getListState().containsKey(State.OUT)) {
+				    		   nbCorrectPath++;
+				    	   }		    	   
 		           break;
 		   
 		       case B:
+		    	 //BEDROOM, SCANNER, BLOC, PRESCRIPTION, OUT
+		    	   if(p.getListState().containsKey(State.BEDROOM) &&		    			  
+		    			   p.getListState().containsKey(State.SCANNER) &&
+		    			   p.getListState().containsKey(State.BLOC) &&
+				    	   p.getListState().containsKey(State.PRESCRIPTION) &&
+				    	   p.getListState().containsKey(State.OUT)) {
+				    		   nbCorrectPath++;
+				    	   }
 		           break;
 		   
 		       case C:
-		    	   //algo parcours C
-		    	   System.out.println("parcours C");
+		    	//BEDROOM, ANALYSIS, SCANNER, PRESCRIPTION, OUT
+		    	   if(p.getListState().containsKey(State.BEDROOM) &&
+		    			   p.getListState().containsKey(State.ANALYSIS) &&
+		    			   p.getListState().containsKey(State.SCANNER) &&
+				    	   p.getListState().containsKey(State.PRESCRIPTION) &&
+				    	   p.getListState().containsKey(State.OUT)) {
+				    		   nbCorrectPath++;
+				    	   }
 		           break;
 		       case D:
-		           // ARRIVAL, RECEPTION, BEDROOM, PRESCRIPTION, OUT
-		    	   if(p.getListState().containsKey(State.ARRIVAL) && 
-		    	   p.getListState().containsKey(State.RECEPTION) &&
-		    	   p.getListState().containsKey(State.BEDROOM) &&
+		           //BEDROOM, PRESCRIPTION, OUT
+		    	   if(p.getListState().containsKey(State.BEDROOM) &&
 		    	   p.getListState().containsKey(State.PRESCRIPTION) &&
 		    	   p.getListState().containsKey(State.OUT)) {
 		    		   nbCorrectPath++;
-		    	   }else
-		    		   System.out.println(p);
+		    	   }
 		           break;
 		   }
 		}
@@ -71,15 +88,18 @@ public class EventsTest {
 		Scheduler s = new Scheduler();
 		s.run();
 		int nbCorrectPath = 0;
+		int nbPatient = s.getData().getNbOfPatients();
 		s.getData().getPatientsOver();
 		for(Patient p : s.getData().getPatientsOver()) {
-	    	   if(p.getListState().containsKey(State.RECEPTION)) {
+	    	   if(p.getListState().containsKey(State.RECEPTION) && !p.isArrival()) {
 	    		   nbCorrectPath++;
+	    	   }else if(p.isArrival()){
+	    		   nbPatient--;
 	    	   }else
 	    		   System.out.println(p);
 		}
 		System.out.println(nbCorrectPath);
-		assertEquals(nbCorrectPath, s.getData().getNbOfPatients());
+		assertEquals(nbCorrectPath, nbPatient);
   }
 	
 

@@ -32,8 +32,8 @@ public class Utils {
 	 * @return A string with the total waiting time in format days/hours/minutes
 	 */
 	public static String globalWaitingTime(int secondsTime) {
-		if (secondsTime<=0)
-			throw new IllegalArgumentException("The given argument must be > 0.");
+		if (secondsTime<0)
+			throw new IllegalArgumentException("The given argument must be >= 0.");
 		
 		int sec=0,hour=0,min=0,day=0;
 		

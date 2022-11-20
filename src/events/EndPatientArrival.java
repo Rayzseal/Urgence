@@ -26,13 +26,8 @@ public class EndPatientArrival implements Runnable{
 	@Override
 	public void run() {
 		try {
-			//System.out.println(patient.toString() + " en acceuil.");
-			synchronized (data.getPatientsActive()) {
-				//patient.setState(State.RECEPTION, data.getTime());
-				patient.getListState().put(State.RECEPTION, data.getTime());
-				//System.out.println(Utils.globalWaitingTime(data.getTime()));
-			}
-			
+			patient.setState(State.OCCUPIED, data.getTime());
+			patient.getListState().put(State.RECEPTION, data.getTime());			
 			Thread.sleep(data.getTimeReception()/data.getReduceTime()); 
 			
 			//TODO assigne gravité
@@ -40,16 +35,11 @@ public class EndPatientArrival implements Runnable{
 			
 			patient.setState(State.AVAILABLE, data.getTime());
 			new Thread(new BedroomResearch(data, patient)).start();
-			//BedroomResearch bedroomResearch = new BedroomResearch(data, patient);
-			//bedroomResearch.run();
 			
 			if(data.getWaitListArrival().size() > 0) {
-				//System.out.println("test thread : " + Thread.activeCount());
 				patient = data.getWaitListArrival().get(0);
 				data.getWaitListArrival().remove(patient);
 				new Thread(new EndPatientArrival(data, patient, receptionistAvailable)).start();
-				//EndPatientArrival arrival = new EndPatientArrival(data, patient, receptionistAvailable);
-				//arrival.run();
 			}else {
 				synchronized (data.getReceptionists()) {
 					data.getReceptionists().get(receptionistAvailable).setState(State.AVAILABLE);

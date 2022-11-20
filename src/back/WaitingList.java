@@ -26,6 +26,8 @@ public class WaitingList{
 	
 	public void add(Patient p, int time) {
 		p.setState(State.WAITING, time);
+		//start waiting
+		p.setWaitInSeconds(time);
 		switch(p.getGravity()){
 		   
 	       case A: 
@@ -51,6 +53,7 @@ public class WaitingList{
 	
 	public void remove(Patient p, int time) {
 		p.setState(State.AVAILABLE, time);
+		p.addWaitingTime(time);
 		switch(p.getGravity()){
 	       case A: 
 	    	   listA.remove(p);

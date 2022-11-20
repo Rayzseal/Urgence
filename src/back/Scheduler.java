@@ -57,7 +57,9 @@ public class Scheduler {
 						}
 					}
 
-					if (patient != null)
+					if (patient.isArrival()) {
+						//TODO parcours 1
+					}else
 						new Thread(new PatientArrival(data, patient)).start();
 				}
 
