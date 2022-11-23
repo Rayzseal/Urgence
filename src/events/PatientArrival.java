@@ -29,30 +29,20 @@ public class PatientArrival implements Runnable {
 			synchronized (data.getReceptionists()) {
 				data.getReceptionists().get(receptionistAvailable).setState(State.OCCUPIED);
 		    }
-			new Thread(new EndPatientArrival(data, patient, receptionistAvailable)).start();;
-			//EndPatientArrival endPatientArrival = new EndPatientArrival(data, patient, receptionistAvailable);
-			//endPatientArrival.run();
+			new Thread(new EndPatientArrival(data, patient, receptionistAvailable)).start();
 		}
 		else {
 			synchronized (data.getWaitListArrival()) {
 				data.getWaitListArrival().add(patient);
 		    }
-			patient.setState(State.WAITING, data.getTime());
+			patient.setState(State.WAITING);
 		}
 	}
-	
-	public void criticArrival() {
-		//TODO
-	}
-
 	@Override
 	public void run() {
-		patient.getListState().put(State.ARRIVAL, data.getTime());
-		if(patient.isArrival()) {
-			criticArrival();
-		}else
-			arrival();
-		
+		patient.setState(State.ARRIVAL, data.getTime());
+		//patient.getListState().put(State.ARRIVAL, data.getTime());
+		arrival();
 	}
 
 }

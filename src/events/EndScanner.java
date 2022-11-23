@@ -37,8 +37,9 @@ public class EndScanner implements Runnable {
 	@Override
 	public void run() {
 		try {
-			patient.setState(State.OCCUPIED, data.getTime());
-			patient.getListState().put(State.SCANNER, data.getTime());
+			//patient.setState(State.OCCUPIED, data.getTime());
+			//patient.getListState().put(State.SCANNER, data.getTime());
+			patient.setState(State.SCANNER, data.getTime());
 
 			Thread.sleep(data.getTimeScanner() / data.getReduceTime());
 

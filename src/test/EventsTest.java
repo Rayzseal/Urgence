@@ -64,7 +64,6 @@ public class EventsTest {
 		           break;
 		   }
 		}
-		System.out.println(nbCorrectPath);
 		assertEquals(nbCorrectPath, s.getData().getNbOfPatients());
     }
 	
@@ -80,7 +79,6 @@ public class EventsTest {
 	    	   }else
 	    		   System.out.println(p);
 		}
-		System.out.println(nbCorrectPath);
 		assertEquals(nbCorrectPath, s.getData().getNbOfPatients());
    }
 	@Test
@@ -91,14 +89,13 @@ public class EventsTest {
 		int nbPatient = s.getData().getNbOfPatients();
 		s.getData().getPatientsOver();
 		for(Patient p : s.getData().getPatientsOver()) {
-	    	   if(p.getListState().containsKey(State.RECEPTION) && !p.isArrival()) {
+	    	   if(p.getListState().containsKey(State.RECEPTION) && !p.isTypeArrival()) {
 	    		   nbCorrectPath++;
-	    	   }else if(p.isArrival()){
+	    	   }else if(p.isTypeArrival()){
 	    		   nbPatient--;
 	    	   }else
 	    		   System.out.println(p);
 		}
-		System.out.println(nbCorrectPath);
 		assertEquals(nbCorrectPath, nbPatient);
   }
 	

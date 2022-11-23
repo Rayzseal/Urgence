@@ -18,42 +18,49 @@ public class Patient {
 	private State state;
 
 	private Map<State, Integer> listState;
+	private Map<State, Integer> listWaitTime;
+	private int GlobalWaitInSeconds;
 
 	private Bedroom bedroom;
 
 	private int arrivalDate;
-	private boolean arrival; //false by himself
-
-	private int waitInSeconds;
-	private int GlobalWaitInSeconds;
+	private boolean typeArrival; // false patient arrive by himself
 
 	public Patient() {
-		listState = new TreeMap<>();
+		patient();
 		name = null;
 		surname = null;
-		arrivalDate = 0; //TODO gravité
-		arrival = false;
-		state = State.WAITING;
-		bedroom = null;
+		arrivalDate = 0;
 
 	}
 
 	public Patient(String name, String surname, int arrivalDate) {
-		listState = new TreeMap<>();
+		patient();
 		this.name = name;
 		this.surname = surname;
 		this.arrivalDate = arrivalDate;
-		arrival = false; //TODO gravité
-		waitInSeconds = 0;
-		GlobalWaitInSeconds = 0;
-		state = State.AVAILABLE;
+
 	}
-	
+
+	/**
+	 * function to initialize patient
+	 */
+	private void patient() {
+		listState = new TreeMap<>();
+		listWaitTime = new TreeMap<>();
+
+		typeArrival = false; // TODO gravité
+
+		state = State.AVAILABLE;
+		bedroom = null;
+
+		GlobalWaitInSeconds = 0;
+	}
 
 	public void addWaitingTime(int time) {
-		this.waitInSeconds = time - this.waitInSeconds;
-		this.GlobalWaitInSeconds += this.waitInSeconds;
-		this.waitInSeconds = 0;
+		// this.startWait = time - this.startWait;
+		// this.GlobalWaitInSeconds += this.startWait;
+		// this.startWait = 0;
 	}
 
 	public String getName() {
@@ -62,10 +69,6 @@ public class Patient {
 
 	public String getSurname() {
 		return surname;
-	}
-
-	public int getWaitInSeconds() {
-		return waitInSeconds;
 	}
 
 	public int getGlobalWaitInSeconds() {
@@ -80,6 +83,22 @@ public class Patient {
 		return listState;
 	}
 
+	public Map<State, Integer> getListWaitTime() {
+		return listWaitTime;
+	}
+
+	public void setListWaitTime(Map<State, Integer> listWaitTime) {
+		this.listWaitTime = listWaitTime;
+	}
+
+	public boolean isTypeArrival() {
+		return typeArrival;
+	}
+
+	public void setTypeArrival(boolean typeArrival) {
+		this.typeArrival = typeArrival;
+	}
+
 	public void setListState(TreeMap<State, Integer> listState) {
 		this.listState = listState;
 	}
@@ -90,10 +109,6 @@ public class Patient {
 
 	public void setSurname(String surname) {
 		this.surname = surname;
-	}
-
-	public void setWaitInSeconds(int waitInSeconds) {
-		this.waitInSeconds = waitInSeconds;
 	}
 
 	public void setGlobalWaitInSeconds(int globalWaitInSeconds) {
@@ -115,14 +130,18 @@ public class Patient {
 	public State getState() {
 		return state;
 	}
-	
 
 	public void setState(State state) {
 		this.state = state;
 	}
 
 	public void setState(State state, int time) {
-		this.state = state;
+		if(state != State.WAITING && state != State.AVAILABLE ) {
+			this.state = State.OCCUPIED;
+			listState.put(state, time);
+		}else			
+			this.state = state;
+			
 	}
 
 	public Bedroom getBedroom() {
@@ -132,16 +151,6 @@ public class Patient {
 	public void setBedroom(Bedroom bedroom) {
 		this.bedroom = bedroom;
 	}
-	
-
-	public boolean isArrival() {
-		return arrival;
-	}
-
-	public void setArrival(boolean arrival) {
-		this.arrival = arrival;
-	}
-
 
 	public void setListState(Map<State, Integer> listState) {
 		this.listState = listState;
@@ -149,12 +158,11 @@ public class Patient {
 
 	@Override
 	public String toString() {
-		String str = "Patient " + "(parcours "+ gravity + ") "+ name + " " + surname +" : ";
+		String str = "Patient " + "(parcours " + gravity + ") " + name + " " + surname + " : ";
 		for (Entry<State, Integer> i : listState.entrySet()) {
-			// int time = i.getKey();
 			str += Utils.globalWaitingTime(i.getValue()) + " " + i.getKey() + " | ";
 		}
-		str+= "Global waiting time : "+ Utils.globalWaitingTime(GlobalWaitInSeconds);
+		str += "Global waiting time : " + Utils.globalWaitingTime(GlobalWaitInSeconds);
 		return str;
 	}
 

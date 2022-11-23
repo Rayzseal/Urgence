@@ -22,12 +22,13 @@ public class EndBloc implements Runnable {
 	@Override
 	public void run() {
 		try {
-			patient.setState(State.OCCUPIED, data.getTime());
-			patient.getListState().put(State.BLOC, data.getTime());
+			patient.setState(State.BLOC, data.getTime());
+			//patient.setState(State.OCCUPIED, data.getTime());
+			//patient.getListState().put(State.BLOC, data.getTime());
 
 			Thread.sleep(data.getTimeBloc() / data.getReduceTime());
 
-			patient.setState(State.AVAILABLE, data.getTime());
+			patient.setState(State.AVAILABLE);
 			new Thread(new Prescription(data, patient)).start();
 
 			if (data.getWaitListBloc().size() > 0) {

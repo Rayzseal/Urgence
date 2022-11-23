@@ -38,7 +38,7 @@ public class Utils {
 		int sec=0,hour=0,min=0,day=0;
 		
 		day = (int) secondsTime /(24*3600);
-		secondsTime -= hour*24*3600;
+		secondsTime -= day*24*3600;
 		
 		
 		hour = (int) secondsTime/3600;
@@ -51,19 +51,24 @@ public class Utils {
 		
 		sec = secondsTime;
 		
-		String str = " ";
+		String str = "";
 		
 		if (day>0)
-			str += day+"day(s) ";
-			//return day+"day(s) "+hour+":"+min+":"+sec;
+			str += day+" day(s) ";
+		if(hour==0)
+			str+="0";
 		if (hour>0)
 			if(hour <10)
 				str+="0";
 			str+=hour+":";
+		if(min==0)
+			str += "0";
 		if (min>0)
 			if(min<10)
 				str+="0";
 			str+=min+":";
+		if(sec<10)
+			str += "0";
 		return str + sec;
 	}
 	

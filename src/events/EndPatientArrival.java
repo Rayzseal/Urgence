@@ -27,8 +27,9 @@ public class EndPatientArrival implements Runnable{
 	@Override
 	public void run() {
 		try {
-			patient.setState(State.OCCUPIED, data.getTime());
-			patient.getListState().put(State.RECEPTION, data.getTime());			
+			//patient.setState(State.OCCUPIED, data.getTime());
+			//patient.getListState().put(State.RECEPTION, data.getTime());	
+			patient.setState(State.RECEPTION, data.getTime());
 			Thread.sleep(data.getTimeReception()/data.getReduceTime()); 
 			
 			//TODO assigne gravité
@@ -37,7 +38,7 @@ public class EndPatientArrival implements Runnable{
 			//patient.setGravity(Gravity.D); // TODEL for now
 			patient.setGravity(EventsUtils.setGravity());
 			
-			patient.setState(State.AVAILABLE, data.getTime());
+			patient.setState(State.AVAILABLE);
 			new Thread(new BedroomResearch(data, patient)).start();
 			
 			if(data.getWaitListArrival().size() > 0) {
