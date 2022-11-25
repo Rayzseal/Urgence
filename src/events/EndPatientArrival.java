@@ -44,6 +44,12 @@ public class EndPatientArrival implements Runnable{
 			if(data.getWaitListArrival().size() > 0) {
 				patient = data.getWaitListArrival().get(0);
 				data.getWaitListArrival().remove(patient);
+				
+				int time = patient.getListWaitTime().get(State.RECEPTION);
+				time = data.getTime() - time;
+				patient.getListWaitTime().replace(State.RECEPTION, time);
+				patient.addWaitingTime(time);
+				
 				new Thread(new EndPatientArrival(data, patient, receptionistAvailable)).start();
 			}else {
 				synchronized (data.getReceptionists()) {

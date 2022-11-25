@@ -58,9 +58,7 @@ public class Patient {
 	}
 
 	public void addWaitingTime(int time) {
-		// this.startWait = time - this.startWait;
-		// this.GlobalWaitInSeconds += this.startWait;
-		// this.startWait = 0;
+		this.GlobalWaitInSeconds += time;
 	}
 
 	public String getName() {
@@ -160,6 +158,11 @@ public class Patient {
 	public String toString() {
 		String str = "Patient " + "(parcours " + gravity + ") " + name + " " + surname + " : ";
 		for (Entry<State, Integer> i : listState.entrySet()) {
+			str += Utils.globalWaitingTime(i.getValue()) + " " + i.getKey() + " | ";
+		}
+		if(listWaitTime.size()>0)
+			str += System.getProperty("line.separator");
+		for (Entry<State, Integer> i : getListWaitTime().entrySet()) {
 			str += Utils.globalWaitingTime(i.getValue()) + " " + i.getKey() + " | ";
 		}
 		str += "Global waiting time : " + Utils.globalWaitingTime(GlobalWaitInSeconds);

@@ -1,16 +1,24 @@
 package hud;
 
+import java.util.Map.Entry;
+
 import back.Patient;
 import back.Scheduler;
+import back.State;
 import utils.EventsUtils;
+import utils.Utils;
 
 public class MainApp {
 
 	public static void main(String[] args) {
-		Scheduler s = new Scheduler(10);
+		Scheduler s = new Scheduler(150);
 		s.run();
 		for(Patient p : s.getData().getPatientsOver()) {
-			System.out.println(p);
+			if(p.getListWaitTime().size()>1) {
+				System.out.println(p);
+				
+			}
+			
 		}
 		
 	}

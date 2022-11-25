@@ -10,6 +10,7 @@ import back.Doctor;
 import back.Patient;
 import back.Receptionist;
 import back.Scanner;
+import back.State;
 import back.WaitingList;
 import events.PatientArrival;
 
@@ -128,11 +129,11 @@ public class Data {
 
 	public void generateWaitingList() {
 		waitListArrival = new ArrayList<Patient>();
-		waitListBedroom = new WaitingList();
-		waitListPrescription = new WaitingList();
-		waitListAnalysis = new WaitingList();
-		waitListBloc = new WaitingList();;
-		waitListScanner = new WaitingList();
+		waitListBedroom = new WaitingList(State.BEDROOM);
+		waitListPrescription = new WaitingList(State.PRESCRIPTION);
+		waitListAnalysis = new WaitingList(State.ANALYSIS);
+		waitListBloc = new WaitingList(State.BLOC);
+		waitListScanner = new WaitingList(State.SCANNER);
 	}
 
 	/**

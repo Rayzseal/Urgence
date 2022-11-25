@@ -21,7 +21,7 @@ public class Scheduler {
 	public void scheduler() {
 		// 1000 == 1 seconde / reduceTime
 		// with reduceTime = an accelerator
-		data.setReduceTime(2000);
+		data.setReduceTime(1100);
 
 		// Utils.showList(data.getPatients());
 		System.out.println("------------------");
@@ -66,7 +66,11 @@ public class Scheduler {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
+			
 
+		}
+		while(data.getPatientsOver().size()<data.getNbOfPatients()) {
+			
 		}
 		System.out.println("------------------");
 		System.out.println("END");

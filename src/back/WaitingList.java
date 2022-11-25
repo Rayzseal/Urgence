@@ -3,6 +3,7 @@ package back;
 import java.util.ArrayList;
 
 import events.PatientLeave;
+import utils.Utils;
 
 /**
  * Class containing all the necessary methods to create a new waiting list.
@@ -16,18 +17,30 @@ public class WaitingList{
 	private ArrayList<Patient> listC;
 	private ArrayList<Patient> listD;
 	
+	private State stateList;
+	
 
 	public WaitingList() {
 		listA = new ArrayList<Patient>();
 		listB = new ArrayList<Patient>();
 		listC = new ArrayList<Patient>();
 		listD = new ArrayList<Patient>();
+		stateList = null;
+	}
+	
+	public WaitingList(State state) {
+		listA = new ArrayList<Patient>();
+		listB = new ArrayList<Patient>();
+		listC = new ArrayList<Patient>();
+		listD = new ArrayList<Patient>();
+		stateList = state;
 	}
 	
 	public void add(Patient p, int time) {
-		p.setState(State.WAITING, time);
+		p.setState(State.WAITING);
 		//start waiting
 		//p.setWaitInSeconds(time);
+		p.getListWaitTime().put(stateList, time);
 		switch(p.getGravity()){
 		   
 	       case A: 
@@ -52,8 +65,14 @@ public class WaitingList{
 	}
 	
 	public void remove(Patient p, int time) {
-		p.setState(State.AVAILABLE, time);
-		p.addWaitingTime(time);
+		p.setState(State.AVAILABLE);
+		System.out.println("remove list of "+ stateList);
+		System.out.println(Utils.globalWaitingTime(time));
+		System.out.println(Utils.globalWaitingTime(p.getListWaitTime().get(stateList)));
+		int timeWait = time - p.getListWaitTime().get(stateList);
+		
+		p.getListWaitTime().put(stateList, timeWait);
+		p.addWaitingTime(timeWait);
 		switch(p.getGravity()){
 	       case A: 
 	    	   listA.remove(p);

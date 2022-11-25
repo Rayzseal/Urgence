@@ -36,6 +36,7 @@ public class PatientArrival implements Runnable {
 				data.getWaitListArrival().add(patient);
 		    }
 			patient.setState(State.WAITING);
+			patient.getListWaitTime().put(State.RECEPTION, data.getTime());
 		}
 	}
 	@Override
