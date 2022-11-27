@@ -33,15 +33,23 @@ public class EndPrescription implements Runnable{
 			patient.setState(State.AVAILABLE);
 			new Thread(new PatientLeave(data, patient)).start();
 			
-			if(data.getWaitListPrescription().size() > 0) {
-				patient = data.getWaitListPrescription().selectPatientFromArrayList();
-				data.getWaitListPrescription().remove(patient, data.getTime());
-				EndPrescription prescription = new EndPrescription(data, patient, doctortAvailable);
-				prescription.run();
-			}else {
-				synchronized (data.getDoctors()) {
-					data.getDoctors().get(doctortAvailable).setState(State.AVAILABLE);
-			    }
+			Patient nextPatient = null;
+			synchronized (data.getWaitListPrescription()) {
+				if (data.getWaitListPrescription().size() > 0) {
+
+					nextPatient = data.getWaitListPrescription().selectPatientFromArrayList();
+					data.getWaitListPrescription().remove(nextPatient, data.getTime());
+					
+
+				} else {
+					synchronized (data.getDoctors()) {
+						data.getDoctors().get(doctortAvailable).setState(State.AVAILABLE);
+					}
+				}
+			}
+			if(nextPatient!=null) {
+				EndPrescription e = new EndPrescription(data, nextPatient, doctortAvailable);
+				e.run();
 			}
 				
 		} catch (InterruptedException e) {

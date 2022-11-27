@@ -121,9 +121,9 @@ public class Data {
 			int nbName = (int) (Math.random() * Utils.names.length);
 			int nbSur = (int) (Math.random() * Utils.surnames.length);
 
-			Patient p = new Patient(Utils.names[nbName], Utils.surnames[nbSur], millisDelay);
+			//Patient p = new Patient(Utils.names[nbName], Utils.surnames[nbSur], millisDelay);
 
-			this.patients.add(p);
+			this.patients.add(new Patient(Utils.names[nbName], Utils.surnames[nbSur], millisDelay));
 		}
 	}
 

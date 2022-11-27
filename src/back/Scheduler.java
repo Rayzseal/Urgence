@@ -21,7 +21,7 @@ public class Scheduler {
 	public void scheduler() {
 		// 1000 == 1 seconde / reduceTime
 		// with reduceTime = an accelerator
-		data.setReduceTime(1100);
+		data.setReduceTime(1001);
 
 		// Utils.showList(data.getPatients());
 		System.out.println("------------------");

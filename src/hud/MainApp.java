@@ -11,7 +11,7 @@ import utils.Utils;
 public class MainApp {
 
 	public static void main(String[] args) {
-		Scheduler s = new Scheduler(150);
+		Scheduler s = new Scheduler(1000);
 		s.run();
 		for(Patient p : s.getData().getPatientsOver()) {
 			if(p.getListWaitTime().size()>1) {

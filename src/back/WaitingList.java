@@ -38,8 +38,6 @@ public class WaitingList{
 	
 	public void add(Patient p, int time) {
 		p.setState(State.WAITING);
-		//start waiting
-		//p.setWaitInSeconds(time);
 		p.getListWaitTime().put(stateList, time);
 		switch(p.getGravity()){
 		   
@@ -66,9 +64,6 @@ public class WaitingList{
 	
 	public void remove(Patient p, int time) {
 		p.setState(State.AVAILABLE);
-		System.out.println("remove list of "+ stateList);
-		System.out.println(Utils.globalWaitingTime(time));
-		System.out.println(Utils.globalWaitingTime(p.getListWaitTime().get(stateList)));
 		int timeWait = time - p.getListWaitTime().get(stateList);
 		
 		p.getListWaitTime().put(stateList, timeWait);

@@ -46,17 +46,23 @@ public class EndScanner implements Runnable {
 			patient.setState(State.AVAILABLE, data.getTime());
 
 			path();
+			Patient nextPatient = null;
+			synchronized (data.getWaitListScanner()) {
+				if (data.getWaitListScanner().size() > 0) {
 
-			if (data.getWaitListScanner().size() > 0) {
-				patient = data.getWaitListScanner().selectPatientFromArrayList();
-				data.getWaitListScanner().remove(patient, data.getTime());
+					nextPatient = data.getWaitListScanner().selectPatientFromArrayList();
+					data.getWaitListScanner().remove(nextPatient, data.getTime());
+					
 
-				EndScanner e = new EndScanner(data, patient, scannerAvailable);
-				e.run();
-			} else {
-				synchronized (data.getScanners()) {
-					data.getScanners().get(scannerAvailable).setState(State.AVAILABLE);
+				} else {
+					synchronized (data.getScanners()) {
+						data.getScanners().get(scannerAvailable).setState(State.AVAILABLE);
+					}
 				}
+			}
+			if(nextPatient!=null) {
+				EndScanner e = new EndScanner(data, nextPatient, scannerAvailable);
+				e.run();
 			}
 
 		} catch (InterruptedException e) {

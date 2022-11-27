@@ -23,26 +23,35 @@ public class EndBloc implements Runnable {
 	public void run() {
 		try {
 			patient.setState(State.BLOC, data.getTime());
-			//patient.setState(State.OCCUPIED, data.getTime());
-			//patient.getListState().put(State.BLOC, data.getTime());
 
 			Thread.sleep(data.getTimeBloc() / data.getReduceTime());
 
 			patient.setState(State.AVAILABLE);
-			new Thread(new Prescription(data, patient)).start();
 
-			if (data.getWaitListBloc().size() > 0) {
-				patient = data.getWaitListBloc().selectPatientFromArrayList();
-				data.getWaitListBloc().remove(patient, data.getTime());
-				EndBloc e = new EndBloc(data, patient, blocAvailable);
-				e.run();
-			} else {
-				synchronized (data.getBlocs()) {
-					data.getBlocs().get(blocAvailable).setState(State.AVAILABLE);
+			new Thread(new Prescription(data, patient)).start();
+			
+			Patient nextPatient = null;
+			synchronized (data.getWaitListBloc()) {
+				if (data.getWaitListBloc().size() > 0) {
+
+					nextPatient = data.getWaitListBloc().selectPatientFromArrayList();
+					data.getWaitListBloc().remove(nextPatient, data.getTime());
+					
+
+				} else {
+					synchronized (data.getBlocs()) {
+						data.getBlocs().get(blocAvailable).setState(State.AVAILABLE);
+					}
 				}
 			}
+			if(nextPatient!=null) {
+				EndBloc e = new EndBloc(data, nextPatient, blocAvailable);
+				e.run();
+			}
 
-		} catch (InterruptedException e) {
+		} catch (
+
+		InterruptedException e) {
 			e.printStackTrace();
 		}
 

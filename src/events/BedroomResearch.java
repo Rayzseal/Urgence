@@ -27,7 +27,6 @@ public class BedroomResearch implements Runnable{
 		    }
 			patient.setBedroom(data.getBedrooms().get(bedAvailable));
 			patient.setState(State.BEDROOM, data.getTime());
-			//patient.getListState().put(State.BEDROOM, data.getTime());
 			
 			//start of the path
 			EventsUtils.pathChoice(data, patient);
