@@ -14,7 +14,7 @@ public class MainApp {
 		Scheduler s = new Scheduler(1000);
 		s.run();
 		for(Patient p : s.getData().getPatientsOver()) {
-			if(p.getListWaitTime().size()>1) {
+			if(p.getListWaitTime().size()>=1) {
 				System.out.println(p);
 				
 			}

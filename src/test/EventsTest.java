@@ -16,7 +16,7 @@ public class EventsTest {
 
 	@Test
 	 public void testPaths() {
-		Scheduler s = new Scheduler(50);
+		Scheduler s = new Scheduler(500);
 		s.run();
 		int nbCorrectPath = 0;
 		s.getData().getPatientsOver();
@@ -69,7 +69,7 @@ public class EventsTest {
 	
 	@Test
 	 public void testArrival() {
-		Scheduler s = new Scheduler(50);
+		Scheduler s = new Scheduler(500);
 		s.run();
 		int nbCorrectPath = 0;
 		s.getData().getPatientsOver();
@@ -83,7 +83,7 @@ public class EventsTest {
    }
 	@Test
 	 public void testReception() {
-		Scheduler s = new Scheduler();
+		Scheduler s = new Scheduler(500);
 		s.run();
 		int nbCorrectPath = 0;
 		int nbPatient = s.getData().getNbOfPatients();

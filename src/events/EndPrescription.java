@@ -24,8 +24,6 @@ public class EndPrescription implements Runnable{
 	@Override
 	public void run() {
 		try {
-			//patient.setState(State.OCCUPIED, data.getTime());
-			//patient.getListState().put(State.PRESCRIPTION, data.getTime());
 			patient.setState(State.PRESCRIPTION, data.getTime());
 
 			Thread.sleep(data.getTimePrescription()/data.getReduceTime()); 
