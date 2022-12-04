@@ -16,7 +16,7 @@ import events.PatientArrival;
 
 public class Data {
 	
-	private int nbOfPatients = 50;
+	private int nbOfPatients = 500;
 	
 	
 
@@ -24,6 +24,8 @@ public class Data {
 	// value in seconds
 	private int hourPeakArrivals = 54000; // average
 	private int standardDeviation = 10000; // deviation
+	private double lambda = 18;
+	
 
 	private ArrayList<Bedroom> bedrooms;
 	private ArrayList<Bloc> blocs;
@@ -65,7 +67,8 @@ public class Data {
 		this.reduceTime = 300;
 		DataFile dataFile = new DataFile();
 		generateLists(dataFile);
-		generatePatients();
+		//generatePatientsNormal();
+		generatePatients(lambda);
 		generateWaitingList();
 
 		this.patients.sort(new SortPatientArrival());
@@ -96,7 +99,7 @@ public class Data {
 			doctors.add(new Doctor());
 	}
 
-	public void generatePatients() {
+	public void generatePatientsNormal() {
 		this.time = 0;
 		
 		int nbSecondsPerDay = 86400;
@@ -125,6 +128,70 @@ public class Data {
 
 			this.patients.add(new Patient(Utils.names[nbName], Utils.surnames[nbSur], millisDelay));
 		}
+	}
+	
+	public ArrayList<Integer> poisson (double lambda) {
+	    ArrayList<Integer> values = new ArrayList<>();
+
+		for (int i = 0; i < nbOfPatients; i++) {
+			Random random = new Random();
+			double somme = 1;
+		    double t = 1;
+		    int n = 0;
+		    double r = random.nextDouble() * Math.exp (lambda);
+		    while (somme < r) {
+		      n ++;
+		      t *= lambda / n;
+		      somme += t;
+		    }
+			values.add(n);
+		}
+		return values;
+	}
+	
+	public int getMax(ArrayList<Integer> list) {
+		int max = 0;
+		for (int i = 0 ; i < list.size(); i++) {
+			if (list.get(i)>max)
+				max=list.get(i);
+		}
+		return max;
+	}
+	
+	public int getMin(ArrayList<Integer> list) {
+		int min = list.get(0);
+		for (int i = 0; i < list.size(); i++) {
+			if (list.get(i)<min)
+				min = list.get(i);
+		}
+		return min;
+	}
+	
+
+	public void generatePatients(double lambda) {
+		this.time = 0;
+		
+		int nbSecondsPerDay = 86400;
+		
+		ArrayList<Integer> values = new ArrayList<>();
+		values = poisson(lambda);
+		
+		int max = getMax(values);
+		int min = getMin(values);
+		int gap = max - min + 1;
+		
+		int gapP = (nbSecondsPerDay/gap)*max - nbSecondsPerDay;
+		
+		for (int i = 0; i < nbOfPatients; i++) {
+			
+			int val = (nbSecondsPerDay/gap)*(values.get(i));
+			
+		    int nbName = (int) (Math.random() * Utils.names.length);
+			int nbSur = (int) (Math.random() * Utils.surnames.length);
+			
+			this.patients.add(new Patient(Utils.names[nbName], Utils.surnames[nbSur], val-gapP));
+		}
+	    
 	}
 
 	public void generateWaitingList() {
@@ -334,4 +401,61 @@ public class Data {
 		this.doctors = doctors;
 	}
 	
+	/**
+	public static void main(String args[]) {
+		
+		 Data d = new Data();
+		 
+		int values[] = new int[18];
+
+		for (int i = 0; i < 18; i ++)
+			values[i]=0;
+
+		for (int i = 0; i < d.getNbOfPatients(); i++) {
+			if (d.getPatients().get(i).getArrivalDate() > 0 && d.getPatients().get(i).getArrivalDate() < 5000) 
+				values[0]=values[0]+1;
+			if (d.getPatients().get(i).getArrivalDate() > 5000 && d.getPatients().get(i).getArrivalDate() < 10000) 
+				values[1]=values[1]+1;
+			if (d.getPatients().get(i).getArrivalDate() > 10000 && d.getPatients().get(i).getArrivalDate() < 15000) 
+				values[2]=values[2]+1;
+			if (d.getPatients().get(i).getArrivalDate() > 15000 && d.getPatients().get(i).getArrivalDate() < 20000) 
+				values[3]=values[3]+1;
+			if (d.getPatients().get(i).getArrivalDate() > 20000 && d.getPatients().get(i).getArrivalDate() < 25000) 
+				values[4]=values[4]+1;
+			if (d.getPatients().get(i).getArrivalDate() > 25000 && d.getPatients().get(i).getArrivalDate() < 30000) 
+				values[5]=values[5]+1;
+			if (d.getPatients().get(i).getArrivalDate() > 30000 && d.getPatients().get(i).getArrivalDate() < 35000) 
+				values[6]=values[6]+1;
+			if (d.getPatients().get(i).getArrivalDate() > 35000 && d.getPatients().get(i).getArrivalDate() < 40000) 
+				values[7]=values[7]+1;
+			if (d.getPatients().get(i).getArrivalDate() > 40000 && d.getPatients().get(i).getArrivalDate() < 45000) 
+				values[8]=values[8]+1;		
+			if (d.getPatients().get(i).getArrivalDate() > 45000 && d.getPatients().get(i).getArrivalDate() < 50000) 
+				values[9]=values[9]+1;			
+			if (d.getPatients().get(i).getArrivalDate() > 50000 && d.getPatients().get(i).getArrivalDate() < 55000) 
+				values[10]=values[10]+1;				
+			if (d.getPatients().get(i).getArrivalDate() > 55000 && d.getPatients().get(i).getArrivalDate() < 60000) 
+				values[11]=values[11]+1;
+			if (d.getPatients().get(i).getArrivalDate() > 60000 && d.getPatients().get(i).getArrivalDate() < 65000) 
+				values[12]=values[12]+1;	
+			if (d.getPatients().get(i).getArrivalDate() > 65000 && d.getPatients().get(i).getArrivalDate() < 70000) 
+				values[13]=values[13]+1;	
+			if (d.getPatients().get(i).getArrivalDate() > 70000 && d.getPatients().get(i).getArrivalDate() < 75000) 
+				values[14]=values[14]+1;			
+			if (d.getPatients().get(i).getArrivalDate() > 75000 && d.getPatients().get(i).getArrivalDate() < 80000) 
+				values[15]=values[15]+1;				
+			if (d.getPatients().get(i).getArrivalDate() > 80000 && d.getPatients().get(i).getArrivalDate() < 85000) 
+				values[16]=values[16]+1;					
+			if (d.getPatients().get(i).getArrivalDate() > 85000 && d.getPatients().get(i).getArrivalDate() < 90000) 
+				values[17]=values[17]+1;
+	
+			System.out.println(d.getPatients().get(i).getArrivalDate());
+		}
+		
+		for (int i = 0; i < 18; i++) {
+			System.out.println("Values : "+values[i]);
+		}
+		
+	}
+	**/
 }
