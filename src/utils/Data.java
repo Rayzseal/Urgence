@@ -80,6 +80,7 @@ public class Data {
 		this.scanners = new ArrayList<>();
 		this.receptionists = new ArrayList<>();
 		this.doctors = new ArrayList<>();
+		this.nurses = new ArrayList<>();
 
 		for (int i = 0; i < dataFile.getNbBedrooms(); i++)
 			bedrooms.add(new Bedroom());
