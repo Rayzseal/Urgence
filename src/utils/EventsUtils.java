@@ -4,6 +4,7 @@ import back.Gravity;
 import back.Patient;
 import events.EvBloc;
 import events.EvScanner;
+import events.ParcoursC;
 import events.Prescription;
 
 public class EventsUtils {
@@ -22,8 +23,8 @@ public class EventsUtils {
 			break;
 
 		case C:
-			// algo parcours C
-			System.out.println("parcours C");
+			ParcoursC e3 = new ParcoursC(data, p);
+			e3.run();
 			break;
 		case D:
 			Prescription e4 = new Prescription(data, p);

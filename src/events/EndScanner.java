@@ -9,10 +9,6 @@ public class EndScanner implements Runnable {
 	Data data;
 	int scannerAvailable;
 
-	public EndScanner() {
-		// TODO Auto-generated constructor stub
-	}
-
 	public EndScanner(Data d, Patient p, int available) {
 		patient = p;
 		data = d;
@@ -25,7 +21,7 @@ public class EndScanner implements Runnable {
 			new Thread(new EvBloc(data, patient)).start();
 			break;
 		case C:
-			// algo parcours C
+			new Thread(new ParcoursC(data, patient)).start();
 			break;
 		default:
 			System.out.println(patient.getGravity());

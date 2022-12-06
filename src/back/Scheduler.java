@@ -3,6 +3,7 @@ package back;
 import java.util.Random;
 
 import events.PatientArrival;
+import events.PatientCriticArrival;
 import utils.Data;
 import utils.SortPatientArrival;
 import utils.Utils;
@@ -57,9 +58,9 @@ public class Scheduler {
 							data.getPatients().remove(patient);
 						}
 					}
-
+					
 					if (patient.isTypeArrival()) {
-						//TODO parcours 1
+						new Thread(new PatientCriticArrival(data, patient)).start();						
 					}else
 						new Thread(new PatientArrival(data, patient)).start();
 				}

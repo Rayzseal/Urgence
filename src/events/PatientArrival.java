@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import back.Patient;
 import back.Receptionist;
-import back.Room;
+import back.Ressource;
 import back.Scheduler;
 import back.State;
 import utils.Data;

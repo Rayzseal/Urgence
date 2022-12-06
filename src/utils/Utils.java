@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import back.Gravity;
 import back.Patient;
-import back.Room;
+import back.Ressource;
 import back.State;
 import events.EvBloc;
 import events.EvScanner;
@@ -84,7 +84,7 @@ public class Utils {
 	 */
 	public static int objectAvailable(ArrayList<?> list) {
 		for(int i = 0 ; i<list.size(); i++){
-			if(((Room) list.get(i)).getState()== State.AVAILABLE)
+			if(((Ressource) list.get(i)).getState()== State.AVAILABLE)
 				return i;	
 		}
 		return -1;

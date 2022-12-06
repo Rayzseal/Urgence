@@ -1,6 +1,6 @@
 package back;
 
-public class Room {
+public class Ressource {
 	
 	private String name;
 	
@@ -8,7 +8,7 @@ public class Room {
 	
 	private State state;
 
-	public Room() {
+	public Ressource() {
 		state = State.AVAILABLE;
 	}
 

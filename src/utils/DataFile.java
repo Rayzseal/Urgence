@@ -18,6 +18,7 @@ public class DataFile {
 	private int nbBloc;
 	private int nbReceptionist;
 	private int nbDoctor;
+	private int nbNurse;
 	
 	private int timeReception;
 	private int timeScanner;
@@ -52,6 +53,7 @@ public class DataFile {
 			this.nbBloc = Integer.parseInt(data[2]);
 			this.nbReceptionist = Integer.parseInt(data[3]);
 			this.nbDoctor = Integer.parseInt(data[4]);
+			this.nbNurse = Integer.parseInt(data[5]);
 			
 			in.close();
 			
@@ -165,6 +167,14 @@ public class DataFile {
 
 	public void setTimePrescription(int timePrescription) {
 		this.timePrescription = timePrescription;
+	}
+
+	public int getNbNurse() {
+		return nbNurse;
+	}
+
+	public void setNbNurse(int nbNurse) {
+		this.nbNurse = nbNurse;
 	}
 	
 }

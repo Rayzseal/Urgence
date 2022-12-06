@@ -1,6 +1,6 @@
 package back;
 
-public class Bloc extends Room {
+public class Bloc extends Ressource {
 		
 	private static int no = 0;
 

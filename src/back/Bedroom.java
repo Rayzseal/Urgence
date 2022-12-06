@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * @author chloe
  *
  */
-public class Bedroom extends Room {
+public class Bedroom extends Ressource {
 		
 	private static int no = 0;
 

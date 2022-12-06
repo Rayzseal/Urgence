@@ -1,6 +1,6 @@
 package back;
 
-public class Scanner extends Room {
+public class Scanner extends Ressource {
 	
 	private static int no = 0;
 

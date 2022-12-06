@@ -48,8 +48,13 @@ public class Patient {
 	private void patient() {
 		listState = new TreeMap<>();
 		listWaitTime = new TreeMap<>();
+		int g = (int) (Math.random() * 100);
+		int critic = 2;
 
-		typeArrival = false; // TODO gravité
+		if (g < critic)
+			typeArrival = true;
+		else
+			typeArrival = false; // TODO gravité
 
 		state = State.AVAILABLE;
 		bedroom = null;
