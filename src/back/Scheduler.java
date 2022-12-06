@@ -8,7 +8,7 @@ import utils.SortPatientArrival;
 import utils.Utils;
 
 public class Scheduler {
-	protected Data data;
+	private Data data;
 
 	public Scheduler() {
 		data = new Data();
@@ -49,6 +49,7 @@ public class Scheduler {
 					Patient patient;
 					synchronized (data.getPatients()) {
 						patient = data.getPatients().get(0);
+						patient.setState(State.ARRIVAL, data.getTime());
 						synchronized (data.getPatientsActive()) {
 							data.getPatientsActive().add(data.getPatients().get(0));
 						}

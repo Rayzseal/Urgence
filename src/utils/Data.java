@@ -80,9 +80,6 @@ public class Data {
 		this.scanners = new ArrayList<>();
 		this.receptionists = new ArrayList<>();
 		this.doctors = new ArrayList<>();
-		this.patients = new ArrayList<>();
-		this.patientsActive = new ArrayList<>();
-		this.patientsOver = new ArrayList<>();
 
 		for (int i = 0; i < dataFile.getNbBedrooms(); i++)
 			bedrooms.add(new Bedroom());
@@ -101,6 +98,10 @@ public class Data {
 
 	public void generatePatientsNormal() {
 		this.time = 0;
+
+		this.patients = new ArrayList<>();
+		this.patientsActive = new ArrayList<>();
+		this.patientsOver = new ArrayList<>();
 		
 		int nbSecondsPerDay = 86400;
 
@@ -169,6 +170,10 @@ public class Data {
 	
 
 	public void generatePatients(double lambda) {
+
+		this.patients = new ArrayList<>();
+		this.patientsActive = new ArrayList<>();
+		this.patientsOver = new ArrayList<>();
 		this.time = 0;
 		
 		int nbSecondsPerDay = 86400;

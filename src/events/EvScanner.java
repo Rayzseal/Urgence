@@ -20,21 +20,25 @@ public class EvScanner implements Runnable{
 
 	@Override
 	public void run() {
-		int scannerAvailable = Utils.objectAvailable(data.getScanners());
-		if(scannerAvailable >= 0) { 
-			synchronized (data.getScanners()) {
-				data.getScanners().get(scannerAvailable).setState(State.OCCUPIED);
-		    }
+		int scannerAvailable = -1;
+		synchronized (data.getScanners()) {
+			scannerAvailable = Utils.objectAvailable(data.getScanners());
+			if(scannerAvailable >= 0) { 
+				
+					data.getScanners().get(scannerAvailable).setState(State.OCCUPIED);
+			    }
+			else {
+				synchronized (data.getWaitListScanner()) {
+					data.getWaitListScanner().add(patient, data.getTime());
+	
+			    }
+			}
+		
+		}
+		if(scannerAvailable>=0) {
 			EndScanner e = new EndScanner(data, patient, scannerAvailable);
 			e.run();
 		}
-		else {
-			synchronized (data.getWaitListScanner()) {
-				data.getWaitListScanner().add(patient, data.getTime());
-
-		    }
-		}
-		
 	}
 
 }

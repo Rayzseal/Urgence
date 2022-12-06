@@ -19,7 +19,6 @@ public class EventsTest {
 		Scheduler s = new Scheduler(500);
 		s.run();
 		int nbCorrectPath = 0;
-		s.getData().getPatientsOver();
 		for(Patient p : s.getData().getPatientsOver()) {
 			switch(p.getGravity()){
 			   
@@ -72,7 +71,6 @@ public class EventsTest {
 		Scheduler s = new Scheduler(500);
 		s.run();
 		int nbCorrectPath = 0;
-		s.getData().getPatientsOver();
 		for(Patient p : s.getData().getPatientsOver()) {
 	    	   if(p.getListState().containsKey(State.ARRIVAL)) {
 	    		   nbCorrectPath++;
@@ -87,7 +85,6 @@ public class EventsTest {
 		s.run();
 		int nbCorrectPath = 0;
 		int nbPatient = s.getData().getNbOfPatients();
-		s.getData().getPatientsOver();
 		for(Patient p : s.getData().getPatientsOver()) {
 	    	   if(p.getListState().containsKey(State.RECEPTION) && !p.isTypeArrival()) {
 	    		   nbCorrectPath++;
@@ -98,6 +95,20 @@ public class EventsTest {
 		}
 		assertEquals(nbCorrectPath, nbPatient);
   }
+	
+	@Test
+	public void testList() {
+		Scheduler s = new Scheduler(100);
+		s.run();
+		int nbPatient = s.getData().getNbOfPatients();
+		
+		assertEquals(s.getData().getPatientsOver().size(), nbPatient);
+		//assertEquals(s.getData().getPatients().size(), 0);
+		//assertEquals(s.getData().getPatientsActive().size(), 0);
+		
+		
+		
+	}
 	
 
 }

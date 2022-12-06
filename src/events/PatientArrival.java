@@ -14,36 +14,38 @@ public class PatientArrival implements Runnable {
 	private Patient patient;
 	private Data data;
 	
-	public PatientArrival() {
-		patient = null;
-	}
-	
 	public PatientArrival(Data d, Patient p) {
 		data = d;
 		patient = p;
 	}
 	
 	public void arrival() {
-		int receptionistAvailable = Utils.objectAvailable(data.getReceptionists());
-		if(receptionistAvailable >= 0) {  //TODO
-			synchronized (data.getReceptionists()) {
-				data.getReceptionists().get(receptionistAvailable).setState(State.OCCUPIED);
-		    }
+		int receptionistAvailable  = -1;
+		synchronized (data.getReceptionists()) {
+			receptionistAvailable = Utils.objectAvailable(data.getReceptionists());
+			if(receptionistAvailable >= 0) {  //TODO
+				
+					data.getReceptionists().get(receptionistAvailable).setState(State.OCCUPIED);
+			    }
+			else {
+				synchronized (data.getWaitListArrival()) {
+					data.getWaitListArrival().add(patient);
+					patient.setState(State.WAITING);
+					patient.getListWaitTime().put(State.RECEPTION, data.getTime());
+			    }
+			}
+		}
+		if(receptionistAvailable>=0) {
 			new Thread(new EndPatientArrival(data, patient, receptionistAvailable)).start();
 		}
-		else {
-			synchronized (data.getWaitListArrival()) {
-				data.getWaitListArrival().add(patient);
-				patient.setState(State.WAITING);
-				patient.getListWaitTime().put(State.RECEPTION, data.getTime());
-		    }
 			
-		}
+		
+		
 	}
 	@Override
 	public void run() {
-		patient.setState(State.ARRIVAL, data.getTime());
 		arrival();
+		
 	}
 
 }

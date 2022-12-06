@@ -22,19 +22,25 @@ public class EvBloc implements Runnable{
 
 	@Override
 	public void run() {
-		int blocAvailable = Utils.objectAvailable(data.getBlocs());
-		if(blocAvailable >= 0) { 
-			synchronized (data.getBlocs()) {
-				data.getBlocs().get(blocAvailable).setState(State.OCCUPIED);
-		    }
+		int blocAvailable = -1;
+		synchronized (data.getBlocs()) {
+			blocAvailable = Utils.objectAvailable(data.getBlocs());
+			if(blocAvailable >= 0) { 
+				
+					data.getBlocs().get(blocAvailable).setState(State.OCCUPIED);
+			    }
+			else {
+				synchronized (data.getWaitListBloc()) {
+					data.getWaitListBloc().add(patient, data.getTime());
+	
+			    }
+			}
+			
+		}
+		
+		if(blocAvailable >= 0) {
 			EndBloc e = new EndBloc(data, patient, blocAvailable);
 			e.run();
-		}
-		else {
-			synchronized (data.getWaitListBloc()) {
-				data.getWaitListBloc().add(patient, data.getTime());
-
-		    }
 		}
 		
 	}

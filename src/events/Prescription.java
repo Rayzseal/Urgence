@@ -22,19 +22,25 @@ public class Prescription implements Runnable{
 	}
 	@Override
 	public void run() {
-		int prescriptionAvailable = Utils.objectAvailable(data.getDoctors());
-		if(prescriptionAvailable >= 0) { 
-			synchronized (data.getDoctors()) {
-				data.getDoctors().get(prescriptionAvailable).setState(State.OCCUPIED);
-		    }
+		int prescriptionAvailable = -1;
+		synchronized (data.getDoctors()) {
+			prescriptionAvailable = Utils.objectAvailable(data.getDoctors());
+			if(prescriptionAvailable >= 0) { 
+				
+					data.getDoctors().get(prescriptionAvailable).setState(State.OCCUPIED);
+			    }
+				
+			
+			else {
+				synchronized (data.getWaitListPrescription()) {
+					data.getWaitListPrescription().add(patient, data.getTime());
+	
+			    }
+			}
+		}
+		if(prescriptionAvailable>=0) {
 			EndPrescription endPrescription = new EndPrescription(data, patient, prescriptionAvailable);
 			endPrescription.run();
-		}
-		else {
-			synchronized (data.getWaitListPrescription()) {
-				data.getWaitListPrescription().add(patient, data.getTime());
-
-		    }
 		}
 		
 	}
