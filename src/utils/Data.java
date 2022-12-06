@@ -24,7 +24,7 @@ public class Data {
 	// value in seconds
 	private int hourPeakArrivals = 54000; // average
 	private int standardDeviation = 10000; // deviation
-	private double lambda = 18;
+	private double lambda = 50;
 	
 
 	private ArrayList<Bedroom> bedrooms;
@@ -70,8 +70,6 @@ public class Data {
 		//generatePatientsNormal();
 		generatePatients(lambda);
 		generateWaitingList();
-
-		this.patients.sort(new SortPatientArrival());
 	}
 
 	public void generateLists(DataFile dataFile) {
@@ -196,7 +194,32 @@ public class Data {
 			
 			this.patients.add(new Patient(Utils.names[nbName], Utils.surnames[nbSur], val-gapP));
 		}
-	    
+		patients.sort(new SortPatientArrival());
+		realValues();
+	}
+	
+	public int getNextValue(int value, int index) {
+		int i = index;
+		while(value==patients.get(i).getArrivalDate() && i < patients.size()-1)
+			i++;
+		
+		return patients.get(i).getArrivalDate();
+	}
+	
+	public ArrayList<Integer> realValues() {
+		  ArrayList<Integer> tmp = new ArrayList<>();
+		
+		int lower = 0;
+		int upper = patients.get(0).getArrivalDate();
+		for (int i = 0; i < patients.size(); i++) {
+			//TODO ajouter pour le dernier element 86400
+			//TODO changer la valeur dans patient
+			int newValue = (int) (Math.random() * (upper - lower)) + lower;
+			System.out.println("New value is "+newValue+" beteween "+lower+" and "+upper); 
+			upper = getNextValue(patients.get(i).getArrivalDate(),i);	
+			lower = patients.get(i).getArrivalDate();;
+		}
+		return tmp;
 	}
 
 	public void generateWaitingList() {
@@ -406,7 +429,7 @@ public class Data {
 		this.doctors = doctors;
 	}
 	
-	/**
+	
 	public static void main(String args[]) {
 		
 		 Data d = new Data();
@@ -454,7 +477,7 @@ public class Data {
 			if (d.getPatients().get(i).getArrivalDate() > 85000 && d.getPatients().get(i).getArrivalDate() < 90000) 
 				values[17]=values[17]+1;
 	
-			System.out.println(d.getPatients().get(i).getArrivalDate());
+			//System.out.println(d.getPatients().get(i).getArrivalDate());
 		}
 		
 		for (int i = 0; i < 18; i++) {
@@ -462,5 +485,5 @@ public class Data {
 		}
 		
 	}
-	**/
+	
 }
