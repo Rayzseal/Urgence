@@ -7,6 +7,7 @@ import java.util.Vector;
 import back.Bedroom;
 import back.Bloc;
 import back.Doctor;
+import back.Nurse;
 import back.Patient;
 import back.Receptionist;
 import back.Scanner;
@@ -32,6 +33,7 @@ public class Data {
 	private ArrayList<Scanner> scanners;
 	private ArrayList<Receptionist> receptionists;
 	private ArrayList<Doctor> doctors;
+	private ArrayList<Nurse> nurses;
 
 	private ArrayList<Patient> patients;
 	private ArrayList<Patient> patientsActive;
@@ -92,6 +94,8 @@ public class Data {
 			receptionists.add(new Receptionist());
 		for (int i = 0; i < dataFile.getNbDoctor(); i++)
 			doctors.add(new Doctor());
+		for(int i = 0; i<dataFile.getNbNurse();i++)
+			nurses.add(new Nurse());
 	}
 
 	public void generatePatientsNormal() {
@@ -428,8 +432,15 @@ public class Data {
 	public void setDoctors(ArrayList<Doctor> doctors) {
 		this.doctors = doctors;
 	}
-	
-	
+		
+	public ArrayList<Nurse> getNurses() {
+		return nurses;
+	}
+
+	public void setNurses(ArrayList<Nurse> nurses) {
+		this.nurses = nurses;
+	}
+
 	public static void main(String args[]) {
 		
 		 Data d = new Data();
