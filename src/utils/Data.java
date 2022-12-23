@@ -69,6 +69,7 @@ public class Data {
 		this.reduceTime = 300;
 		DataFile dataFile = new DataFile();
 		generateLists(dataFile);
+		generateTime(dataFile);
 		//generatePatientsNormal();
 		generatePatients(lambda);
 		generateWaitingList();
@@ -97,6 +98,14 @@ public class Data {
 			doctors.add(new Doctor());
 		for(int i = 0; i<dataFile.getNbNurse();i++)
 			nurses.add(new Nurse());
+	}
+	
+	public void generateTime(DataFile dataFile) {
+		this.timeReception = dataFile.getTimePrescription();
+		this.timeScanner = dataFile.getTimeScanner();
+		this.timeAnalysis = dataFile.getTimeAnalysis();
+		this.timeBloc = dataFile.getTimeBloc();
+		this.timePrescription = dataFile.getTimePrescription();
 	}
 
 	public void generatePatientsNormal() {
