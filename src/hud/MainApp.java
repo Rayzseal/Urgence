@@ -5,6 +5,7 @@ import java.util.Map.Entry;
 import back.Patient;
 import back.Scheduler;
 import back.State;
+import back.Statistics;
 import utils.EventsUtils;
 import utils.Utils;
 
@@ -20,6 +21,9 @@ public class MainApp {
 			}
 			
 		}
+		
+		
+		Statistics.statistics(s.getData());
 		
 	}
 

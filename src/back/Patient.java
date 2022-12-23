@@ -163,14 +163,14 @@ public class Patient {
 	public String toString() {
 		String str = "Patient " + "(parcours " + gravity + ") " + name + " " + surname + " : ";
 		for (Entry<State, Integer> i : listState.entrySet()) {
-			str += Utils.globalWaitingTime(i.getValue()) + " " + i.getKey() + " | ";
+			str += Utils.timeIntToString(i.getValue()) + " " + i.getKey() + " | ";
 		}
 		if(listWaitTime.size()>0)
 			str += System.getProperty("line.separator");
 		for (Entry<State, Integer> i : getListWaitTime().entrySet()) {
-			str += Utils.globalWaitingTime(i.getValue()) + " " + i.getKey() + " | ";
+			str += Utils.timeIntToString(i.getValue()) + " " + i.getKey() + " | ";
 		}
-		str += "Global waiting time : " + Utils.globalWaitingTime(GlobalWaitInSeconds);
+		str += "Global waiting time : " + Utils.timeIntToString(GlobalWaitInSeconds);
 		return str;
 	}
 

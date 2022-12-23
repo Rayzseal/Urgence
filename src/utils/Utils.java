@@ -31,7 +31,7 @@ public class Utils {
 	 * @param secondsTime Number of seconds to get a time from
 	 * @return A string with the total waiting time in format days/hours/minutes
 	 */
-	public static String globalWaitingTime(int secondsTime) {
+	public static String timeIntToString(int secondsTime) {
 		if (secondsTime<0)
 			throw new IllegalArgumentException("The given argument must be >= 0.");
 		

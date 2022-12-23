@@ -11,18 +11,18 @@ public class UtilsTest {
 	@Test
 	public void testPrintTime() {
 		int time =360;
-		assertEquals("00:06:00", Utils.globalWaitingTime(time));
+		assertEquals("00:06:00", Utils.timeIntToString(time));
 	}
 	@Test
 	public void testPrintTime2() {
 		int time = 33366;
-		assertEquals("09:16:06", Utils.globalWaitingTime(time));
+		assertEquals("09:16:06", Utils.timeIntToString(time));
 	}
 	
 	@Test
 	public void testPrintTime3() {
 		int time = 86400;
-		System.out.println(Utils.globalWaitingTime(time));
-		assertEquals("1 day(s) 00:00:00", Utils.globalWaitingTime(time));
+		System.out.println(Utils.timeIntToString(time));
+		assertEquals("1 day(s) 00:00:00", Utils.timeIntToString(time));
 	}
 }
