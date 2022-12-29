@@ -9,6 +9,8 @@ import utils.Utils;
 public class Statistics {
 	
 	public static void statistics(Data data) {
+		
+		System.out.print("Average global waiting time : ");
 		System.out.println(Utils.timeIntToString(Statistics.getAverageWaitingTime(data)));
 	}
 	
@@ -32,13 +34,14 @@ public class Statistics {
 			time.put(p.getGravity(), t);
 		}
 		for(Gravity g : Gravity.values()) {
-			int t = time.get(g).intValue() /nbPatient.get(g);//TODO /par nb of patient
+			int t = time.get(g).intValue() /nbPatient.get(g);
 			time.put(g, t);
 		}
 		return time;
 	}
 	public static Map<Ressource, Integer> getAverageWaitingTimeByActivity(Data data){
 		Map<Ressource, Integer> average = new HashMap<Ressource, Integer>();
+		//TODO
 		return average;
 	}
 	
