@@ -13,7 +13,7 @@ import events.Prescription;
 import utils.Data;
 
 public class EventsTest {
-
+	
 	@Test
 	 public void testPaths() {
 		Scheduler s = new Scheduler(500);
@@ -103,8 +103,8 @@ public class EventsTest {
 		int nbPatient = s.getData().getNbOfPatients();
 		
 		assertEquals(s.getData().getPatientsOver().size(), nbPatient);
-		//assertEquals(s.getData().getPatients().size(), 0);
-		//assertEquals(s.getData().getPatientsActive().size(), 0);
+		assertEquals(s.getData().getPatients().size(), 0);
+		assertEquals(s.getData().getPatientsActive().size(), 0);
 		
 		
 		

@@ -1,8 +1,8 @@
 package utils;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
-import java.util.Vector;
 
 import back.Bedroom;
 import back.Bloc;
@@ -13,14 +13,11 @@ import back.Receptionist;
 import back.Scanner;
 import back.State;
 import back.WaitingList;
-import events.PatientArrival;
 
 public class Data {
 	
 	private int nbOfPatients = 500;
 	
-	
-
 	// --- Gaussian values --- //
 	// value in seconds
 	private int hourPeakArrivals = 54000; // average
@@ -28,24 +25,25 @@ public class Data {
 	private double lambda = 50;
 	
 
-	private ArrayList<Bedroom> bedrooms;
-	private ArrayList<Bloc> blocs;
-	private ArrayList<Scanner> scanners;
-	private ArrayList<Receptionist> receptionists;
-	private ArrayList<Doctor> doctors;
-	private ArrayList<Nurse> nurses;
+	private List<Bedroom> bedrooms;
+	private List<Bloc> blocs;
+	private List<Scanner> scanners;
+	private List<Receptionist> receptionists;
+	private List<Doctor> doctors;
+	private List<Nurse> nurses;
 
-	private ArrayList<Patient> patients;
-	private ArrayList<Patient> patientsActive;
-	private ArrayList<Patient> patientsOver;
+	private List<Patient> patients;
+	private List<Patient> patientsActive;
+	private List<Patient> patientsOver;
 
-	private ArrayList<Patient> waitListArrival;
+	private List<Patient> waitListArrival;
 	
 	private WaitingList waitListBedroom;
 	private WaitingList waitListAnalysis;
 	private WaitingList waitListBloc;
 	private WaitingList waitListPrescription;
 	private WaitingList waitListScanner;
+	private List<Patient> waitListPathC;
 
 	private int time;
 	private int reduceTime;
@@ -229,7 +227,6 @@ public class Data {
 			//TODO ajouter pour le dernier element 86400
 			//TODO changer la valeur dans patient
 			int newValue = (int) (Math.random() * (upper - lower)) + lower;
-			System.out.println("New value is "+newValue+" beteween "+lower+" and "+upper); 
 			upper = getNextValue(patients.get(i).getArrivalDate(),i);	
 			lower = patients.get(i).getArrivalDate();;
 		}
@@ -243,6 +240,7 @@ public class Data {
 		waitListAnalysis = new WaitingList(State.ANALYSIS);
 		waitListBloc = new WaitingList(State.BLOC);
 		waitListScanner = new WaitingList(State.SCANNER);
+		waitListPathC = new ArrayList<Patient>();
 	}
 
 	/**
@@ -275,67 +273,82 @@ public class Data {
 		this.standardDeviation = standardDeviation;
 	}
 
-	public ArrayList<Bedroom> getBedrooms() {
+	public List<Bedroom> getBedrooms() {
 		return bedrooms;
 	}
 
-	public void setBedrooms(ArrayList<Bedroom> bedrooms) {
+	public void setBedrooms(List<Bedroom> bedrooms) {
 		this.bedrooms = bedrooms;
 	}
 
-	public ArrayList<Bloc> getBlocs() {
+	public List<Bloc> getBlocs() {
 		return blocs;
 	}
 
-	public void setBlocs(ArrayList<Bloc> blocs) {
+	public void setBlocs(List<Bloc> blocs) {
 		this.blocs = blocs;
 	}
 
-	public ArrayList<Scanner> getScanners() {
+	public List<Scanner> getScanners() {
 		return scanners;
 	}
 
-	public void setScanners(ArrayList<Scanner> scanners) {
+	public void setScanners(List<Scanner> scanners) {
 		this.scanners = scanners;
 	}
 
-	public ArrayList<Receptionist> getReceptionists() {
+	public List<Receptionist> getReceptionists() {
 		return receptionists;
 	}
 
-	public void setReceptionists(ArrayList<Receptionist> receptionists) {
+	public void setReceptionists(List<Receptionist> receptionists) {
 		this.receptionists = receptionists;
 	}
+	public List<Doctor> getDoctors() {
+		return doctors;
+	}
 
-	public ArrayList<Patient> getPatients() {
+	public void setDoctors(List<Doctor> doctors) {
+		this.doctors = doctors;
+	}
+		
+	public List<Nurse> getNurses() {
+		return nurses;
+	}
+
+	public void setNurses(List<Nurse> nurses) {
+		this.nurses = nurses;
+	}
+
+	public List<Patient> getPatients() {
 		return patients;
 	}
 
-	public void setPatients(ArrayList<Patient> patients) {
+	public void setPatients(List<Patient> patients) {
 		this.patients = patients;
 	}
 
-	public ArrayList<Patient> getPatientsActive() {
+	public List<Patient> getPatientsActive() {
 		return patientsActive;
 	}
 
-	public void setPatientsActive(ArrayList<Patient> patientsActive) {
+	public void setPatientsActive(List<Patient> patientsActive) {
 		this.patientsActive = patientsActive;
 	}
 
-	public ArrayList<Patient> getPatientsOver() {
+	public List<Patient> getPatientsOver() {
 		return patientsOver;
 	}
 
-	public void setPatientsOver(ArrayList<Patient> patientsOver) {
+	public void setPatientsOver(List<Patient> patientsOver) {
 		this.patientsOver = patientsOver;
 	}
 
-	public ArrayList<Patient> getWaitListArrival() {
+	public List<Patient> getWaitListArrival() {
 		return waitListArrival;
 	}
 
-	public void setWaitListArrival(ArrayList<Patient> waitListArrival) {
+	public void setWaitListArrival(List<Patient> waitListArrival) {
 		this.waitListArrival = waitListArrival;
 	}
 
@@ -377,6 +390,14 @@ public class Data {
 
 	public void setWaitListScanner(WaitingList waitListScanner) {
 		this.waitListScanner = waitListScanner;
+	}
+
+	public List<Patient> getWaitListPathC() {
+		return waitListPathC;
+	}
+
+	public void setWaitListPathC(List<Patient> waitListPathC) {
+		this.waitListPathC = waitListPathC;
 	}
 
 	public int getTime() {
@@ -433,78 +454,6 @@ public class Data {
 
 	public void setTimePrescription(int timePrescription) {
 		this.timePrescription = timePrescription;
-	}
-
-	public ArrayList<Doctor> getDoctors() {
-		return doctors;
-	}
-
-	public void setDoctors(ArrayList<Doctor> doctors) {
-		this.doctors = doctors;
-	}
-		
-	public ArrayList<Nurse> getNurses() {
-		return nurses;
-	}
-
-	public void setNurses(ArrayList<Nurse> nurses) {
-		this.nurses = nurses;
-	}
-
-	public static void main(String args[]) {
-		
-		 Data d = new Data();
-		 
-		int values[] = new int[18];
-
-		for (int i = 0; i < 18; i ++)
-			values[i]=0;
-
-		for (int i = 0; i < d.getNbOfPatients(); i++) {
-			if (d.getPatients().get(i).getArrivalDate() > 0 && d.getPatients().get(i).getArrivalDate() < 5000) 
-				values[0]=values[0]+1;
-			if (d.getPatients().get(i).getArrivalDate() > 5000 && d.getPatients().get(i).getArrivalDate() < 10000) 
-				values[1]=values[1]+1;
-			if (d.getPatients().get(i).getArrivalDate() > 10000 && d.getPatients().get(i).getArrivalDate() < 15000) 
-				values[2]=values[2]+1;
-			if (d.getPatients().get(i).getArrivalDate() > 15000 && d.getPatients().get(i).getArrivalDate() < 20000) 
-				values[3]=values[3]+1;
-			if (d.getPatients().get(i).getArrivalDate() > 20000 && d.getPatients().get(i).getArrivalDate() < 25000) 
-				values[4]=values[4]+1;
-			if (d.getPatients().get(i).getArrivalDate() > 25000 && d.getPatients().get(i).getArrivalDate() < 30000) 
-				values[5]=values[5]+1;
-			if (d.getPatients().get(i).getArrivalDate() > 30000 && d.getPatients().get(i).getArrivalDate() < 35000) 
-				values[6]=values[6]+1;
-			if (d.getPatients().get(i).getArrivalDate() > 35000 && d.getPatients().get(i).getArrivalDate() < 40000) 
-				values[7]=values[7]+1;
-			if (d.getPatients().get(i).getArrivalDate() > 40000 && d.getPatients().get(i).getArrivalDate() < 45000) 
-				values[8]=values[8]+1;		
-			if (d.getPatients().get(i).getArrivalDate() > 45000 && d.getPatients().get(i).getArrivalDate() < 50000) 
-				values[9]=values[9]+1;			
-			if (d.getPatients().get(i).getArrivalDate() > 50000 && d.getPatients().get(i).getArrivalDate() < 55000) 
-				values[10]=values[10]+1;				
-			if (d.getPatients().get(i).getArrivalDate() > 55000 && d.getPatients().get(i).getArrivalDate() < 60000) 
-				values[11]=values[11]+1;
-			if (d.getPatients().get(i).getArrivalDate() > 60000 && d.getPatients().get(i).getArrivalDate() < 65000) 
-				values[12]=values[12]+1;	
-			if (d.getPatients().get(i).getArrivalDate() > 65000 && d.getPatients().get(i).getArrivalDate() < 70000) 
-				values[13]=values[13]+1;	
-			if (d.getPatients().get(i).getArrivalDate() > 70000 && d.getPatients().get(i).getArrivalDate() < 75000) 
-				values[14]=values[14]+1;			
-			if (d.getPatients().get(i).getArrivalDate() > 75000 && d.getPatients().get(i).getArrivalDate() < 80000) 
-				values[15]=values[15]+1;				
-			if (d.getPatients().get(i).getArrivalDate() > 80000 && d.getPatients().get(i).getArrivalDate() < 85000) 
-				values[16]=values[16]+1;					
-			if (d.getPatients().get(i).getArrivalDate() > 85000 && d.getPatients().get(i).getArrivalDate() < 90000) 
-				values[17]=values[17]+1;
-	
-			//System.out.println(d.getPatients().get(i).getArrivalDate());
-		}
-		
-		for (int i = 0; i < 18; i++) {
-			System.out.println("Values : "+values[i]);
-		}
-		
 	}
 	
 }

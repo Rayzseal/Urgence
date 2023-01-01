@@ -112,79 +112,23 @@ public class WaitingList{
 		return null;
 	}
 	
-	
-	
-	// TODO TEST
-		/**
-		 * Selects the highest priority patient from multiple lists.
-		 * 
-		 * @param listA Highest priority list.
-		 * @param listB 2nd priority list.
-		 * @return Next patient to be selected or null if no patient has been selected
-		 *         (empty list).
-		 */
-		public static Patient selectPatientFromArrayList(ArrayList<Patient> listA, ArrayList<Patient> listB) {
-			if (listA == null || listB == null)
-				throw new IllegalArgumentException("None of the lists should be null");
-
-			if (!listA.isEmpty()) {
-				return listA.get(0);
-			} else if (!listB.isEmpty()) {
-				return listB.get(0);
-			}
-			return null;
+	@Override
+	public String toString() {
+		String str = " ";
+		for(Patient p : listA) {
+			str += p.getName() + "|";
 		}
-
-		/**
-		 * Selects the highest priority patient from multiple lists.
-		 * 
-		 * @param listA Highest priority list.
-		 * @param listB 2nd priority list.
-		 * @param listC 3rd priority list.
-		 * @return Next patient to be selected or null if no patient has been selected
-		 *         (empty list).
-		 */
-		public Patient selectPatientFromArrayList(ArrayList<Patient> listA, ArrayList<Patient> listB,
-				ArrayList<Patient> listC) {
-			if (listA == null || listB == null || listC == null)
-				throw new IllegalArgumentException("None of the lists should be null");
-
-			if (!listA.isEmpty()) {
-				return listA.get(0);
-			} else if (!listB.isEmpty()) {
-				return listB.get(0);
-			} else if (!listC.isEmpty()) {
-				return listC.get(0);
-			}
-			return null;
+		for(Patient p : listB) {
+			str += p.getName() + "|";
 		}
-
-		/**
-		 * Selects the highest priority patient from multiple lists.
-		 * 
-		 * @param listA Highest priority list.
-		 * @param listB 2nd priority list.
-		 * @param listC 3rd priority list.
-		 * @param listD non-priority list.
-		 * @return Next patient to be selected or null if no patient has been selected
-		 *         (empty list).
-		 */
-		public Patient selectPatientFromArrayList(ArrayList<Patient> listA, ArrayList<Patient> listB,
-				ArrayList<Patient> listC, ArrayList<Patient> listD) {
-			if (listA == null || listB == null || listC == null || listD == null)
-				throw new IllegalArgumentException("None of the lists should be null");
-
-			if (!listA.isEmpty()) {
-				return listA.get(0);
-			} else if (!listB.isEmpty()) {
-				return listB.get(0);
-			} else if (listC != null && !listC.isEmpty()) {
-				return listC.get(0);
-			} else if (listD != null && !listD.isEmpty()) {
-				return listD.get(0);
-			}
-			return null;
+		for(Patient p : listC) {
+			str += p.getName() + "|";
 		}
+		for(Patient p : listD) {
+			str += p.getName() + "|";
+		}
+		return str;
+	}
 
 
 }

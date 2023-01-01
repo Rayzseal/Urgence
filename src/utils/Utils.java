@@ -1,6 +1,7 @@
 package utils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import back.Gravity;
 import back.Patient;
@@ -73,7 +74,7 @@ public class Utils {
 	}
 	
 
-	public static void showList(ArrayList<?> list) {
+	public static void showList(List<?> list) {
 		for (int i = 0; i < list.size(); i++)
 			System.out.println(list.get(i).toString());
 	}
@@ -82,7 +83,7 @@ public class Utils {
 	 * 
 	 * -1 if no objcts are available and an index in the list of the first object available
 	 */
-	public static int objectAvailable(ArrayList<?> list) {
+	public static int objectAvailable(List<?> list) {
 		for(int i = 0 ; i<list.size(); i++){
 			if(((Ressource) list.get(i)).getState()== State.AVAILABLE)
 				return i;	

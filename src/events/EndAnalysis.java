@@ -1,8 +1,10 @@
 package events;
 
+import back.Gravity;
 import back.Patient;
 import back.State;
 import utils.Data;
+import utils.EventsUtils;
 
 public class EndAnalysis implements Runnable{	
 	private Patient patient;
@@ -14,6 +16,34 @@ public class EndAnalysis implements Runnable{
 		data = d;
 		nurseAvailable = available;
 	}
+	
+	public Patient chooseNextPatient() {
+		Patient nextPatient = null;
+		synchronized (data.getWaitListAnalysis()) {
+			if (data.getWaitListAnalysis().size() > 0) {
+
+				nextPatient = data.getWaitListAnalysis().selectPatientFromArrayList();
+				
+				if (patient.getGravity() == Gravity.C) {
+					if (EventsUtils.patientAvailable(data, patient)) {
+						data.getWaitListAnalysis().remove(nextPatient, data.getTime());
+					}else {
+						nextPatient = chooseNextPatient();
+						System.out.println(nextPatient.getName());
+						System.out.println("Contenu Liste analysis : "+data.getWaitListAnalysis());
+					}
+				} else {
+					data.getWaitListAnalysis().remove(nextPatient, data.getTime());
+				}
+
+			} else {
+				synchronized (data.getNurses()) {
+					data.getNurses().get(nurseAvailable).setState(State.AVAILABLE);
+				}
+			}
+		}
+		return nextPatient;
+	}
 
 	@Override
 	public void run() {
@@ -24,22 +54,9 @@ public class EndAnalysis implements Runnable{
 
 			patient.setState(State.AVAILABLE);
 
-			new Thread(new ParcoursC(data, patient)).start();
-			
-			Patient nextPatient = null;
-			synchronized (data.getWaitListAnalysis()) {
-				if (data.getWaitListAnalysis().size() > 0) {
-
-					nextPatient = data.getWaitListAnalysis().selectPatientFromArrayList();
-					data.getWaitListAnalysis().remove(nextPatient, data.getTime());
-					
-
-				} else {
-					synchronized (data.getNurses()) {
-						data.getNurses().get(nurseAvailable).setState(State.AVAILABLE);
-					}
-				}
-			}
+			new Thread(new EvEndPathC(data, patient)).start();
+			//System.out.println("analysis patient before chosing : "+patient.getName());
+			Patient nextPatient = chooseNextPatient();
 			if(nextPatient!=null) {
 				EndAnalysis e = new EndAnalysis(data, nextPatient, nurseAvailable);
 				e.run();
