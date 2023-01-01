@@ -24,7 +24,7 @@ public class EvScanner implements Runnable {
 			scannerAvailable = Utils.objectAvailable(data.getScanners());
 			if (scannerAvailable >= 0) {
 				if (patient.getGravity() == Gravity.C) {
-					if (EventsUtils.patientAvailable(data, patient)) {
+					if (EventsUtils.patientAvailableScanner(data, patient)) {
 						data.getScanners().get(scannerAvailable).setState(State.OCCUPIED);
 					} else {
 						scannerAvailable = -1;
@@ -34,22 +34,26 @@ public class EvScanner implements Runnable {
 				}
 
 			}
+			else {
+				synchronized (data.getWaitListScanner()) {
+					if (patient.getGravity() == Gravity.C) {
+						if (data.getWaitListPathC().contains(patient)) {
+							data.getWaitListScanner().add(patient, data.getTime());
+							System.out.println("liste attent scanner:"+patient);
+						}
+					}
+					else {
+						data.getWaitListScanner().add(patient, data.getTime());
+					}
+					
+				}
 
 		}
 		if (scannerAvailable >= 0) {
-			//System.out.println("run scanner : "+patient.getName());
+			System.out.println("run scanner : "+patient.getName());
 			EndScanner e = new EndScanner(data, patient, scannerAvailable);
 			e.run();
-		} else {
-			synchronized (data.getWaitListScanner()) {
-				if (patient.getGravity() == Gravity.C) {
-					if (EventsUtils.patientAvailable(data, patient)) {
-						data.getWaitListScanner().add(patient, data.getTime());
-						//System.out.println("liste attent scanner:"+patient.getName());
-					}
-				}
-				
-			}
+		} 
 		}
 	}
 

@@ -15,13 +15,15 @@ public class EvPathC implements Runnable{
 
 	@Override
 	public void run() {
-		System.out.println("start path C"+patient.getName());
+		
 		data.getWaitListPathC().add(patient);
 		
 		if(!patient.getListState().containsKey(State.SCANNER)) {
-			new Thread(new EvScanner(data, patient)).start();;			
+			System.out.println("start path C scanner "+patient);
+			new Thread(new EvScanner(data, patient)).start();		
 		}
 		if(!patient.getListState().containsKey(State.ANALYSIS)) {
+			System.out.println("start path C analysis "+patient);
 			new Thread(new EvAnalysis(data, patient)).start();
 		}
 		

@@ -25,7 +25,7 @@ public class EvAnalysis implements Runnable {
 			nurseAvailable = Utils.objectAvailable(data.getNurses());
 			if (nurseAvailable >= 0) {
 				if (patient.getGravity() == Gravity.C) {
-					if (EventsUtils.patientAvailable(data, patient)) {
+					if (EventsUtils.patientAvailableAnalysis(data, patient)) {
 						data.getNurses().get(nurseAvailable).setState(State.OCCUPIED);
 					}
 					else {
@@ -34,25 +34,29 @@ public class EvAnalysis implements Runnable {
 				} else {
 					data.getNurses().get(nurseAvailable).setState(State.OCCUPIED);
 				}
-			} 
+			}
+			else {
+				synchronized (data.getWaitListAnalysis()) {
+					if (patient.getGravity() == Gravity.C) {
+						if (data.getWaitListPathC().contains(patient)) {
+							data.getWaitListAnalysis().add(patient, data.getTime());
+							System.out.println("waiting list anlysis : "+patient.getName()+ patient.getSurname());
+						}
+					}
+					else {
+						data.getWaitListAnalysis().add(patient, data.getTime());
+					}
+					
+				}
+			}
 
 		}
 		if (nurseAvailable >= 0) {
-			//System.out.println("run analysis : "+patient.getName());
+			System.out.println("run analysis : "+patient.getName()+ patient.getSurname());
 			EndAnalysis e = new EndAnalysis(data, patient, nurseAvailable);
 			e.run();
 		}
-		else {
-			synchronized (data.getWaitListAnalysis()) {
-				if (patient.getGravity() == Gravity.C) {
-					if (EventsUtils.patientAvailable(data, patient)) {
-						data.getWaitListAnalysis().add(patient, data.getTime());
-						//System.out.println("waiting list anlysis : "+patient.getName());
-					}
-				}
-				
-			}
-		}
+		
 
 	}
 

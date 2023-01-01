@@ -24,17 +24,20 @@ public class EndAnalysis implements Runnable{
 
 				nextPatient = data.getWaitListAnalysis().selectPatientFromArrayList();
 				
-				if (patient.getGravity() == Gravity.C) {
-					if (EventsUtils.patientAvailable(data, patient)) {
+				/*if (patient.getGravity() == Gravity.C) {
+					if (EventsUtils.patientAvailableAnalysis(data, nextPatient)) {
 						data.getWaitListAnalysis().remove(nextPatient, data.getTime());
 					}else {
 						nextPatient = chooseNextPatient();
-						System.out.println(nextPatient.getName());
+						System.out.println(nextPatient);
 						System.out.println("Contenu Liste analysis : "+data.getWaitListAnalysis());
 					}
 				} else {
 					data.getWaitListAnalysis().remove(nextPatient, data.getTime());
-				}
+				}*/
+				if (patient.getGravity() == Gravity.C) 
+					EventsUtils.patientAvailableAnalysis(data, nextPatient);
+				data.getWaitListAnalysis().remove(nextPatient, data.getTime());
 
 			} else {
 				synchronized (data.getNurses()) {
@@ -55,9 +58,11 @@ public class EndAnalysis implements Runnable{
 			patient.setState(State.AVAILABLE);
 
 			new Thread(new EvEndPathC(data, patient)).start();
-			//System.out.println("analysis patient before chosing : "+patient.getName());
+			
 			Patient nextPatient = chooseNextPatient();
+			
 			if(nextPatient!=null) {
+				System.out.println("analysis patient next : "+nextPatient.getName());
 				EndAnalysis e = new EndAnalysis(data, nextPatient, nurseAvailable);
 				e.run();
 			}

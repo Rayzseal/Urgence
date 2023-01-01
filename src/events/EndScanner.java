@@ -38,19 +38,20 @@ public class EndScanner implements Runnable {
 			if (data.getWaitListScanner().size() > 0) {
 
 				nextPatient = data.getWaitListScanner().selectPatientFromArrayList();
-				if (patient.getGravity() == Gravity.C) {
-					if (EventsUtils.patientAvailable(data, patient)) {
+				/*if (patient.getGravity() == Gravity.C) {
+					if (EventsUtils.patientAvailableScanner(data, nextPatient)) {
 						data.getWaitListScanner().remove(nextPatient, data.getTime());
 					}else {
-						
 						nextPatient = chooseNextPatient();
 						System.out.println(nextPatient);
 						System.out.println("Contenu Liste scanner: "+data.getWaitListScanner());
 					}
 				} else {
 					data.getWaitListScanner().remove(nextPatient, data.getTime());
-				}
-				
+				}*/
+				if (patient.getGravity() == Gravity.C) 
+					EventsUtils.patientAvailableScanner(data, nextPatient);
+				data.getWaitListScanner().remove(nextPatient, data.getTime());
 
 			} else {
 				synchronized (data.getScanners()) {
@@ -72,9 +73,11 @@ public class EndScanner implements Runnable {
 			patient.setState(State.AVAILABLE, data.getTime());
 			
 			path();
-			//System.out.println("scanner patient before chosing : "+patient.getName());
+			
 			Patient nextPatient = chooseNextPatient();
+			
 			if(nextPatient!=null) {
+				System.out.println("scanner patient before chosing : "+nextPatient.getName());
 				EndScanner e = new EndScanner(data, nextPatient, scannerAvailable);
 				e.run();
 			}
