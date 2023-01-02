@@ -99,8 +99,8 @@ public class EventsTest {
 		int nbPatient = s.getData().getNbOfPatients();
 		
 		assertEquals(s.getData().getPatientsOver().size(), nbPatient);
-		//assertEquals(s.getData().getPatients().size(), 0);
-		//assertEquals(s.getData().getPatientsActive().size(), 0);
+		assertEquals(s.getData().getPatients().size(), 0);
+		assertEquals(s.getData().getPatientsActive().size(), 0);
 		
 		
 		

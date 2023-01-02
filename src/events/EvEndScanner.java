@@ -34,24 +34,20 @@ public class EvEndScanner implements Runnable {
 	
 	public Patient chooseNextPatient() {
 		Patient nextPatient = null;
-		synchronized (data.getWaitListScanner()) {
-			if (data.getWaitListScanner().size() > 0) {
+		synchronized (data.getWaitListPathC().get(State.SCANNER)) {
+			if (data.getWaitListPathC().get(State.SCANNER).size() > 0) {
 
-				nextPatient = data.getWaitListScanner().selectPatientFromArrayList();
-				/*if (patient.getGravity() == Gravity.C) {
-					if (EventsUtils.patientAvailableScanner(data, nextPatient)) {
-						data.getWaitListScanner().remove(nextPatient, data.getTime());
+				nextPatient = data.getWaitListPathC().get(State.SCANNER).selectPatientFromArrayList();
+				if (nextPatient.getGravity() == Gravity.C) {
+					if (EventsUtils.patientAvailable(data, nextPatient, State.ANALYSIS)) {
+						data.getWaitListPathC().get(State.SCANNER).remove(nextPatient, data.getTime());
 					}else {
+						data.getWaitListPathC().get(State.SCANNER).remove(nextPatient);
 						nextPatient = chooseNextPatient();
-						System.out.println(nextPatient);
-						System.out.println("Contenu Liste scanner: "+data.getWaitListScanner());
 					}
 				} else {
-					data.getWaitListScanner().remove(nextPatient, data.getTime());
-				}*/
-				if (patient.getGravity() == Gravity.C) 
-					EventsUtils.patientAvailableScanner(data, nextPatient);
-				data.getWaitListScanner().remove(nextPatient, data.getTime());
+					data.getWaitListPathC().get(State.SCANNER).remove(nextPatient, data.getTime());
+				}
 
 			} else {
 				synchronized (data.getScanners()) {
@@ -77,7 +73,7 @@ public class EvEndScanner implements Runnable {
 			Patient nextPatient = chooseNextPatient();
 			
 			if(nextPatient!=null) {
-				System.out.println("scanner patient before chosing : "+nextPatient.getName());
+				System.out.println("scanner patient next: "+nextPatient.getName());
 				EvEndScanner e = new EvEndScanner(data, nextPatient, scannerAvailable);
 				e.run();
 			}

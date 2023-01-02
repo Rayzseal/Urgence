@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import back.Gravity;
 import back.Patient;
+import back.Ressource;
 import back.State;
 import utils.Data;
 import utils.EventsUtils;
@@ -28,44 +29,44 @@ public class EvAnalysis extends Event implements Runnable {
 		EvEndAnalysis e = new EvEndAnalysis(getData(), getPatient(), getObjectAvailable());
 		e.run();
 	}
-	/*public void startEvent() {
-		int nurseAvailable = -1;
-		synchronized (data.getNurses()) {
-			nurseAvailable = Utils.objectAvailable(data.getNurses());
-			if (nurseAvailable >= 0) {
-				if (patient.getGravity() == Gravity.C) {
-					if (EventsUtils.patientAvailableAnalysis(data, patient)) {
-						data.getNurses().get(nurseAvailable).setState(State.OCCUPIED);
+	public void startEvent() {
+		setObjectAvailable(-1);
+		synchronized (getRessources()) {
+			setObjectAvailable(Utils.objectAvailable(getRessources()));
+			if (getObjectAvailable() >= 0) {
+				if (getPatient().getGravity() == Gravity.C) {
+					if (EventsUtils.patientAvailable(getData(), getPatient(), State.SCANNER)) {
+						((Ressource) getRessources().get(getObjectAvailable())).setState(State.OCCUPIED);
 					}
 					else {
-						nurseAvailable = -1;
+						setObjectAvailable(-1);
 					}
 				} else {
-					data.getNurses().get(nurseAvailable).setState(State.OCCUPIED);
+					((Ressource) getRessources().get(getObjectAvailable())).setState(State.OCCUPIED);
 				}
 			}
 			else {
-				synchronized (data.getWaitListAnalysis()) {
-					if (patient.getGravity() == Gravity.C) {
-						if (data.getWaitListPathC().contains(patient)) {
-							data.getWaitListAnalysis().add(patient, data.getTime());
-							System.out.println("waiting list anlysis : "+patient.getName()+ patient.getSurname());
+				synchronized (getData().getWaitListPathC()) {
+					if (getPatient().getGravity() == Gravity.C) {
+						if (getData().getWaitListPathC().get(State.WAITING).contains(getPatient())) {
+							getData().getWaitListPathC().get(State.ANALYSIS).add(getPatient(), getData().getTime());
+							//System.out.println("waiting list anlysis : "+patient.getName()+ patient.getSurname());
 						}
 					}
 					else {
-						data.getWaitListAnalysis().add(patient, data.getTime());
+						getData().getWaitListPathC().get(State.ANALYSIS).add(getPatient(), getData().getTime());
 					}
 					
 				}
 			}
 
 		}
-		if (nurseAvailable >= 0) {
+		if (getObjectAvailable() >= 0) {
 			nextEvent();
 		}
 		
 
-	}*/
+	}
 	
 
 	@Override

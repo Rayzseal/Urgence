@@ -39,6 +39,10 @@ public class WaitingList{
 	public void add(Patient p, int time) {
 		p.setState(State.WAITING);
 		p.getListWaitTime().put(stateList, time);
+		add(p);
+	}
+	
+	public void add(Patient p) {
 		switch(p.getGravity()){
 		   
 	       case A: 

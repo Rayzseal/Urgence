@@ -19,25 +19,21 @@ public class EvEndAnalysis implements Runnable{
 	
 	public Patient chooseNextPatient() {
 		Patient nextPatient = null;
-		synchronized (data.getWaitListAnalysis()) {
-			if (data.getWaitListAnalysis().size() > 0) {
+		synchronized (data.getWaitListPathC().get(State.ANALYSIS)) {
+			if (data.getWaitListPathC().get(State.ANALYSIS).size() > 0) {
 
-				nextPatient = data.getWaitListAnalysis().selectPatientFromArrayList();
+				nextPatient = data.getWaitListPathC().get(State.ANALYSIS).selectPatientFromArrayList();
 				
-				/*if (patient.getGravity() == Gravity.C) {
-					if (EventsUtils.patientAvailableAnalysis(data, nextPatient)) {
-						data.getWaitListAnalysis().remove(nextPatient, data.getTime());
+				if (nextPatient.getGravity() == Gravity.C) {
+					if (EventsUtils.patientAvailable(data, nextPatient, State.SCANNER)) {
+						data.getWaitListPathC().get(State.ANALYSIS).remove(nextPatient, data.getTime());
 					}else {
+						data.getWaitListPathC().get(State.ANALYSIS).remove(nextPatient);
 						nextPatient = chooseNextPatient();
-						System.out.println(nextPatient);
-						System.out.println("Contenu Liste analysis : "+data.getWaitListAnalysis());
 					}
 				} else {
-					data.getWaitListAnalysis().remove(nextPatient, data.getTime());
-				}*/
-				if (patient.getGravity() == Gravity.C) 
-					EventsUtils.patientAvailableAnalysis(data, nextPatient);
-				data.getWaitListAnalysis().remove(nextPatient, data.getTime());
+					data.getWaitListPathC().get(State.ANALYSIS).remove(nextPatient, data.getTime());
+				}
 
 			} else {
 				synchronized (data.getNurses()) {

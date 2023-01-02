@@ -1,7 +1,9 @@
 package utils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import back.Bedroom;
@@ -43,7 +45,7 @@ public class Data {
 	private WaitingList waitListBloc;
 	private WaitingList waitListPrescription;
 	private WaitingList waitListScanner;
-	private List<Patient> waitListPathC;
+	private Map<State, WaitingList> waitListPathC;
 
 	private int time;
 	private int reduceTime;
@@ -240,7 +242,11 @@ public class Data {
 		waitListAnalysis = new WaitingList(State.ANALYSIS);
 		waitListBloc = new WaitingList(State.BLOC);
 		waitListScanner = new WaitingList(State.SCANNER);
-		waitListPathC = new ArrayList<Patient>();
+		waitListPathC = new HashMap<State, WaitingList>();
+		waitListPathC.put(State.ANALYSIS, waitListAnalysis);
+		waitListPathC.put(State.SCANNER, waitListScanner);
+		//add new waitingList to prevent synchronization error on the pathC
+		waitListPathC.put(State.WAITING, new WaitingList(State.WAITING));
 	}
 
 	/**
@@ -392,11 +398,11 @@ public class Data {
 		this.waitListScanner = waitListScanner;
 	}
 
-	public List<Patient> getWaitListPathC() {
+	public Map<State, WaitingList> getWaitListPathC() {
 		return waitListPathC;
 	}
 
-	public void setWaitListPathC(List<Patient> waitListPathC) {
+	public void setWaitListPathC(Map<State, WaitingList> waitListPathC) {
 		this.waitListPathC = waitListPathC;
 	}
 
