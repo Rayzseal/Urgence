@@ -1,16 +1,9 @@
 package utils;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import events.EvBloc;
-import events.EvScanner;
-import model.Gravity;
-import model.Patient;
 import model.Ressource;
 import model.State;
-import events.EvPatientLeave;
-import events.EvPrescription;
 
 public class Utils {
 	
@@ -22,11 +15,6 @@ public class Utils {
 			"Gonzalez", "Green", "Hall", "Harris", "Hernandez", "Hughes", "Jackson", "Johnson", "Jones", "Lam", "Lee",
 			"Lewis", "Lopez", "Martin", "Miller", "O'connor", "O'Neil" };
 
-	public Utils() {
-		// TODO Auto-generated constructor stub
-	}
-	
-	//TODO TEST
 	/**
 	 * Format a string DAY/HOUR/MIN/SEC with a number of seconds given in argument.
 	 * @param secondsTime Number of seconds to get a time from
@@ -73,15 +61,20 @@ public class Utils {
 		return str + sec;
 	}
 	
-
+	/**
+	 * print the list of any object
+	 * @param list
+	 */
 	public static void showList(List<?> list) {
 		for (int i = 0; i < list.size(); i++)
 			System.out.println(list.get(i).toString());
 	}
 	
+	
 	/**
-	 * 
-	 * -1 if no objcts are available and an index in the list of the first object available
+	 * -1 if objects are not available or an index in the list of the first object available
+	 * @param list
+	 * @return
 	 */
 	public static int objectAvailable(List<?> list) {
 		for(int i = 0 ; i<list.size(); i++){
