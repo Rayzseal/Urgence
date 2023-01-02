@@ -10,6 +10,10 @@ import utils.Data;
 import utils.SortPatientArrival;
 import utils.Utils;
 
+/**
+ * The class Scheduler time the arrival of every patients
+ *
+ */
 public class Scheduler {
 	private Data data;
 
@@ -20,7 +24,9 @@ public class Scheduler {
 	public Scheduler(int nbPatient) {
 		data = new Data(nbPatient);
 	}
-
+	/**
+	 * handle time and arrival of everyPatients
+	 */
 	public void scheduler() {
 		// 1000 == 1 seconde / reduceTime
 		// with reduceTime = an accelerator
@@ -80,10 +86,15 @@ public class Scheduler {
 		System.out.println("END");
 		System.out.println("------------------");
 	}
-
+	/**
+	 * runnable function
+	 */
 	public void run() {
 		scheduler();
 	}
+	/**
+	 * Setter and getter of the class
+	 */
 
 	public Data getData() {
 		return data;
