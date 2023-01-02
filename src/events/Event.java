@@ -2,10 +2,10 @@ package events;
 
 import java.util.List;
 
-import back.Patient;
-import back.Ressource;
-import back.State;
-import back.WaitingList;
+import model.Patient;
+import model.Ressource;
+import model.State;
+import model.WaitingList;
 import utils.Data;
 import utils.Utils;
 

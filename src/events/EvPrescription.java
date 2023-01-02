@@ -1,7 +1,7 @@
 package events;
 
-import back.Patient;
-import back.State;
+import model.Patient;
+import model.State;
 import utils.Data;
 
 public class EvPrescription extends Event implements Runnable{

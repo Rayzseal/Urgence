@@ -1,4 +1,4 @@
-package back;
+package model;
 
 public enum Gravity {
 	

@@ -1,4 +1,4 @@
-package back;
+package model;
 
 public class Doctor extends Ressource{
 

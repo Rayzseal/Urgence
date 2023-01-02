@@ -3,12 +3,12 @@ package utils;
 import java.util.ArrayList;
 import java.util.List;
 
-import back.Gravity;
-import back.Patient;
-import back.Ressource;
-import back.State;
 import events.EvBloc;
 import events.EvScanner;
+import model.Gravity;
+import model.Patient;
+import model.Ressource;
+import model.State;
 import events.EvPatientLeave;
 import events.EvPrescription;
 

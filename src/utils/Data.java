@@ -6,15 +6,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import back.Bedroom;
-import back.Bloc;
-import back.Doctor;
-import back.Nurse;
-import back.Patient;
-import back.Receptionist;
-import back.Scanner;
-import back.State;
-import back.WaitingList;
+import model.Bedroom;
+import model.Bloc;
+import model.Doctor;
+import model.Nurse;
+import model.Patient;
+import model.Receptionist;
+import model.Scanner;
+import model.State;
+import model.WaitingList;
 
 public class Data {
 	

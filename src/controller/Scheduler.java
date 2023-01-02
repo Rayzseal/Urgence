@@ -1,9 +1,11 @@
-package back;
+package controller;
 
 import java.util.Random;
 
 import events.EvPatientArrival;
 import events.EvPatientCriticArrival;
+import model.Patient;
+import model.State;
 import utils.Data;
 import utils.SortPatientArrival;
 import utils.Utils;

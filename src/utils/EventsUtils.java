@@ -1,12 +1,12 @@
 package utils;
 
-import back.Gravity;
-import back.Patient;
-import back.State;
 import events.EvBloc;
 import events.EvScanner;
+import model.Gravity;
+import model.Patient;
+import model.State;
 import events.EvPathC;
-import events.Prescription;
+import events.EvPrescription;
 
 public class EventsUtils {
 
@@ -28,7 +28,7 @@ public class EventsUtils {
 			e3.run();
 			break;
 		case D:
-			Prescription e4 = new Prescription(data, p);
+			EvPrescription e4 = new EvPrescription(data, p);
 			e4.run();
 			break;
 		}
@@ -39,7 +39,7 @@ public class EventsUtils {
 		//return Gravity.C;
 		
 		int g = (int) (Math.random() * 100);
-		int statC = -1;
+		int statC = -1;//45;
 		int statB = 30;
 		int statA = 5;
 
@@ -52,35 +52,15 @@ public class EventsUtils {
 		return Gravity.D;
 	}
 	
-
-	public static Boolean patientAvailableScanner(Data data, Patient p) {
+	public static Boolean patientAvailable(Data data, Patient p, State stateWaitList) {
 		Boolean bool = false;
 		synchronized (data.getWaitListPathC()) {
-			synchronized (data.getWaitListAnalysis()) {
-				if(data.getWaitListPathC().contains(p)){
-					data.getWaitListPathC().remove(p);
-					if(data.getWaitListAnalysis().contains(p))
-						data.getWaitListAnalysis().remove(p);
-					bool = true;
-				}
+			if(data.getWaitListPathC().get(State.WAITING).contains(p)){
+				data.getWaitListPathC().get(State.WAITING).remove(p);
+				if(data.getWaitListPathC().get(stateWaitList).contains(p))
+					data.getWaitListPathC().get(stateWaitList).remove(p);
+				bool = true;
 			}
-			
-		}
-		
-		return bool;
-	}
-	public static Boolean patientAvailableAnalysis(Data data, Patient p) {
-		Boolean bool = false;
-		synchronized (data.getWaitListPathC()) {
-			synchronized (data.getWaitListScanner()) {
-				if(data.getWaitListPathC().contains(p)){
-					data.getWaitListPathC().remove(p);
-					if(data.getWaitListScanner().contains(p))
-						data.getWaitListScanner().remove(p);
-					bool = true;
-				}
-			}
-			
 		}
 		
 		return bool;

@@ -2,11 +2,11 @@ package events;
 
 import java.util.ArrayList;
 
-import back.Patient;
-import back.Receptionist;
-import back.Ressource;
-import back.Scheduler;
-import back.State;
+import controller.Scheduler;
+import model.Patient;
+import model.Receptionist;
+import model.Ressource;
+import model.State;
 import utils.Data;
 import utils.Utils;
 

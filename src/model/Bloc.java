@@ -1,4 +1,4 @@
-package back;
+package model;
 
 public class Bloc extends Ressource {
 		

@@ -1,10 +1,10 @@
 package events;
 
-import back.Gravity;
-import back.Patient;
-import back.Receptionist;
-import back.Ressource;
-import back.State;
+import model.Gravity;
+import model.Patient;
+import model.Receptionist;
+import model.Ressource;
+import model.State;
 import utils.Data;
 import utils.EventsUtils;
 import utils.Utils;

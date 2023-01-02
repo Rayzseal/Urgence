@@ -1,9 +1,9 @@
 package events;
 
-import back.Bedroom;
-import back.Gravity;
-import back.Patient;
-import back.State;
+import model.Bedroom;
+import model.Gravity;
+import model.Patient;
+import model.State;
 import utils.Data;
 import utils.EventsUtils;
 

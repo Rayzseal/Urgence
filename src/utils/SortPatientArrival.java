@@ -2,7 +2,7 @@ package utils;
 
 import java.util.Comparator;
 
-import back.Patient;
+import model.Patient;
 
 public class SortPatientArrival implements Comparator<Patient>{
 

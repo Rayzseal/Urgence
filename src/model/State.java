@@ -1,4 +1,4 @@
-package back;
+package model;
 
 public enum State {
 	AVAILABLE, WAITING, OCCUPIED, OUT, ARRIVAL, RECEPTION, BEDROOM, BLOC, SCANNER, PRESCRIPTION, ANALYSIS;

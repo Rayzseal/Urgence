@@ -4,9 +4,9 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import back.Patient;
-import back.Scheduler;
-import back.State;
+import controller.Scheduler;
+import model.Patient;
+import model.State;
 
 public class EventsTest {
 

@@ -1,8 +1,11 @@
-package back;
+package controller;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import model.Gravity;
+import model.Patient;
+import model.Ressource;
 import utils.Data;
 import utils.Utils;
 

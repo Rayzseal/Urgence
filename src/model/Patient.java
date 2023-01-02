@@ -1,9 +1,8 @@
-package back;
+package model;
 
-import java.util.ArrayList;
-import java.util.TreeMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.TreeMap;
 
 import utils.Utils;
 
@@ -25,6 +24,7 @@ public class Patient {
 
 	private int arrivalDate;
 	private boolean typeArrival; // false patient arrive by himself
+	
 
 	public Patient() {
 		patient();
@@ -166,7 +166,7 @@ public class Patient {
 			str += Utils.timeIntToString(i.getValue()) + " " + i.getKey() + " | ";
 		}
 		if(listWaitTime.size()>0)
-			str += System.getProperty("line.separator");
+			str += System.getProperty("line.separator") + "Temps d'attente : ";
 		for (Entry<State, Integer> i : getListWaitTime().entrySet()) {
 			str += Utils.timeIntToString(i.getValue()) + " " + i.getKey() + " | ";
 		}
