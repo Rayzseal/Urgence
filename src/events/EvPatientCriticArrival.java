@@ -7,11 +7,11 @@ import back.State;
 import utils.Data;
 import utils.EventsUtils;
 
-public class PatientCriticArrival implements Runnable{
+public class EvPatientCriticArrival implements Runnable{
 	private Patient patient;
 	private Data data;
 
-	public PatientCriticArrival(Data d, Patient p) {
+	public EvPatientCriticArrival(Data d, Patient p) {
 		data = d;
 		patient = p;
 	}

@@ -6,12 +6,12 @@ import back.State;
 import utils.Data;
 import utils.EventsUtils;
 
-public class EndAnalysis implements Runnable{	
+public class EvEndAnalysis implements Runnable{	
 	private Patient patient;
 	private Data data;
 	private int nurseAvailable;
 	
-	public EndAnalysis(Data d, Patient p, int available) {
+	public EvEndAnalysis(Data d, Patient p, int available) {
 		patient = p;
 		data = d;
 		nurseAvailable = available;
@@ -63,7 +63,7 @@ public class EndAnalysis implements Runnable{
 			
 			if(nextPatient!=null) {
 				System.out.println("analysis patient next : "+nextPatient.getName());
-				EndAnalysis e = new EndAnalysis(data, nextPatient, nurseAvailable);
+				EvEndAnalysis e = new EvEndAnalysis(data, nextPatient, nurseAvailable);
 				e.run();
 			}
 

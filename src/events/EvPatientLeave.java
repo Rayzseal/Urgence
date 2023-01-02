@@ -5,15 +5,15 @@ import back.Patient;
 import back.State;
 import utils.Data;
 
-public class PatientLeave implements Runnable {
+public class EvPatientLeave implements Runnable {
 	private Patient patient;
 	private Data data;
 
-	public PatientLeave() {
+	public EvPatientLeave() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public PatientLeave(Data d, Patient p) {
+	public EvPatientLeave(Data d, Patient p) {
 		data = d;
 		patient = p;
 	}
@@ -40,7 +40,7 @@ public class PatientLeave implements Runnable {
 				synchronized (data.getWaitListBedroom()) {					
 					data.getWaitListBedroom().remove(patient, data.getTime());
 				}
-				new Thread(new BedroomResearch(data, patient)).start();
+				new Thread(new EvBedroomResearch(data, patient)).start();
 			}
 		}
 

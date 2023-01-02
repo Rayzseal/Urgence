@@ -9,8 +9,8 @@ import back.Ressource;
 import back.State;
 import events.EvBloc;
 import events.EvScanner;
-import events.PatientLeave;
-import events.Prescription;
+import events.EvPatientLeave;
+import events.EvPrescription;
 
 public class Utils {
 	

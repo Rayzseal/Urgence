@@ -10,11 +10,11 @@ import back.State;
 import utils.Data;
 import utils.Utils;
 
-public class PatientArrival implements Runnable {
+public class EvPatientArrival implements Runnable {
 	private Patient patient;
 	private Data data;
 	
-	public PatientArrival(Data d, Patient p) {
+	public EvPatientArrival(Data d, Patient p) {
 		data = d;
 		patient = p;
 	}
@@ -23,7 +23,7 @@ public class PatientArrival implements Runnable {
 		int receptionistAvailable  = -1;
 		synchronized (data.getReceptionists()) {
 			receptionistAvailable = Utils.objectAvailable(data.getReceptionists());
-			if(receptionistAvailable >= 0) {  //TODO
+			if(receptionistAvailable >= 0) { 
 				
 					data.getReceptionists().get(receptionistAvailable).setState(State.OCCUPIED);
 			    }
@@ -36,7 +36,7 @@ public class PatientArrival implements Runnable {
 			}
 		}
 		if(receptionistAvailable>=0) {
-			new Thread(new EndPatientArrival(data, patient, receptionistAvailable)).start();
+			new Thread(new EvEndPatientArrival(data, patient, receptionistAvailable)).start();
 		}
 			
 		

@@ -2,7 +2,7 @@ package back;
 
 import java.util.ArrayList;
 
-import events.PatientLeave;
+import events.EvPatientLeave;
 import utils.Utils;
 
 /**
@@ -144,31 +144,6 @@ public class WaitingList{
 			return listC.get(0);
 		} else if (listD != null && !listD.isEmpty()) {
 			return listD.get(0);
-		}
-		return null;
-	}
-	/**
-	 * Selects the highest priority patient from multiple lists at an index.
-	 * 
-	 * @param listA Highest priority list.
-	 * @param listB 2nd priority list.
-	 * @param listC 3rd priority list.
-	 * @param listD non-priority list.
-	 * @return Next patient to be selected or null if no patient has been selected
-	 *         (empty list).
-	 */
-	public Patient selectPatientFromArrayList(int index) {
-		if (listA == null || listB == null || listC == null || listD == null)
-			throw new IllegalArgumentException("None of the lists should be null");
-
-		if (!listA.isEmpty()) {
-			return listA.get(index);
-		} else if (!listB.isEmpty()) {
-			return listB.get(index);
-		} else if (listC != null && !listC.isEmpty()) {
-			return listC.get(index);
-		} else if (listD != null && !listD.isEmpty()) {
-			return listD.get(index);
 		}
 		return null;
 	}

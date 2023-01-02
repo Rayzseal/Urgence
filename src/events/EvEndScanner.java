@@ -6,12 +6,12 @@ import back.State;
 import utils.Data;
 import utils.EventsUtils;
 
-public class EndScanner implements Runnable {
+public class EvEndScanner implements Runnable {
 	Patient patient;
 	Data data;
 	int scannerAvailable;
 
-	public EndScanner(Data d, Patient p, int available) {
+	public EvEndScanner(Data d, Patient p, int available) {
 		patient = p;
 		data = d;
 		scannerAvailable = available;
@@ -78,7 +78,7 @@ public class EndScanner implements Runnable {
 			
 			if(nextPatient!=null) {
 				System.out.println("scanner patient before chosing : "+nextPatient.getName());
-				EndScanner e = new EndScanner(data, nextPatient, scannerAvailable);
+				EvEndScanner e = new EvEndScanner(data, nextPatient, scannerAvailable);
 				e.run();
 			}
 			

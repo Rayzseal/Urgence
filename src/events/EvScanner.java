@@ -51,7 +51,7 @@ public class EvScanner implements Runnable {
 		}
 		if (scannerAvailable >= 0) {
 			System.out.println("run scanner : "+patient.getName());
-			EndScanner e = new EndScanner(data, patient, scannerAvailable);
+			EvEndScanner e = new EvEndScanner(data, patient, scannerAvailable);
 			e.run();
 		} 
 		}

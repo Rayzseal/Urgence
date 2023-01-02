@@ -4,22 +4,33 @@ import back.Patient;
 import back.State;
 import utils.Data;
 
-public class EndBloc implements Runnable {
-	Patient patient;
-	Data data;
-	int blocAvailable;
+public class EvEndBloc extends Event implements Runnable {
+	
+	public EvEndBloc(Data d, Patient p, int objectAvailable) {
+		super(d, p, objectAvailable);
+		setState();
 
-	public EndBloc() {
-		// TODO Auto-generated constructor stub
 	}
-
-	public EndBloc(Data d, Patient p, int available) {
-		patient = p;
-		data = d;
-		blocAvailable = available;
+	public void setState() {
+		setStateEvent(State.BLOC);
+		setRessources(getData().getBlocs());
+		setTimeRessource(getData().getTimeBloc());
+		setWaitingList(getData().getWaitListBloc());
 	}
-
+	public void sameEvent(Patient nextPatient) {
+		EvEndBloc e = new EvEndBloc(getData(), nextPatient, getObjectAvailable());
+		e.run();
+	}
+	public void nextEvent() {
+		new Thread(new EvPrescription(getData(), getPatient())).start();
+	}
+	
 	@Override
+	public void run() {
+		endEvent();
+	}
+
+	/*@Override
 	public void run() {
 		try {
 			patient.setState(State.BLOC, data.getTime());
@@ -28,7 +39,7 @@ public class EndBloc implements Runnable {
 
 			patient.setState(State.AVAILABLE);
 
-			new Thread(new Prescription(data, patient)).start();
+			new Thread(new EvPrescription(data, patient)).start();
 			
 			Patient nextPatient = null;
 			synchronized (data.getWaitListBloc()) {
@@ -45,7 +56,7 @@ public class EndBloc implements Runnable {
 				}
 			}
 			if(nextPatient!=null) {
-				EndBloc e = new EndBloc(data, nextPatient, blocAvailable);
+				EvEndBloc e = new EvEndBloc(data, nextPatient, blocAvailable);
 				e.run();
 			}
 
@@ -55,6 +66,6 @@ public class EndBloc implements Runnable {
 			e.printStackTrace();
 		}
 
-	}
+	}*/
 
 }

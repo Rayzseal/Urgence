@@ -23,7 +23,7 @@ public class EvEndPathC implements Runnable{
 		}
 		else {
 			System.out.println("fin path C"+patient.getName());
-			Prescription e = new Prescription(data, patient);
+			EvPrescription e = new EvPrescription(data, patient);
 			e.run();
 		}
 		

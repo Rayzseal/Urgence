@@ -9,17 +9,26 @@ import utils.Data;
 import utils.EventsUtils;
 import utils.Utils;
 
-public class EvAnalysis implements Runnable {
-	Patient patient;
-	Data data;
+public class EvAnalysis extends Event implements Runnable {
+	//TODO
 
 	public EvAnalysis(Data d, Patient p) {
-		patient = p;
-		data = d;
-	}
+		super(d, p);
+		setState();
 
-	@Override
-	public void run() {
+	}
+	public void setState() {
+		setStateEvent(State.ANALYSIS);
+		setRessources(getData().getNurses());
+		setTimeRessource(getData().getTimeAnalysis());
+		setWaitingList(getData().getWaitListAnalysis());
+	}
+	public void nextEvent() {
+		System.out.println("run analysis : "+getPatient().getName()+ getPatient().getSurname());
+		EvEndAnalysis e = new EvEndAnalysis(getData(), getPatient(), getObjectAvailable());
+		e.run();
+	}
+	/*public void startEvent() {
 		int nurseAvailable = -1;
 		synchronized (data.getNurses()) {
 			nurseAvailable = Utils.objectAvailable(data.getNurses());
@@ -52,12 +61,17 @@ public class EvAnalysis implements Runnable {
 
 		}
 		if (nurseAvailable >= 0) {
-			System.out.println("run analysis : "+patient.getName()+ patient.getSurname());
-			EndAnalysis e = new EndAnalysis(data, patient, nurseAvailable);
-			e.run();
+			nextEvent();
 		}
 		
 
+	}*/
+	
+
+	@Override
+	public void run() {
+		startEvent();
 	}
+		
 
 }
