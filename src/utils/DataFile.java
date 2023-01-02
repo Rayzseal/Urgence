@@ -88,7 +88,9 @@ public class DataFile {
 				System.out.println(e);
 		}
 	}
-
+	/**
+	 * Setter and getter of the class
+	 */
 	public int getNbBedrooms() {
 		return nbBedrooms;
 	}

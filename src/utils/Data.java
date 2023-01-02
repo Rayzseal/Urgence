@@ -26,7 +26,9 @@ public class Data {
 	private int standardDeviation = 10000; // deviation
 	private double lambda = 50;
 	
-
+	/**
+	 * ressources
+	 */
 	private List<Bedroom> bedrooms;
 	private List<Bloc> blocs;
 	private List<Scanner> scanners;
@@ -38,15 +40,22 @@ public class Data {
 	private List<Patient> patientsActive;
 	private List<Patient> patientsOver;
 
-	private List<Patient> waitListArrival;
 	
+	
+	/**
+	 * waiting list
+	 */
+	private List<Patient> waitListArrival;
 	private WaitingList waitListBedroom;
 	private WaitingList waitListAnalysis;
 	private WaitingList waitListBloc;
 	private WaitingList waitListPrescription;
 	private WaitingList waitListScanner;
 	private Map<State, WaitingList> waitListPathC;
-
+	
+	/**
+	 * value of time
+	 */
 	private int time;
 	private int reduceTime;
 
@@ -55,17 +64,24 @@ public class Data {
 	private int timeAnalysis;
 	private int timeBloc;
 	private int timePrescription;
-	
+	/**
+	 * constructor of the class, the number of patients is 500 by default
+	 */
 	public Data() {
 		generateData();
 	}
-
+	/**
+	 * constructor of the class, generate data, and the number of patients : nbPatient
+	 * @param nbPatient
+	 */
 	public Data(int nbPatient) {
 		nbOfPatients = nbPatient;
 		generateData();
 	}
-	
-	public void generateData() {
+	/**
+	 * generate every data : ressources, patients, waiting List
+	 */
+	private void generateData() {
 		this.reduceTime = 300;
 		DataFile dataFile = new DataFile();
 		generateLists(dataFile);
@@ -74,8 +90,11 @@ public class Data {
 		generatePatients(lambda);
 		generateWaitingList();
 	}
-
-	public void generateLists(DataFile dataFile) {
+	/**
+	 * generate lists of ressources needed for activities
+	 * @param dataFile
+	 */
+	private void generateLists(DataFile dataFile) {
 		this.bedrooms = new ArrayList<>();
 		this.blocs = new ArrayList<>();
 		this.scanners = new ArrayList<>();
@@ -99,15 +118,20 @@ public class Data {
 		for(int i = 0; i<dataFile.getNbNurse();i++)
 			nurses.add(new Nurse());
 	}
-	
-	public void generateTime(DataFile dataFile) {
+	/**
+	 * generate time value for every activity in paths
+	 * @param dataFile
+	 */
+	private void generateTime(DataFile dataFile) {
 		this.timeReception = dataFile.getTimePrescription();
 		this.timeScanner = dataFile.getTimeScanner();
 		this.timeAnalysis = dataFile.getTimeAnalysis();
 		this.timeBloc = dataFile.getTimeBloc();
 		this.timePrescription = dataFile.getTimePrescription();
 	}
-
+	/**
+	 * TODO
+	 */
 	public void generatePatientsNormal() {
 		this.time = 0;
 
@@ -142,7 +166,11 @@ public class Data {
 			this.patients.add(new Patient(Utils.names[nbName], Utils.surnames[nbSur], millisDelay));
 		}
 	}
-	
+	/**
+	 * TODO
+	 * @param lambda
+	 * @return
+	 */
 	public ArrayList<Integer> poisson (double lambda) {
 	    ArrayList<Integer> values = new ArrayList<>();
 
@@ -161,7 +189,11 @@ public class Data {
 		}
 		return values;
 	}
-	
+	/**
+	 * TODO
+	 * @param list
+	 * @return
+	 */
 	public int getMax(ArrayList<Integer> list) {
 		int max = 0;
 		for (int i = 0 ; i < list.size(); i++) {
@@ -170,7 +202,11 @@ public class Data {
 		}
 		return max;
 	}
-	
+	/**
+	 * TODO
+	 * @param list
+	 * @return
+	 */
 	public int getMin(ArrayList<Integer> list) {
 		int min = list.get(0);
 		for (int i = 0; i < list.size(); i++) {
@@ -180,8 +216,11 @@ public class Data {
 		return min;
 	}
 	
-
-	public void generatePatients(double lambda) {
+	/**
+	 * generate patients for a number given
+	 * @param lambda
+	 */
+	private void generatePatients(double lambda) {
 
 		this.patients = new ArrayList<>();
 		this.patientsActive = new ArrayList<>();
@@ -211,16 +250,24 @@ public class Data {
 		patients.sort(new SortPatientArrival());
 		realValues();
 	}
-	
-	public int getNextValue(int value, int index) {
+	/**
+	 * TODO
+	 * @param value
+	 * @param index
+	 * @return
+	 */
+	private int getNextValue(int value, int index) {
 		int i = index;
 		while(value==patients.get(i).getArrivalDate() && i < patients.size()-1)
 			i++;
 		
 		return patients.get(i).getArrivalDate();
 	}
-	
-	public ArrayList<Integer> realValues() {
+	/**
+	 * TODO
+	 * @return
+	 */
+	private ArrayList<Integer> realValues() {
 		  ArrayList<Integer> tmp = new ArrayList<>();
 		
 		int lower = 0;
@@ -234,8 +281,10 @@ public class Data {
 		}
 		return tmp;
 	}
-
-	public void generateWaitingList() {
+	/**
+	 * generate every WaitingList
+	 */
+	private void generateWaitingList() {
 		waitListArrival = new ArrayList<Patient>();
 		waitListBedroom = new WaitingList(State.BEDROOM);
 		waitListPrescription = new WaitingList(State.PRESCRIPTION);
@@ -261,6 +310,7 @@ public class Data {
 
 	public void setNbOfPatients(int nbOfPatients) {
 		this.nbOfPatients = nbOfPatients;
+		generatePatients(lambda);
 	}
 
 	public int getHourPeakArrivals() {
