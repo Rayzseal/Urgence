@@ -2,8 +2,8 @@ package back;
 
 import java.util.Random;
 
-import events.PatientArrival;
-import events.PatientCriticArrival;
+import events.EvPatientArrival;
+import events.EvPatientCriticArrival;
 import utils.Data;
 import utils.SortPatientArrival;
 import utils.Utils;
@@ -60,9 +60,9 @@ public class Scheduler {
 					}
 					
 					if (patient.isTypeArrival()) {
-						new Thread(new PatientCriticArrival(data, patient)).start();						
+						new Thread(new EvPatientCriticArrival(data, patient)).start();						
 					}else
-						new Thread(new PatientArrival(data, patient)).start();
+						new Thread(new EvPatientArrival(data, patient)).start();
 				}
 
 			} catch (InterruptedException e) {
