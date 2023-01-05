@@ -2,73 +2,88 @@ package events;
 
 import model.Gravity;
 import model.Patient;
+import model.Ressource;
 import model.State;
 import utils.Data;
 import utils.EventsUtils;
-
-public class EvEndAnalysis implements Runnable{	
-	private Patient patient;
-	private Data data;
-	private int nurseAvailable;
-	
-	public EvEndAnalysis(Data d, Patient p, int available) {
-		patient = p;
-		data = d;
-		nurseAvailable = available;
+/**
+ * Event of end in Analysis, it inherits the class Event
+ */
+public class EvEndAnalysis extends Event implements Runnable{	
+	/**
+	 * constructor of the event
+	 * @param d Data
+	 * @param p Patient
+	 * @param objectAvailable index in the list of ressources used
+	 */
+	public EvEndAnalysis(Data d, Patient p, int objectAvailable) {
+		super(d, p, objectAvailable);
+		setState();
 	}
 	
-	public Patient chooseNextPatient() {
+	/**
+	 * set ressources, times and waitingList to use in this event
+	 */
+	public void setState() {
+		setStateEvent(State.ANALYSIS);
+		setRessources(getData().getNurses());
+		setTimeRessource(getData().getTimeAnalysis());
+		setWaitingList(null);
+	}
+	/**
+	 * override of the methods getNextPatient to add particularities due to the path C
+	 * The method verifies if a patient is waiting in the waitingList
+	 * @return nextPatient or null if no patient is waiting
+	 */
+	@Override
+	public Patient getNextPatient() {
 		Patient nextPatient = null;
-		synchronized (data.getWaitListPathC().get(State.ANALYSIS)) {
-			if (data.getWaitListPathC().get(State.ANALYSIS).size() > 0) {
+		synchronized (getData().getWaitListPathC().get(getStateEvent())) {
+			if (getData().getWaitListPathC().get(getStateEvent()).size() > 0) {
 
-				nextPatient = data.getWaitListPathC().get(State.ANALYSIS).selectPatientFromArrayList();
+				nextPatient = getData().getWaitListPathC().get(getStateEvent()).selectPatientFromArrayList();
 				
 				if (nextPatient.getGravity() == Gravity.C) {
-					if (EventsUtils.patientAvailable(data, nextPatient, State.SCANNER)) {
-						data.getWaitListPathC().get(State.ANALYSIS).remove(nextPatient, data.getTime());
+					if (EventsUtils.patientAvailable(getData(), nextPatient, State.SCANNER)) {
+						getData().getWaitListPathC().get(getStateEvent()).remove(nextPatient, getData().getTime());
 					}else {
-						data.getWaitListPathC().get(State.ANALYSIS).remove(nextPatient);
-						nextPatient = chooseNextPatient();
+						getData().getWaitListPathC().get(getStateEvent()).remove(nextPatient);
+						nextPatient = getNextPatient();
 					}
 				} else {
-					data.getWaitListPathC().get(State.ANALYSIS).remove(nextPatient, data.getTime());
+					getData().getWaitListPathC().get(getStateEvent()).remove(nextPatient, getData().getTime());
 				}
 
 			} else {
-				synchronized (data.getNurses()) {
-					data.getNurses().get(nurseAvailable).setState(State.AVAILABLE);
+				synchronized (getRessources()) {
+					((Ressource) getRessources().get(getObjectAvailable())).setState(State.AVAILABLE);
 				}
 			}
 		}
 		return nextPatient;
 	}
-
+	/**
+	 * set the next event when the patient finished this event
+	 */
+	@Override
+	public void nextEvent() {
+		new Thread(new EvEndPathC(getData(), getPatient())).start();
+	}
+	/**
+	 * set the event for the nextPatient to continue when the patient finished this event
+	 */
+	@Override
+	public void sameEvent(Patient nextPatient) {
+		EvEndAnalysis e = new EvEndAnalysis(getData(), nextPatient, getObjectAvailable());
+		e.run();
+	}
+	/**
+	 * runnable method which call endEvent() from Event
+	 */
 	@Override
 	public void run() {
-		try {
-			patient.setState(State.ANALYSIS, data.getTime());
-
-			Thread.sleep(data.getTimeAnalysis() / data.getReduceTime());
-
-			patient.setState(State.AVAILABLE);
-
-			new Thread(new EvEndPathC(data, patient)).start();
-			
-			Patient nextPatient = chooseNextPatient();
-			
-			if(nextPatient!=null) {
-				System.out.println("analysis patient next : "+nextPatient.getName());
-				EvEndAnalysis e = new EvEndAnalysis(data, nextPatient, nurseAvailable);
-				e.run();
-			}
-
-		} catch (
-
-		InterruptedException e) {
-			e.printStackTrace();
-		}
-		
+		endEvent();
 	}
+		
 
 }

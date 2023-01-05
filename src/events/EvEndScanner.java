@@ -2,86 +2,91 @@ package events;
 
 import model.Gravity;
 import model.Patient;
+import model.Ressource;
 import model.State;
 import utils.Data;
 import utils.EventsUtils;
+/**
+ * Event of end in Scanner, it inherits the class Event
+ */
+public class EvEndScanner extends Event implements Runnable {
 
-public class EvEndScanner implements Runnable {
-	Patient patient;
-	Data data;
-	int scannerAvailable;
-
-	public EvEndScanner(Data d, Patient p, int available) {
-		patient = p;
-		data = d;
-		scannerAvailable = available;
+	public EvEndScanner(Data d, Patient p, int objectAvailable) {
+		super(d, p, objectAvailable);
+		setState();
 	}
-
-	public void path() {
-		switch (patient.getGravity()) {
+	/**
+	 * set ressources, times and waitingList to use in this event
+	 */
+	public void setState() {
+		setStateEvent(State.SCANNER);
+		setRessources(getData().getScanners());
+		setTimeRessource(getData().getTimeScanner());
+		setWaitingList(null);
+	}
+	/**
+	 * set the next event when the patient finished this event
+	 */
+	@Override
+	public void nextEvent() {
+		switch (getPatient().getGravity()) {
 		case B:
-			new Thread(new EvBloc(data, patient)).start();
+			new Thread(new EvBloc(getData(), getPatient())).start();
 			break;
 		case C:
-			new Thread(new EvEndPathC(data, patient)).start();
+			new Thread(new EvEndPathC(getData(), getPatient())).start();
 			break;
 		default:
-			System.out.println(patient.getGravity());
 			throw new IllegalArgumentException("The patient shouldn't be here");
 		}
 
 	}
-	
-	public Patient chooseNextPatient() {
+	/**
+	 * set the event for the nextPatient to continue when the patient finished this event
+	 */
+	@Override
+	public void sameEvent(Patient nextPatient) {
+		EvEndScanner e = new EvEndScanner(getData(), nextPatient, getObjectAvailable());
+		e.run();
+	}
+	/**
+	 * override of the methods getNextPatient to add particularities due to the path C
+	 * The method verifies if a patient is waiting in the waitingList
+	 * @return nextPatient or null if no patient is waiting
+	 */
+	@Override
+	public Patient getNextPatient() {
 		Patient nextPatient = null;
-		synchronized (data.getWaitListPathC().get(State.SCANNER)) {
-			if (data.getWaitListPathC().get(State.SCANNER).size() > 0) {
+		synchronized (getData().getWaitListPathC().get(getStateEvent())) {
+			if (getData().getWaitListPathC().get(getStateEvent()).size() > 0) {
 
-				nextPatient = data.getWaitListPathC().get(State.SCANNER).selectPatientFromArrayList();
+				nextPatient = getData().getWaitListPathC().get(getStateEvent()).selectPatientFromArrayList();
 				if (nextPatient.getGravity() == Gravity.C) {
-					if (EventsUtils.patientAvailable(data, nextPatient, State.ANALYSIS)) {
-						data.getWaitListPathC().get(State.SCANNER).remove(nextPatient, data.getTime());
+					if (EventsUtils.patientAvailable(getData(), nextPatient, State.ANALYSIS)) {
+						getData().getWaitListPathC().get(getStateEvent()).remove(nextPatient, getData().getTime());
 					}else {
-						data.getWaitListPathC().get(State.SCANNER).remove(nextPatient);
-						nextPatient = chooseNextPatient();
+						getData().getWaitListPathC().get(getStateEvent()).remove(nextPatient);
+						nextPatient = getNextPatient();
 					}
 				} else {
-					data.getWaitListPathC().get(State.SCANNER).remove(nextPatient, data.getTime());
+					getData().getWaitListPathC().get(getStateEvent()).remove(nextPatient, getData().getTime());
 				}
 
 			} else {
-				synchronized (data.getScanners()) {
-					data.getScanners().get(scannerAvailable).setState(State.AVAILABLE);
+				synchronized (getRessources()) {
+					((Ressource) getRessources().get(getObjectAvailable())).setState(State.AVAILABLE);
 				}
 			}
 		}
 		return nextPatient;
 		
 	}
-
+	/**
+	 * runnable method which call endEvent() from Event
+	 */
 	@Override
 	public void run() {
-		try {
-			patient.setState(State.SCANNER, data.getTime());
-
-			Thread.sleep(data.getTimeScanner() / data.getReduceTime());
-
-			patient.setState(State.AVAILABLE, data.getTime());
-			
-			path();
-			
-			Patient nextPatient = chooseNextPatient();
-			
-			if(nextPatient!=null) {
-				System.out.println("scanner patient next: "+nextPatient.getName());
-				EvEndScanner e = new EvEndScanner(data, nextPatient, scannerAvailable);
-				e.run();
-			}
-			
-
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+		endEvent();
 
 	}
 
