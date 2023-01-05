@@ -9,7 +9,6 @@ import utils.Utils;
  * Class containing all the necessary methods to create a new waiting list.
  *
  */
-
 public class WaitingList{
 
 	private ArrayList<Patient> listA;
@@ -20,6 +19,9 @@ public class WaitingList{
 	private State stateList;
 	
 
+	/**
+	 * Constructor of waiting list, creates all the list. 
+	 */
 	public WaitingList() {
 		listA = new ArrayList<Patient>();
 		listB = new ArrayList<Patient>();
@@ -28,6 +30,9 @@ public class WaitingList{
 		stateList = null;
 	}
 	
+	/**
+	 * Constructor of waiting list, creates all the list, with a specified state. 
+	 */
 	public WaitingList(State state) {
 		listA = new ArrayList<Patient>();
 		listB = new ArrayList<Patient>();
@@ -36,12 +41,21 @@ public class WaitingList{
 		stateList = state;
 	}
 	
+	/**
+	 * Add a waiting patient.
+	 * @param p Patient added.
+	 * @param time at what time. 
+	 */
 	public void add(Patient p, int time) {
 		p.setState(State.WAITING);
 		p.getListWaitTime().put(stateList, time);
 		add(p);
 	}
 	
+	/**
+	 * Add a patient to list depending of his gravity. 
+	 * @param p Patient to be added. 
+	 */
 	public void add(Patient p) {
 		switch(p.getGravity()){
 		   
@@ -62,10 +76,19 @@ public class WaitingList{
 	   }
 	}
 	
+	/**
+	 * Sizes of all the list combined. 
+	 * @return
+	 */
 	public int size() {
 		return listA.size()+listB.size()+listC.size()+listD.size();
 	}
 	
+	/**
+	 * Remove a patient from a gravity list. 
+	 * @param p Patient to delete. 
+	 * @param time The time when the patient is deleted. 
+	 */
 	public void remove(Patient p, int time) {
 		p.setState(State.AVAILABLE);
 		int timeWait = time - p.getListWaitTime().get(stateList);
@@ -90,6 +113,10 @@ public class WaitingList{
 	   }
 	}
 	
+	/**
+	 * Removes patient from list depending of his gravity. 
+	 * @param p Patient to delete. 
+	 */
 	public void remove(Patient p) {
 		p.setState(State.AVAILABLE);
 		switch(p.getGravity()){
@@ -110,6 +137,11 @@ public class WaitingList{
 	   }
 	}
 	
+	/**
+	 * Check if a patient is contained in one of the waiting list. 
+	 * @param p Patient we are looking for. 
+	 * @return True if the patient is contained in one of the list, null otherwise. 
+	 */
 	public Boolean contains(Patient p) {
 		switch(p.getGravity()){
 	       case A: 
@@ -169,6 +201,4 @@ public class WaitingList{
 		}
 		return str;
 	}
-
-
 }

@@ -2,11 +2,14 @@ package model;
 
 /**
  * 
- * @author chloe
+ * Class Receptionist, used to create a receptionist. 
  *
  */
 public class Receptionist extends Ressource{
 
+	/**
+	 * Created a receptionist.
+	 */
 	public Receptionist() {
 		super();
 	}

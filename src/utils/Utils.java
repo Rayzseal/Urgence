@@ -5,6 +5,14 @@ import java.util.List;
 import model.Ressource;
 import model.State;
 
+/**
+ * 
+ * Class used to generated patients (using a random name & surname).
+ * Can also format a number of seconds to DAY/HOUR/MIN/SEC format.
+ * Loops through a list to find an object available. 
+ * Display a list on screen. 
+ *
+ */
 public class Utils {
 	
 	public static String[] names = { "Olivia", "Amelia", "Isla", "Ava", "Mia", "Ivy", "Lily", "Oliver", "George",
@@ -62,8 +70,8 @@ public class Utils {
 	}
 	
 	/**
-	 * print the list of any object
-	 * @param list
+	 * Print the list of any object
+	 * @param list List to display.
 	 */
 	public static void showList(List<?> list) {
 		for (int i = 0; i < list.size(); i++)
@@ -73,8 +81,8 @@ public class Utils {
 	
 	/**
 	 * -1 if objects are not available or an index in the list of the first object available
-	 * @param list
-	 * @return
+	 * @param list List in which we are looking for an available resource. 
+	 * @return The index of an available object, or -1 if no objects or available.
 	 */
 	public static int objectAvailable(List<?> list) {
 		for(int i = 0 ; i<list.size(); i++){

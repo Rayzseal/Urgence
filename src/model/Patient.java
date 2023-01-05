@@ -7,6 +7,11 @@ import java.util.TreeMap;
 
 import utils.Utils;
 
+/**
+ * 
+ * Class patient, generates a patient.
+ *
+ */
 public class Patient implements Serializable{
 
 	private static final long serialVersionUID = 1L;
@@ -27,7 +32,9 @@ public class Patient implements Serializable{
 	private int arrivalDate;
 	private boolean typeArrival; // false patient arrive by himself
 	
-
+	/**
+	 * Default constructor, with no parameters.
+	 */
 	public Patient() {
 		patient();
 		name = null;
@@ -36,6 +43,12 @@ public class Patient implements Serializable{
 
 	}
 
+	/**
+	 * Constructor to generate a patient with specified parameters.
+	 * @param name Name to set. 
+	 * @param surname Surname to set. 
+	 * @param arrivalDate Arrival date to set.
+	 */
 	public Patient(String name, String surname, int arrivalDate) {
 		patient();
 		this.name = name;
@@ -45,7 +58,7 @@ public class Patient implements Serializable{
 	}
 
 	/**
-	 * function to initialize patient
+	 * Function to initialize patient
 	 */
 	private void patient() {
 		listState = new TreeMap<>();
@@ -70,82 +83,160 @@ public class Patient implements Serializable{
 		return patient;
 	}
 
+	/**
+	 * Add waiting time to a patient.
+	 * @param time Time to be added. 
+	 */
 	public void addWaitingTime(int time) {
 		this.GlobalWaitInSeconds += time;
 	}
 
+	/* Getters & Setters */
+	
+	/**
+	 * @return the name
+	 */
 	public String getName() {
 		return name;
 	}
 
+	/**
+	 * @return the surname
+	 */
 	public String getSurname() {
 		return surname;
 	}
 
-	public int getGlobalWaitInSeconds() {
-		return GlobalWaitInSeconds;
-	}
-
+	/**
+	 * @return the gravity
+	 */
 	public Gravity getGravity() {
 		return gravity;
 	}
 
-	public Map<State, Integer> getListState() {
-		return listState;
-	}
-
-	public Map<State, Integer> getListWaitTime() {
-		return listWaitTime;
-	}
-
-	public void setListWaitTime(Map<State, Integer> listWaitTime) {
-		this.listWaitTime = listWaitTime;
-	}
-
-	public boolean isTypeArrival() {
-		return typeArrival;
-	}
-
-	public void setTypeArrival(boolean typeArrival) {
-		this.typeArrival = typeArrival;
-	}
-
-	public void setListState(TreeMap<State, Integer> listState) {
-		this.listState = listState;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public void setSurname(String surname) {
-		this.surname = surname;
-	}
-
-	public void setGlobalWaitInSeconds(int globalWaitInSeconds) {
-		GlobalWaitInSeconds = globalWaitInSeconds;
-	}
-
-	public void setGravity(Gravity gravity) {
-		this.gravity = gravity;
-	}
-
-	public int getArrivalDate() {
-		return arrivalDate;
-	}
-
-	public void setArrivalDate(int arrivalDate) {
-		this.arrivalDate = arrivalDate;
-	}
-
+	/**
+	 * @return the state
+	 */
 	public State getState() {
 		return state;
 	}
 
+	/**
+	 * @return the listState
+	 */
+	public Map<State, Integer> getListState() {
+		return listState;
+	}
+
+	/**
+	 * @return the listWaitTime
+	 */
+	public Map<State, Integer> getListWaitTime() {
+		return listWaitTime;
+	}
+
+	/**
+	 * @return the globalWaitInSeconds
+	 */
+	public int getGlobalWaitInSeconds() {
+		return GlobalWaitInSeconds;
+	}
+
+	/**
+	 * @return the bedroom
+	 */
+	public Bedroom getBedroom() {
+		return bedroom;
+	}
+
+	/**
+	 * @return the arrivalDate
+	 */
+	public int getArrivalDate() {
+		return arrivalDate;
+	}
+
+	/**
+	 * @return the typeArrival
+	 */
+	public boolean isTypeArrival() {
+		return typeArrival;
+	}
+
+	/**
+	 * @param name the name to set
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	/**
+	 * @param surname the surname to set
+	 */
+	public void setSurname(String surname) {
+		this.surname = surname;
+	}
+
+	/**
+	 * @param gravity the gravity to set
+	 */
+	public void setGravity(Gravity gravity) {
+		this.gravity = gravity;
+	}
+
+	/**
+	 * @param state the state to set
+	 */
 	public void setState(State state) {
 		this.state = state;
 	}
 
+	/**
+	 * @param listState the listState to set
+	 */
+	public void setListState(Map<State, Integer> listState) {
+		this.listState = listState;
+	}
+
+	/**
+	 * @param listWaitTime the listWaitTime to set
+	 */
+	public void setListWaitTime(Map<State, Integer> listWaitTime) {
+		this.listWaitTime = listWaitTime;
+	}
+
+	/**
+	 * @param globalWaitInSeconds the globalWaitInSeconds to set
+	 */
+	public void setGlobalWaitInSeconds(int globalWaitInSeconds) {
+		GlobalWaitInSeconds = globalWaitInSeconds;
+	}
+
+	/**
+	 * @param bedroom the bedroom to set
+	 */
+	public void setBedroom(Bedroom bedroom) {
+		this.bedroom = bedroom;
+	}
+
+	/**
+	 * @param arrivalDate the arrivalDate to set
+	 */
+	public void setArrivalDate(int arrivalDate) {
+		this.arrivalDate = arrivalDate;
+	}
+
+	/**
+	 * @param typeArrival the typeArrival to set
+	 */
+	public void setTypeArrival(boolean typeArrival) {
+		this.typeArrival = typeArrival;
+	}
+
+	/**
+	 * @param state the state to set
+	 * @param time the time to set
+	 */
 	public void setState(State state, int time) {
 		if(state != State.WAITING && state != State.AVAILABLE ) {
 			this.state = State.OCCUPIED;
@@ -153,18 +244,6 @@ public class Patient implements Serializable{
 		}else			
 			this.state = state;
 			
-	}
-
-	public Bedroom getBedroom() {
-		return bedroom;
-	}
-
-	public void setBedroom(Bedroom bedroom) {
-		this.bedroom = bedroom;
-	}
-
-	public void setListState(Map<State, Integer> listState) {
-		this.listState = listState;
 	}
 
 	@Override

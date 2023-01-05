@@ -4,6 +4,11 @@ import java.util.Comparator;
 
 import model.Patient;
 
+/**
+ * 
+ * Class to sort patients arrival, compares the time when the patient arrives. 
+ *
+ */
 public class SortPatientArrival implements Comparator<Patient>{
 
 	@Override

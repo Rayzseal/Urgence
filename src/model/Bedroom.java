@@ -1,16 +1,17 @@
 package model;
 
-import java.util.ArrayList;
-
 /**
- * Creates a bedromm.
- * @author chloe
+ * 
+ * Class Bedroom, used to create a bedroom. 
  *
  */
 public class Bedroom extends Ressource {
 		
 	private static int no = 0;
 
+	/**
+	 * Creates a bedroom with a name and no associated patient by default. 
+	 */
 	public Bedroom() {
 		this.setName("Bedroom no°"+no);
 		no++;
@@ -18,6 +19,4 @@ public class Bedroom extends Ressource {
 		this.setActualPatient(null);
 	}
 	
-	
-
 }
