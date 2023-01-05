@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -101,11 +100,16 @@ public class DataFile {
 		}
 	}
 	/**
-	 * the methods read the file SimulationExemple and return a list of Patient
-	 * @return data
+	 * the methods read the file nameFile and return a list of Patient
+	 * nameFile must be a csv and contain an object List<Patient>
+	 * @param nameFile
+	 * @return
 	 */
-	public static List<Patient> readSimulationFile() {
-		String filename = "src" + sep + "ressources" + sep + "simulationExemple.csv";
+	public static List<Patient> readSimulationFile(String nameFile) {
+		if(!nameFile.matches("[a-zA-Z0-9]+.csv")) {
+			throw new IllegalArgumentException("Invalid name file");
+		}
+		String filename = "src" + sep + "ressources" + sep + nameFile;
 
 		try (FileInputStream fis = new FileInputStream(filename); ObjectInputStream bis = new ObjectInputStream(fis);) {
 
@@ -125,15 +129,19 @@ public class DataFile {
 		return null;
 	}
 	/**
-	 * the method write a list of patients in the file SimulationExemple
-	 * @param data
+	 * the method write a list of patients in the file nameFile
+	 * @param nameFile
+	 * @param patients
 	 */
-	public static void writeSimulationFile(List<Patient> patients) {
+	public static void writeSimulationFile(String nameFile, List<Patient> patients) {
 		List<Patient> patientsNew = new ArrayList<Patient>();
 		for(Patient p : patients) {
 			patientsNew.add(Patient.resetPatient(p));
 		}
-		String filename = "src" + sep + "ressources" + sep + "simulationExemple.csv";
+		if(!nameFile.matches("[a-zA-Z0-9]+.csv")) {
+			throw new IllegalArgumentException("Invalid name file");
+		}
+		String filename = "src" + sep + "ressources" + sep + nameFile;
 		try (FileOutputStream fos = new FileOutputStream(filename);
 				ObjectOutputStream bos = new ObjectOutputStream(fos);) {
 

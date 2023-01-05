@@ -1,15 +1,11 @@
 package controller;
 
-import java.util.Random;
-
 import events.EvPatientArrival;
 import events.EvPatientCriticArrival;
 import model.Patient;
 import model.State;
 import utils.Data;
 import utils.DataFile;
-import utils.SortPatientArrival;
-import utils.Utils;
 
 /**
  * The class Scheduler time the arrival of every patients
@@ -17,11 +13,23 @@ import utils.Utils;
  */
 public class Scheduler {
 	private Data data;
-
+	/**
+	 * constructor of scheduler and create an object Data with the default number of patients
+	 */
 	public Scheduler() {
-		data = new Data(DataFile.readSimulationFile());
+		data = new Data();
 	}
-
+	/**
+	 * constructor of scheduler and create an object Data with patients in the file nameFile
+	 * @param nameFile
+	 */
+	public Scheduler(String nameFile) {
+		data = new Data(DataFile.readSimulationFile(nameFile));
+	}
+	/**
+	 * constructor of scheduler and create an object Data with the number of patients nbPatient
+	 * @param nbPatient
+	 */
 	public Scheduler(int nbPatient) {
 		data = new Data(nbPatient);
 		
@@ -84,7 +92,7 @@ public class Scheduler {
 		while(data.getPatientsOver().size()<data.getNbOfPatients()) {
 			
 		}
-		//DataFile.writeSimulationFile(data.getPatientsOver());
+		DataFile.writeSimulationFile("SimulationExemple2.csv",data.getPatientsOver());
 		System.out.println("------------------");
 		System.out.println("END");
 		System.out.println("------------------");
