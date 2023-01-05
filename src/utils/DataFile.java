@@ -129,15 +129,24 @@ public class DataFile {
 		return null;
 	}
 	/**
+	 * the method write a list of patients to start a simulation in the file nameFile
+	 * @param nameFile
+	 * @param patients
+	 */
+	public static void writeSimulationStartFile(String nameFile, List<Patient> patients) {
+		List<Patient> patientsNew = new ArrayList<Patient>();
+		for(Patient p : patients) {
+			patientsNew.add(Patient.resetPatient(p));
+		}
+		writeSimulationFile(nameFile, patientsNew);
+	}
+	
+	/**
 	 * the method write a list of patients in the file nameFile
 	 * @param nameFile
 	 * @param patients
 	 */
 	public static void writeSimulationFile(String nameFile, List<Patient> patients) {
-		List<Patient> patientsNew = new ArrayList<Patient>();
-		for(Patient p : patients) {
-			patientsNew.add(Patient.resetPatient(p));
-		}
 		if(!nameFile.matches("[a-zA-Z0-9]+.csv")) {
 			throw new IllegalArgumentException("Invalid name file");
 		}
@@ -145,7 +154,7 @@ public class DataFile {
 		try (FileOutputStream fos = new FileOutputStream(filename);
 				ObjectOutputStream bos = new ObjectOutputStream(fos);) {
 
-			bos.writeObject(patientsNew);
+			bos.writeObject(patients);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
