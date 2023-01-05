@@ -163,94 +163,159 @@ public class DataFile {
 	}
 
 	/**
-	 * Setter and getter of the class
+	 * @return the nbBedrooms
 	 */
 	public int getNbBedrooms() {
 		return nbBedrooms;
 	}
 
+	/**
+	 * @param nbBedrooms the nbBedrooms to set
+	 */
 	public void setNbBedrooms(int nbBedrooms) {
 		this.nbBedrooms = nbBedrooms;
 	}
 
+	/**
+	 * @return the nbScanner
+	 */
 	public int getNbScanner() {
 		return nbScanner;
 	}
 
+	/**
+	 * @param nbScanner the nbScanner to set
+	 */
 	public void setNbScanner(int nbScanner) {
 		this.nbScanner = nbScanner;
 	}
 
+	/**
+	 * @return the nbBloc
+	 */
 	public int getNbBloc() {
 		return nbBloc;
 	}
 
+	/**
+	 * @param nbBloc the nbBloc to set
+	 */
 	public void setNbBloc(int nbBloc) {
 		this.nbBloc = nbBloc;
 	}
 
+	/**
+	 * @return the nbReceptionist
+	 */
 	public int getNbReceptionist() {
 		return nbReceptionist;
 	}
 
+	/**
+	 * @param nbReceptionist the nbReceptionist to set
+	 */
 	public void setNbReceptionist(int nbReceptionist) {
 		this.nbReceptionist = nbReceptionist;
 	}
 
+	/**
+	 * @return the nbDoctor
+	 */
 	public int getNbDoctor() {
 		return nbDoctor;
 	}
 
+	/**
+	 * @param nbDoctor the nbDoctor to set
+	 */
 	public void setNbDoctor(int nbDoctor) {
 		this.nbDoctor = nbDoctor;
 	}
 
-	public int getTimeReception() {
-		return timeReception;
-	}
-
-	public void setTimeReception(int timeReception) {
-		this.timeReception = timeReception;
-	}
-
-	public int getTimeScanner() {
-		return timeScanner;
-	}
-
-	public void setTimeScanner(int timeScanner) {
-		this.timeScanner = timeScanner;
-	}
-
-	public int getTimeAnalysis() {
-		return timeAnalysis;
-	}
-
-	public void setTimeAnalysis(int timeAnalysis) {
-		this.timeAnalysis = timeAnalysis;
-	}
-
-	public int getTimeBloc() {
-		return timeBloc;
-	}
-
-	public void setTimeBloc(int timeBloc) {
-		this.timeBloc = timeBloc;
-	}
-
-	public int getTimePrescription() {
-		return timePrescription;
-	}
-
-	public void setTimePrescription(int timePrescription) {
-		this.timePrescription = timePrescription;
-	}
-
+	/**
+	 * @return the nbNurse
+	 */
 	public int getNbNurse() {
 		return nbNurse;
 	}
 
+	/**
+	 * @param nbNurse the nbNurse to set
+	 */
 	public void setNbNurse(int nbNurse) {
 		this.nbNurse = nbNurse;
 	}
+
+	/**
+	 * @return the timeReception
+	 */
+	public int getTimeReception() {
+		return timeReception;
+	}
+
+	/**
+	 * @param timeReception the timeReception to set
+	 */
+	public void setTimeReception(int timeReception) {
+		this.timeReception = timeReception;
+	}
+
+	/**
+	 * @return the timeScanner
+	 */
+	public int getTimeScanner() {
+		return timeScanner;
+	}
+
+	/**
+	 * @param timeScanner the timeScanner to set
+	 */
+	public void setTimeScanner(int timeScanner) {
+		this.timeScanner = timeScanner;
+	}
+
+	/**
+	 * @return the timeAnalysis
+	 */
+	public int getTimeAnalysis() {
+		return timeAnalysis;
+	}
+
+	/**
+	 * @param timeAnalysis the timeAnalysis to set
+	 */
+	public void setTimeAnalysis(int timeAnalysis) {
+		this.timeAnalysis = timeAnalysis;
+	}
+
+	/**
+	 * @return the timeBloc
+	 */
+	public int getTimeBloc() {
+		return timeBloc;
+	}
+
+	/**
+	 * @param timeBloc the timeBloc to set
+	 */
+	public void setTimeBloc(int timeBloc) {
+		this.timeBloc = timeBloc;
+	}
+
+	/**
+	 * @return the timePrescription
+	 */
+	public int getTimePrescription() {
+		return timePrescription;
+	}
+
+	/**
+	 * @param timePrescription the timePrescription to set
+	 */
+	public void setTimePrescription(int timePrescription) {
+		this.timePrescription = timePrescription;
+	}
+
+	
 
 }
