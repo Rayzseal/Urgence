@@ -33,8 +33,8 @@ public class EvAnalysis extends Event implements Runnable {
 	/**
 	 * set the next event when the patient finished this event
 	 */
+	@Override
 	public void nextEvent() {
-		System.out.println("run analysis : "+getPatient().getName()+ getPatient().getSurname());
 		EvEndAnalysis e = new EvEndAnalysis(getData(), getPatient(), getObjectAvailable());
 		e.run();
 	}

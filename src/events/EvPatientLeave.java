@@ -1,46 +1,57 @@
 package events;
 
-import model.Gravity;
 import model.Patient;
 import model.State;
 import utils.Data;
-
-public class EvPatientLeave implements Runnable {
-	private Patient patient;
-	private Data data;
-
-	public EvPatientLeave() {
-		// TODO Auto-generated constructor stub
-	}
-
+/**
+ * Event when the patient leave the emergency department, it inherits the class Event
+ */
+public class EvPatientLeave extends Event implements Runnable {
+	/**
+	 * constructor of EvAnalysis
+	 * @param d Data
+	 * @param p Patient
+	 */
 	public EvPatientLeave(Data d, Patient p) {
-		data = d;
-		patient = p;
+		super(d, p);
+		setState();
 	}
-
+	/**
+	 * set ressources, times and waitingList to use in this event
+	 */
+	public void setState() {
+		setStateEvent(State.OUT);
+		setRessources(getData().getBedrooms());
+		setTimeRessource(0);
+		setWaitingList(getData().getWaitListBedroom());
+	}
+	/**
+	 * runnable method to reset the bedroom of the patient and gave to an other patient
+	 * the method also put the patient in the list patientsOver
+	 */
 	@Override
 	public void run() {
 
-		synchronized (data.getBedrooms()) {
-			if (patient.getBedroom() != null) {
-				patient.getBedroom().setState(State.AVAILABLE);
-				patient.setBedroom(null);
+		synchronized (getRessources()) {
+			if (getPatient().getBedroom() != null) {
+				getPatient().getBedroom().setState(State.AVAILABLE);
+				getPatient().setBedroom(null);
 			}
-			patient.getListState().put(State.OUT, data.getTime());
+			getPatient().getListState().put(State.OUT, getData().getTime());
 			
-			synchronized (data.getPatientsActive()) {
-				data.getPatientsActive().remove(patient);
+			synchronized (getData().getPatientsActive()) {
+				getData().getPatientsActive().remove(getPatient());
 			}
-			synchronized (data.getPatientsOver()) {
-				data.getPatientsOver().add(patient);
+			synchronized (getData().getPatientsOver()) {
+				getData().getPatientsOver().add(getPatient());
 			}
 
-			if (data.getWaitListBedroom().size() > 0) {
-				patient = data.getWaitListBedroom().selectPatientFromArrayList();
-				synchronized (data.getWaitListBedroom()) {					
-					data.getWaitListBedroom().remove(patient, data.getTime());
+			if (getWaitingList().size() > 0) {
+				Patient nextPatient = getWaitingList().selectPatientFromArrayList();
+				synchronized (getWaitingList()) {					
+					getWaitingList().remove(nextPatient, getData().getTime());
 				}
-				new Thread(new EvBedroomResearch(data, patient)).start();
+				new Thread(new EvBedroomResearch(getData(), nextPatient)).start();
 			}
 		}
 

@@ -2,44 +2,75 @@ package events;
 
 import model.Gravity;
 import model.Patient;
+import model.Ressource;
 import model.State;
 import utils.Data;
 import utils.EventsUtils;
 import utils.Utils;
-
-public class EvScanner implements Runnable {
-	Patient patient;
-	Data data;
-
+/**
+ * Event of start of Scanner, it inherits the class Event
+ */
+public class EvScanner extends Event implements Runnable {
+	/**
+	 * constructor of EvAnalysis
+	 * @param d Data
+	 * @param p Patient
+	 */
 	public EvScanner(Data d, Patient p) {
-		patient = p;
-		data = d;
+		super(d, p);
+		setState();
 	}
-
-	public void startEventTest() {
-		int scannerAvailable = -1;
-		synchronized (data.getScanners()) {
-			scannerAvailable = Utils.objectAvailable(data.getScanners());
-			if (scannerAvailable >= 0) {
-				if (patient.getGravity() == Gravity.C) {
-					if(EventsUtils.patientAvailable(data, patient, State.ANALYSIS)) {
-						data.getScanners().get(scannerAvailable).setState(State.OCCUPIED);
+	/**
+	 * set ressources, times and waitingList to use in this event
+	 */
+	public void setState() {
+		setStateEvent(State.SCANNER);
+		setRessources(getData().getScanners());
+		setTimeRessource(getData().getTimeScanner());
+		setWaitingList(getData().getWaitListScanner());
+	}
+	/**
+	 * set the next event when the patient finished this event
+	 */
+	@Override
+	public void nextEvent() {
+		EvEndScanner e = new EvEndScanner(getData(), getPatient(), getObjectAvailable());
+		e.run();
+	}
+	
+	/**
+	 * override of the methods startEvent to add particularities due to the path C
+	 * The method verifies if required ressources are available, patient continues his path if it is
+	 * or he starts waiting in the waiting list
+	 */
+	@Override
+	public void startEvent() {
+		setObjectAvailable(-1);
+		synchronized (getRessources()) {
+			setObjectAvailable(Utils.objectAvailable(getRessources()));
+			if (getObjectAvailable() >= 0) {
+				if (getPatient().getGravity() == Gravity.C) {
+					//if patients has gravity C, the patients has to be available
+					if(EventsUtils.patientAvailable(getData(), getPatient(), State.ANALYSIS)) {
+						//the patient is available, the ressources is going to be used by him
+						((Ressource) getRessources().get(getObjectAvailable())).setState(State.OCCUPIED);
 					}else {
-						scannerAvailable = -1;
+						//the patient isn't available, because he is the event Scanner so the ressource is set to -1
+						setObjectAvailable(-1);
 					}
 				}else {
-					data.getScanners().get(scannerAvailable).setState(State.OCCUPIED);
+					((Ressource) getRessources().get(getObjectAvailable())).setState(State.OCCUPIED);
 				}
 				
 
 			} else {
-				synchronized (data.getWaitListPathC()) {
-					if (patient.getGravity() == Gravity.C) {
-						if(data.getWaitListPathC().get(State.WAITING).contains(patient)) {
-							data.getWaitListPathC().get(State.SCANNER).add(patient, data.getTime());
+				synchronized (getData().getWaitListPathC()) {
+					if (getPatient().getGravity() == Gravity.C) {
+						if(getData().getWaitListPathC().get(State.WAITING).contains(getPatient())) {
+							getData().getWaitListPathC().get(State.SCANNER).add(getPatient(), getData().getTime());
 						}
 					}else {
-						data.getWaitListPathC().get(State.SCANNER).add(patient, data.getTime());
+						getData().getWaitListPathC().get(State.SCANNER).add(getPatient(), getData().getTime());
 					}
 					
 				}
@@ -47,39 +78,17 @@ public class EvScanner implements Runnable {
 			}
 
 		}
-		if (scannerAvailable >= 0) {
-			System.out.println("run scanner : " + patient.getName());
-			EvEndScanner e = new EvEndScanner(data, patient, scannerAvailable);
-			e.run();
+		if (getObjectAvailable() >= 0) {
+			nextEvent();
+			
 		}
 	}
-
-	/*
-	 * public void startEvent() { int scannerAvailable = -1; synchronized
-	 * (data.getScanners()) { scannerAvailable =
-	 * Utils.objectAvailable(data.getScanners()); if (scannerAvailable >= 0) { if
-	 * (patient.getGravity() == Gravity.C) { if
-	 * (EventsUtils.patientAvailableScanner(data, patient)) {
-	 * data.getScanners().get(scannerAvailable).setState(State.OCCUPIED); } else {
-	 * scannerAvailable = -1; } } else {
-	 * data.getScanners().get(scannerAvailable).setState(State.OCCUPIED); }
-	 * 
-	 * } else { synchronized (data.getWaitListScanner()) { if (patient.getGravity()
-	 * == Gravity.C) { if (data.getWaitListPathC().contains(patient)) {
-	 * data.getWaitListScanner().add(patient, data.getTime());
-	 * System.out.println("liste attent scanner:" + patient); } } else {
-	 * data.getWaitListScanner().add(patient, data.getTime()); }
-	 * 
-	 * }
-	 * 
-	 * } if (scannerAvailable >= 0) { System.out.println("run scanner : " +
-	 * patient.getName()); EvEndScanner e = new EvEndScanner(data, patient,
-	 * scannerAvailable); e.run(); } } }
+	/**
+	 * runnable method which call startEvent()
 	 */
-
 	@Override
 	public void run() {
-		startEventTest();
+		startEvent();
 	}
 
 }
