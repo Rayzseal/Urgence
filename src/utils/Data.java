@@ -108,7 +108,7 @@ public class Data {
 		this.patientsActive = new ArrayList<>();
 		this.patientsOver = new ArrayList<>();
 		this.time = 0;
-		if(patients == null) {
+		if(listPatients == null) {
 			
 			//generatePatientsNormal();
 			generatePatientsPoisson(lambda);
