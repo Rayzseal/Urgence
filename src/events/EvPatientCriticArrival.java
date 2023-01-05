@@ -6,22 +6,29 @@ import model.Patient;
 import model.State;
 import utils.Data;
 import utils.EventsUtils;
-
-public class EvPatientCriticArrival implements Runnable{
-	private Patient patient;
-	private Data data;
-
+/**
+ * Event of the critic arrival, it inherits the class Event
+ */
+public class EvPatientCriticArrival extends Event implements Runnable{
+	/**
+	 * constructor of EvAnalysis
+	 * @param d Data
+	 * @param p Patient
+	 */
 	public EvPatientCriticArrival(Data d, Patient p) {
-		data = d;
-		patient = p;
+		super(d, p);
 	}
 	
+	/**
+	 * runnable method, set the bedroom and gravity
+	 * The patient doesn't wait for a bedroom
+	 */
 	@Override
 	public void run() {
-		patient.setBedroom(new Bedroom());
-		patient.setGravity(Gravity.A);
-		patient.setState(State.BEDROOM, data.getTime());
-		EventsUtils.pathChoice(data, patient);
+		getPatient().setBedroom(new Bedroom());
+		getPatient().setGravity(Gravity.A);
+		getPatient().setState(State.BEDROOM, getData().getTime());
+		EventsUtils.pathChoice(getData(), getPatient());
 	}
 
 }

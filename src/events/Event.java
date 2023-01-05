@@ -8,7 +8,9 @@ import model.State;
 import model.WaitingList;
 import utils.Data;
 import utils.Utils;
-
+/**
+ * Abstract method to every event
+ */
 public abstract class Event {
 	private Patient patient;
 	private Data data;
@@ -17,21 +19,33 @@ public abstract class Event {
 	private List<?> ressources;
 	private int timeRessource;
 	private WaitingList waitingList;
-
+	/**
+	 * constructor of an event
+	 * @param d Data
+	 * @param p Patient
+	 */
 	public Event(Data d, Patient p) {
 		data = d;
 		patient = p;
 		objectAvailable = -1;
 
 	}
-
+	/**
+	 * constructor of an event
+	 * @param d Data
+	 * @param p Patient
+	 * @param objectAvailable index in the list of ressources used
+	 */
 	public Event(Data d, Patient p, int objectAvailable) {
 		data = d;
 		patient = p;
 		this.objectAvailable = objectAvailable;
 
 	}
-
+	/**
+	 * The method verifies if required ressources are available, patient continues his path if it is
+	 * or he starts waiting in the waiting list
+	 */
 	public void startEvent() {
 		synchronized (ressources) {
 			objectAvailable = Utils.objectAvailable(ressources);
@@ -53,21 +67,10 @@ public abstract class Event {
 		}
 
 	}
-	
-	public void addToWaitingList() {
-		waitingList.add(patient, data.getTime());
-	}
-	public void sameEvent(Patient nextPatient) {
-		
-	}
-	public void nextEvent() {
-		
-	}
-	
-	public void otherAction() {
-		
-	}
-	
+	/**
+	 * The method pause for the time timeRessource then search the nextPatient
+	 * patient continue is path with the method nextEvent() 
+	 */
 	public void endEvent() {
 		try {
 			patient.setState(stateEvent, data.getTime());
@@ -85,7 +88,35 @@ public abstract class Event {
 			e.printStackTrace();
 		}
 	}
-	
+	/**
+	 * add to the waiting list defined
+	 */
+	public void addToWaitingList() {
+		waitingList.add(patient, data.getTime());
+	}
+	/**
+	 * method to be override so nextPatient continue on the same event
+	 * @param nextPatient Patient
+	 */
+	public void sameEvent(Patient nextPatient) {
+		
+	}
+	/**
+	 * method to be override so patient continue on the next event
+	 */
+	public void nextEvent() {
+		
+	}
+	/**
+	 * method to be override so events can do other action when they set a ressources to State.OCCUPIED
+	 */
+	public void otherAction() {
+		
+	}
+	/**
+	 * The method verifies if a patient is waiting in the waitingList
+	 * @return nextPatient or null if no patient is waiting
+	 */
 	public Patient getNextPatient() {
 		Patient nextPatient = null;
 		synchronized (waitingList) {
@@ -103,63 +134,88 @@ public abstract class Event {
 		}
 		return nextPatient;
 	}
-
+	/**
+	 * @return the patient
+	 */
 	public Patient getPatient() {
 		return patient;
 	}
-
+	/**
+	 * @param patient the patient to set
+	 */
 	public void setPatient(Patient patient) {
 		this.patient = patient;
 	}
-
+	/**
+	 * @return the data
+	 */
 	public Data getData() {
 		return data;
 	}
-
+	/**
+	 * @param data the data to set
+	 */
 	public void setData(Data data) {
 		this.data = data;
 	}
-
+	/**
+	 * @return the stateEvent
+	 */
 	public State getStateEvent() {
 		return stateEvent;
 	}
-
+	/**
+	 * @param stateEvent the stateEvent to set
+	 */
 	public void setStateEvent(State stateEvent) {
 		this.stateEvent = stateEvent;
 	}
-
+	/**
+	 * @return the objectAvailable
+	 */
 	public int getObjectAvailable() {
 		return objectAvailable;
 	}
-
+	/**
+	 * @param objectAvailable the objectAvailable to set
+	 */
 	public void setObjectAvailable(int objectAvailable) {
 		this.objectAvailable = objectAvailable;
 	}
-
+	/**
+	 * @return the ressources
+	 */
 	public List<?> getRessources() {
 		return ressources;
 	}
-
+	/**
+	 * @param ressources the ressources to set
+	 */
 	public void setRessources(List<?> ressources) {
 		this.ressources = ressources;
 	}
-
+	/**
+	 * @return the timeRessource
+	 */
 	public int getTimeRessource() {
 		return timeRessource;
 	}
-
+	/**
+	 * @param timeRessource the timeRessource to set
+	 */
 	public void setTimeRessource(int timeRessource) {
 		this.timeRessource = timeRessource;
 	}
-
+	/**
+	 * @return the waitingList
+	 */
 	public WaitingList getWaitingList() {
 		return waitingList;
 	}
-
+	/**
+	 * @param waitingList the waitingList to set
+	 */
 	public void setWaitingList(WaitingList waitingList) {
 		this.waitingList = waitingList;
 	}
-	
-	
-
 }

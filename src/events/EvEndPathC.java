@@ -4,26 +4,32 @@ import model.Patient;
 import model.State;
 import utils.Data;
 
-public class EvEndPathC implements Runnable{
-	private Data data;
-	private Patient patient;
-
+/**
+ * Event of the end in the path C, it inherits the class Event
+ */
+public class EvEndPathC extends Event implements Runnable{
+	/**
+	 * constructor of EvEndPathC
+	 * @param d Data
+	 * @param p Patient
+	 */
 	public EvEndPathC(Data d, Patient p) {
-		data = d;
-		patient = p;
+		super(d,p);
 	}
-
+	/**
+	 * runnable method, restart the event EvPathC if patient didn't do both required activity
+	 * else start the event Prescription
+	 */
 	@Override
 	public void run() {
 
-		if(!patient.getListState().containsKey(State.SCANNER) || !patient.getListState().containsKey(State.ANALYSIS)) {
-			EvPathC e = new EvPathC(data, patient);
+		if(!getPatient().getListState().containsKey(State.SCANNER) || !getPatient().getListState().containsKey(State.ANALYSIS)) {
+			EvPathC e = new EvPathC(getData(), getPatient());
 			e.run();
 			
 		}
 		else {
-			System.out.println("fin path C"+patient.getName());
-			EvPrescription e = new EvPrescription(data, patient);
+			EvPrescription e = new EvPrescription(getData(), getPatient());
 			e.run();
 		}
 		

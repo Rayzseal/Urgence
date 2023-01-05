@@ -1,50 +1,81 @@
 package events;
 
-import java.util.ArrayList;
-
-import controller.Scheduler;
 import model.Patient;
-import model.Receptionist;
 import model.Ressource;
 import model.State;
 import utils.Data;
 import utils.Utils;
-
-public class EvPatientArrival implements Runnable {
-	private Patient patient;
-	private Data data;
-	
+/**
+ * Event of start when the patient arrives, it inherits the class Event
+ */
+public class EvPatientArrival extends Event implements Runnable {
+	/**
+	 * constructor of EvPatientArrival
+	 * @param d Data
+	 * @param p Patient
+	 */
 	public EvPatientArrival(Data d, Patient p) {
-		data = d;
-		patient = p;
+		super(d,p);
+		setState();
+	}
+	/**
+	 * set ressources, times and waitingList to use in this event
+	 */
+	public void setState() {
+		setStateEvent(State.RECEPTION);
+		setRessources(getData().getReceptionists());
+		setTimeRessource(getData().getTimeReception());
+		setWaitingList(null);
+	}
+	/**
+	 * set the next event when the patient finished this event
+	 */
+	public void nextEvent() {
+		new Thread(new EvEndPatientArrival(getData(), getPatient(), getObjectAvailable())).start();
+		/*EvEndPatientArrival e = new EvEndPatientArrival(getData(), getPatient(), getObjectAvailable());
+		e.run();*/
+	}
+	/**
+	 * override the method and add to the list arrival
+	 */
+	@Override
+	public void addToWaitingList() {
+		getData().getWaitListArrival().add(getPatient());
+		getPatient().setState(State.WAITING);
+		getPatient().getListWaitTime().put(State.RECEPTION, getData().getTime());
 	}
 	
-	public void arrival() {
-		int receptionistAvailable  = -1;
-		synchronized (data.getReceptionists()) {
-			receptionistAvailable = Utils.objectAvailable(data.getReceptionists());
-			if(receptionistAvailable >= 0) { 
+	/**
+	 * override of the methods startEvent to add particularities due the waiting list of arrival
+	 * The method verifies if required ressources are available, patient continues his path if it is
+	 * or he starts waiting in the waiting list
+	 */
+	@Override
+	public void startEvent() {
+		setObjectAvailable(-1);
+		synchronized (getRessources()) {
+			setObjectAvailable(Utils.objectAvailable(getRessources()));
+			if(getObjectAvailable() >= 0) { 
 				
-					data.getReceptionists().get(receptionistAvailable).setState(State.OCCUPIED);
+				((Ressource) getRessources().get(getObjectAvailable())).setState(State.OCCUPIED);
 			    }
 			else {
-				synchronized (data.getWaitListArrival()) {
-					data.getWaitListArrival().add(patient);
-					patient.setState(State.WAITING);
-					patient.getListWaitTime().put(State.RECEPTION, data.getTime());
+				synchronized (getData().getWaitListArrival()) {
+					addToWaitingList();
 			    }
 			}
 		}
-		if(receptionistAvailable>=0) {
-			new Thread(new EvEndPatientArrival(data, patient, receptionistAvailable)).start();
+		if(getObjectAvailable()>=0) {
+			nextEvent();
 		}
-			
-		
-		
 	}
+	
+	/**
+	 * runnable method which call startEvent() from Event
+	 */
 	@Override
 	public void run() {
-		arrival();
+		startEvent();
 		
 	}
 

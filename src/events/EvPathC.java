@@ -4,32 +4,35 @@ import model.Patient;
 import model.State;
 import utils.Data;
 
-public class EvPathC implements Runnable{
-	private Data data;
-	private Patient patient;
-
+/**
+ * Event of the start in the path C, it inherits the class Event
+ */
+public class EvPathC extends Event implements Runnable{
+	/**
+	 * constructor of EvPathC
+	 * @param d Data
+	 * @param p Patient
+	 */
 	public EvPathC(Data d, Patient p) {
-		data = d;
-		patient = p;
+		super(d,p);
 	}
-
+	/**
+	 * runnable method, add the patient in the list waiting of waitListPathC
+	 * then start analysis and/or scanner event if he didn't already realised it
+	 */
 	@Override
 	public void run() {
-		synchronized (data.getWaitListPathC()) {
-			data.getWaitListPathC().get(State.WAITING).add(patient);
+		//waitListPathC prevent synchronized issue between Analysis and Scanner events
+		synchronized (getData().getWaitListPathC()) {
+			getData().getWaitListPathC().get(State.WAITING).add(getPatient());
 		}
 		
-		if(!patient.getListState().containsKey(State.ANALYSIS)) {
-			System.out.println("start path C analysis "+patient);
-			new Thread(new EvAnalysis(data, patient)).start();
+		if(!getPatient().getListState().containsKey(State.ANALYSIS)) {
+			new Thread(new EvAnalysis(getData(), getPatient())).start();
 		}
-		if(!patient.getListState().containsKey(State.SCANNER)) {
-			System.out.println("start path C scanner "+patient);
-			new Thread(new EvScanner(data, patient)).start();		
+		if(!getPatient().getListState().containsKey(State.SCANNER)) {
+			new Thread(new EvScanner(getData(), getPatient())).start();		
 		}
-		
-		
-		
 	}
 
 }
