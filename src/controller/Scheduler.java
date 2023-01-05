@@ -92,7 +92,7 @@ public class Scheduler {
 		while(data.getPatientsOver().size()<data.getNbOfPatients()) {
 			
 		}
-		DataFile.writeSimulationFile("SimulationExemple2.csv",data.getPatientsOver());
+		//DataFile.writeSimulationFile("SimulationExemple2.csv",data.getPatientsOver());
 		System.out.println("------------------");
 		System.out.println("END");
 		System.out.println("------------------");
