@@ -7,9 +7,15 @@ import model.Patient;
 import model.State;
 import events.EvPathC;
 import events.EvPrescription;
-
+/**
+ * class which contain static methods to help in different events
+ */
 public class EventsUtils {
-
+	/**
+	 * The method direct a Patient p to his right path.
+	 * @param data
+	 * @param p
+	 */
 	public static void pathChoice(Data data, Patient p) {
 		switch (p.getGravity()) {
 
@@ -33,13 +39,14 @@ public class EventsUtils {
 			break;
 		}
 	}
-
+	/**
+	 * The method set the gravity of a patient randomly 
+	 * @return gravity
+	 */
 	public static Gravity setGravity() {
-		//TODO remove
-		//return Gravity.C;
 		
 		int g = (int) (Math.random() * 100);
-		int statC = -1;//45;
+		int statC = 45;
 		int statB = 30;
 		int statA = 5;
 
@@ -51,7 +58,15 @@ public class EventsUtils {
 			return Gravity.C;
 		return Gravity.D;
 	}
-	
+	/**
+	 * The methods return true if a patients C is available to continue in an activity 
+	 * then he is removed from the List Waiting and WaitingList stateWaitingList
+	 * and false if the patient is not in the List waiting
+	 * @param data
+	 * @param p
+	 * @param stateWaitList
+	 * @return bool
+	 */
 	public static Boolean patientAvailable(Data data, Patient p, State stateWaitList) {
 		Boolean bool = false;
 		synchronized (data.getWaitListPathC()) {
