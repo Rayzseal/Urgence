@@ -7,6 +7,7 @@ import events.EvPatientCriticArrival;
 import model.Patient;
 import model.State;
 import utils.Data;
+import utils.DataFile;
 import utils.SortPatientArrival;
 import utils.Utils;
 
@@ -18,11 +19,12 @@ public class Scheduler {
 	private Data data;
 
 	public Scheduler() {
-		data = new Data();
+		data = new Data(DataFile.readSimulationFile());
 	}
 
 	public Scheduler(int nbPatient) {
 		data = new Data(nbPatient);
+		
 	}
 	/**
 	 * handle time and arrival of everyPatients
@@ -82,6 +84,7 @@ public class Scheduler {
 		while(data.getPatientsOver().size()<data.getNbOfPatients()) {
 			
 		}
+		//DataFile.writeSimulationFile(data.getPatientsOver());
 		System.out.println("------------------");
 		System.out.println("END");
 		System.out.println("------------------");

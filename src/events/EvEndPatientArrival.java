@@ -1,29 +1,12 @@
 package events;
 
-import model.Gravity;
 import model.Patient;
-import model.Receptionist;
 import model.Ressource;
 import model.State;
 import utils.Data;
 import utils.EventsUtils;
-import utils.Utils;
 
 public class EvEndPatientArrival extends Event implements Runnable {
-	/*private Patient patient;
-	private Data data;
-	private int receptionistAvailable;
-
-	public EvEndPatientArrival() {
-		patient = null;
-		data = null;
-	}
-
-	public EvEndPatientArrival(Data d, Patient p, int rAvailable) {
-		data = d;
-		patient = p;
-		receptionistAvailable = rAvailable;
-	}*/
 	public EvEndPatientArrival(Data d, Patient p, int objectAvailable) {
 		super(d, p, objectAvailable);
 		setState();
@@ -40,7 +23,9 @@ public class EvEndPatientArrival extends Event implements Runnable {
 		e.run();
 	}
 	public void nextEvent() {
-		getPatient().setGravity(EventsUtils.setGravity());
+		//to prevent modification of the data from Simulation file
+		if(getPatient().getGravity() == null)
+			getPatient().setGravity(EventsUtils.setGravity());
 		new Thread(new EvBedroomResearch(getData(), getPatient())).start();
 	}
 	
@@ -69,26 +54,6 @@ public class EvEndPatientArrival extends Event implements Runnable {
 	@Override
 	public void run() {
 		endEvent();
-		/*try {
-			patient.setState(State.RECEPTION, data.getTime());
-			
-			Thread.sleep(data.getTimeReception() / data.getReduceTime());
-
-			patient.setGravity(EventsUtils.setGravity());
-
-			patient.setState(State.AVAILABLE);
-			new Thread(new EvBedroomResearch(data, patient)).start();
-
-			Patient nextPatient = getNextPatient();
-			
-			if (nextPatient != null) {
-				EvEndPatientArrival e = new EvEndPatientArrival(data, nextPatient, receptionistAvailable);
-				e.run();
-			}
-
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}*/
 
 	}
 

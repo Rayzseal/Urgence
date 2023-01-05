@@ -77,18 +77,48 @@ public class Data {
 	public Data(int nbPatient) {
 		nbOfPatients = nbPatient;
 		generateData();
+		generatePatients(null);
+	}
+	
+	/**
+	 * constructor of the class, generate data, and a list of patients from the file SimulationFile
+	 * @param nbPatient
+	 */
+	public Data(List<Patient> patients) {
+		nbOfPatients = patients.size();
+		generateData();
+		generatePatients(patients);
 	}
 	/**
-	 * generate every data : ressources, patients, waiting List
+	 * generate every data : ressources, data time, waiting List
 	 */
 	private void generateData() {
 		this.reduceTime = 300;
 		DataFile dataFile = new DataFile();
 		generateLists(dataFile);
 		generateTime(dataFile);
-		//generatePatientsNormal();
-		generatePatients(lambda);
+		
 		generateWaitingList();
+	}
+	/**
+	 * if patients is null, patients are generate randomly else the list is the list given
+	 */
+	public void generatePatients(List<Patient> listPatients) {
+		this.patients = new ArrayList<>();
+		this.patientsActive = new ArrayList<>();
+		this.patientsOver = new ArrayList<>();
+		this.time = 0;
+		if(patients == null) {
+			
+			//generatePatientsNormal();
+			generatePatientsPoisson(lambda);
+		}else {
+			for(Patient p : listPatients) {
+				patients.add(p);
+			}
+			patients.sort(new SortPatientArrival());
+		}
+		
 	}
 	/**
 	 * generate lists of ressources needed for activities
@@ -133,11 +163,6 @@ public class Data {
 	 * TODO
 	 */
 	public void generatePatientsNormal() {
-		this.time = 0;
-
-		this.patients = new ArrayList<>();
-		this.patientsActive = new ArrayList<>();
-		this.patientsOver = new ArrayList<>();
 		
 		int nbSecondsPerDay = 86400;
 
@@ -220,13 +245,8 @@ public class Data {
 	 * generate patients for a number given
 	 * @param lambda
 	 */
-	private void generatePatients(double lambda) {
+	private void generatePatientsPoisson(double lambda) {
 
-		this.patients = new ArrayList<>();
-		this.patientsActive = new ArrayList<>();
-		this.patientsOver = new ArrayList<>();
-		this.time = 0;
-		
 		int nbSecondsPerDay = 86400;
 		
 		ArrayList<Integer> values = new ArrayList<>();
@@ -310,7 +330,6 @@ public class Data {
 
 	public void setNbOfPatients(int nbOfPatients) {
 		this.nbOfPatients = nbOfPatients;
-		generatePatients(lambda);
 	}
 
 	public int getHourPeakArrivals() {

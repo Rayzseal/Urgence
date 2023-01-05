@@ -1,13 +1,15 @@
 package model;
 
+import java.io.Serializable;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
 import utils.Utils;
 
-public class Patient {
+public class Patient implements Serializable{
 
+	private static final long serialVersionUID = 1L;
 	private String name;
 	private String surname;
 	// private int age;
@@ -55,11 +57,17 @@ public class Patient {
 			typeArrival = true;
 		else
 			typeArrival = false; // TODO gravité
-
+		gravity = null;
 		state = State.AVAILABLE;
 		bedroom = null;
 
 		GlobalWaitInSeconds = 0;
+	}
+	
+	public static Patient resetPatient(Patient p){
+		Patient patient = new Patient(p.name,p.surname,p.arrivalDate);
+		patient.gravity = p.gravity;
+		return patient;
 	}
 
 	public void addWaitingTime(int time) {
