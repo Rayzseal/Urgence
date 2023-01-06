@@ -14,16 +14,13 @@ public class MainApp {
 
 		s.run();
 		for (Patient p : s.getData().getPatientsOver()) {
-			if (p.getListWaitTime().size() >= 0) {
+			if (p.getListWaitTime().size() >= 1) {
 				System.out.println(p);
 
 			}
 
 		}
 		HUDMain hud = new HUDMain(s.getData());
-		Statistics.getAverageSpendTimeInEachState(s.getData());
-
-		// Statistics.statistics(s.getData());
 
 	}
 
