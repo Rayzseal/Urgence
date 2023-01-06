@@ -39,12 +39,12 @@ public class HUDMain {
 	public void setMenu() {
 		JMenuBar menubar = new JMenuBar();
 		statistics.put(setMenuItem("Information", "Autre"), new HUDStatistiques(data));
-		JMenu menuGravity = new JMenu("Temps par gravité");
+		JMenu menuGravity = new JMenu("Tri par gravité");
 		setPreferedSize(menuGravity);
-		JMenu menuRessource = new JMenu("Temps par ressource");
+		JMenu menuRessource = new JMenu("Tri par ressource");
 		setPreferedSize(menuRessource);
 		String name = "Pourcentage de patient par gravité";
-	    statistics.put(setMenuItem(name, "Gravity"),setHUDStatistics(name, "Gravité d'un patient", "en %", Statistics.getNumberOfPatientByPath(data)));
+	    statistics.put(setMenuItem(name, "Gravity"),setHUDStatistics(name, "Gravité d'un patient", "en %", Statistics.getPercentagePatientByGravity(data)));
 	    
 	    name = "Temps moyen d'attente par gravité";
 	    statistics.put(setMenuItem(name, "Gravity"),setHUDStatistics(name, "Gravité d'un patient", "temps en minute", Statistics.getAverageWaitingTimeByGravity(data)));
@@ -53,7 +53,7 @@ public class HUDMain {
 	    statistics.put(setMenuItem(name, "Ressource"),setHUDStatistics(name, "Ressource", "temps en minute", Statistics.getAverageWaitingTimeByGravity(data)));
 	    
 	    name = "Taux d'utilisation des ressources";//TODO replace method
-	    statistics.put(setMenuItem(name, "Ressource"),setHUDStatistics(name, "Ressource", "en %", Statistics.getAverageWaitingTimeByGravity(data)));
+	    statistics.put(setMenuItem(name, "Ressource"),setHUDStatistics(name, "Ressource", "en %", Statistics.getPercentageUtilizationStates(data)));
 	    
 	    for (Entry<JMenuItem, HUDStatistiques> i : statistics.entrySet()) {
 	    	if(i.getKey().getName().equalsIgnoreCase("Gravity")) {
@@ -98,7 +98,7 @@ public class HUDMain {
 	 * @param map Map<?,Intger>
 	 * @return stats new HUDStatistics
 	 */
-	public HUDStatistiques setHUDStatistics(String nameChart, String nameChartx, String nameCharty, Map<?, Integer> map) {
+	public HUDStatistiques setHUDStatistics(String nameChart, String nameChartx, String nameCharty, Map<?, ?> map) {
 		HUDStatistiques stats = new HUDStatistiques(nameChart, nameChartx, nameCharty, map);
 		return stats;
 

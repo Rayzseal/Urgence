@@ -44,7 +44,7 @@ public class HUDStatistiques {
 	 * @param nameCharty the name of the axis y
 	 * @param map Map<?,Integer> data to put in the diagram
 	 */
-	public HUDStatistiques(String nameChart, String nameChartx, String nameCharty, Map<?, Integer> map) {
+	public HUDStatistiques(String nameChart, String nameChartx, String nameCharty, Map<?, ?> map) {
 		panel = new JPanel();
 		getChartPanel(setName(nameChart, nameChartx, nameCharty, chartMatiere(map)));
 	}
@@ -54,20 +54,10 @@ public class HUDStatistiques {
 	 */
 	private void setResumeStatistics(Data data) {
 		//create a panel for the title and globalWaitingTime
-		JPanel panelTitle = new JPanel();
 		JLabel title = new JLabel("Résumé des ressources disponibles");
 		title.setFont(new Font("italic", Font.ITALIC, 21));
 		title.setHorizontalAlignment(SwingConstants.CENTER);
-		
-		JLabel waitTime = new JLabel("Temps d'attente moyen : "+Utils.timeIntToString(Statistics.getAverageWaitingTime(data)));
-		waitTime.setFont(new Font("italic", Font.ITALIC, 17));
-		waitTime.setHorizontalAlignment(SwingConstants.CENTER);
-		
-		GridLayout gridTitle = new GridLayout(2, 1, 7, 7);
-		panelTitle.setLayout(gridTitle);
-		panelTitle.add(title);
-		panelTitle.add(waitTime);
-		panel.add(panelTitle, BorderLayout.BEFORE_FIRST_LINE);
+		panel.add(title, BorderLayout.BEFORE_FIRST_LINE);
 		
 		//create a panels for the data
 		JPanel panelLabels = new JPanel();
@@ -98,17 +88,47 @@ public class HUDStatistiques {
 			l.setHorizontalAlignment(SwingConstants.CENTER);
 			panelLabels.add(l);
 		}
-		panel.add(panelLabels,  BorderLayout.AFTER_LAST_LINE);
+		panel.add(panelLabels,  BorderLayout.CENTER);
+		
+		
+		JLabel titleStats = new JLabel("Résumé des temps globaux");
+		titleStats.setFont(new Font("italic", Font.ITALIC, 21));
+		titleStats.setHorizontalAlignment(SwingConstants.CENTER);
+		
+		panel.add(titleStats);
+		
+		JPanel panelStats = new JPanel();
+		JLabel waitTime = new JLabel("Temps d'attente moyen : "+Utils.timeIntToString(Statistics.getAverageWaitingTime(data)));
+		waitTime.setFont(new Font("italic", Font.ITALIC, 17));
+		waitTime.setHorizontalAlignment(SwingConstants.CENTER);
+		//TODO
+		JLabel spendTime = new JLabel("Temps passé aux urgences moyen : "+Utils.timeIntToString(Statistics.getAverageWaitingTime(data)));
+		spendTime.setFont(new Font("italic", Font.ITALIC, 17));
+		spendTime.setHorizontalAlignment(SwingConstants.CENTER);
+		
+		GridLayout gridStats = new GridLayout(3, 1, 7, 7);
+		panelStats.setLayout(gridStats);
+		panelStats.add(titleStats);
+		panelStats.add(waitTime);
+		panelStats.add(spendTime);
+		panel.add(panelStats, BorderLayout.AFTER_LAST_LINE);
 	}
+	
 	/**
 	 * return an object DefaultCategoryDataset of data to use in a JFreeChart
-	 * @param map Map<?,Integer>
+	 * @param map Map<?,?>
 	 * @return dataset
 	 */
-	private DefaultCategoryDataset chartMatiere(Map<?, Integer> map) {
+	private DefaultCategoryDataset chartMatiere(Map<?, ?> map) {
 		final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-		for (Entry<?, Integer> m : map.entrySet()) {
-			dataset.addValue(m.getValue(), m.getKey().toString(), " ");
+		for (Entry<?, ?> m : map.entrySet()) {
+			
+			if(m.getValue().getClass() == Integer.class) {
+				int x = ((Integer) m.getValue()).intValue();
+				dataset.addValue(x, m.getKey().toString(), " ");
+			}
+			else 
+				dataset.addValue((Double)m.getValue(), m.getKey().toString(), " ");
 		}
 		return dataset;
 	}
