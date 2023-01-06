@@ -118,7 +118,7 @@ public class HUDMain {
 		});
 	}
 	/**
-	 * set the JFrame and the first panel to be display
+	 * set the JFrame, Menu and the first panel to be display
 	 */
 	public void setFrame() {
 		setMenu();
