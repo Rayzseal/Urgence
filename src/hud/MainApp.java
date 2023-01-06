@@ -10,9 +10,6 @@ public class MainApp {
 
 		Scheduler s = new Scheduler("SimulationExemple2.csv");
 		//Scheduler s = new Scheduler(100);
-		// testThread();
-		// testC();
-
 		//Scheduler s = new Scheduler(10);
 
 		s.run();
@@ -23,8 +20,8 @@ public class MainApp {
 			}
 
 		}
-		Statistics stat = new Statistics();
-		stat.getAverageSpendTimeInEachState(s.getData());
+		HUDMain hud = new HUDMain(s.getData());
+		Statistics.getAverageSpendTimeInEachState(s.getData());
 
 		// Statistics.statistics(s.getData());
 

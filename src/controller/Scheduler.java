@@ -40,7 +40,7 @@ public class Scheduler {
 	public void scheduler() {
 		// 1000 == 1 seconde / reduceTime
 		// with reduceTime = an accelerator
-		data.setReduceTime(1001);
+		data.setReduceTime(1000);
 
 		// Utils.showList(data.getPatients());
 		System.out.println("------------------");
@@ -52,7 +52,7 @@ public class Scheduler {
 		while (data.getPatients().size() > 0 || data.getPatientsActive().size() != 0) {
 			try {
 				// Thread.sleep(1000 / data.getReduceTime());
-				Thread.sleep(1000 / data.getReduceTime());
+				Thread.sleep(1 / data.getReduceTime());
 				data.setTime(data.getTime() + 1);
 
 				// System.out.println("Time : "+ Utils.globalWaitingTime(data.getTime()));

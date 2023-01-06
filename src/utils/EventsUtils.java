@@ -13,8 +13,8 @@ import events.EvPrescription;
 public class EventsUtils {
 	/**
 	 * The method direct a Patient p to his right path.
-	 * @param data
-	 * @param p
+	 * @param data Data
+	 * @param p Patient
 	 */
 	public static void pathChoice(Data data, Patient p) {
 		switch (p.getGravity()) {
@@ -41,7 +41,7 @@ public class EventsUtils {
 	}
 	/**
 	 * The method set the gravity of a patient randomly 
-	 * @return gravity
+	 * @return gravity Gravity generate
 	 */
 	public static Gravity setGravity() {
 		
@@ -62,9 +62,9 @@ public class EventsUtils {
 	 * The methods return true if a patients C is available to continue in an activity 
 	 * then he is removed from the List Waiting and WaitingList stateWaitingList
 	 * and false if the patient is not in the List waiting
-	 * @param data
-	 * @param p
-	 * @param stateWaitList
+	 * @param data Data
+	 * @param p Patient
+	 * @param stateWaitList State of list to remove patient from
 	 * @return bool
 	 */
 	public static Boolean patientAvailable(Data data, Patient p, State stateWaitList) {
