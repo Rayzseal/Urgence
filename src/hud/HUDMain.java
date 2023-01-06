@@ -25,14 +25,15 @@ public class HUDMain {
 		frame = new JFrame();
 		panel = new JPanel();
 		statistics = new HashMap<JMenuItem, HUDStatistiques>();
-		setPanel();
+		setMenu();
 		setFrame();
 	}
-
-	public void setPanel() {
-	    JMenuBar menubar = new JMenuBar();
+	
+	public void setMenu() {
+		JMenuBar menubar = new JMenuBar();
+		statistics.put(setMenuItem("Information"), new HUDStatistiques(data));
 	    String name = "Temps moyen d'attente par gravité";
-	    statistics.put(setMenuItem(name),setNameChart(name, "Gravité d'un patient", "temps en seconde", Statistics.getAverageWaitingTimeByGravity(data))) ;
+	    statistics.put(setMenuItem(name),setHUDStatistics(name, "Gravité d'un patient", "temps en seconde", Statistics.getAverageWaitingTimeByGravity(data))) ;
 	    
 	    for (Entry<JMenuItem, HUDStatistiques> i : statistics.entrySet()) {
 	    	menubar.add(i.getKey());
@@ -46,7 +47,7 @@ public class HUDMain {
 		return item;
 	}
 
-	public HUDStatistiques setNameChart(String nameChart, String nameChartx, String nameCharty, Map<?, Integer> map) {
+	public HUDStatistiques setHUDStatistics(String nameChart, String nameChartx, String nameCharty, Map<?, Integer> map) {
 		HUDStatistiques stats = new HUDStatistiques(nameChart, nameChartx, nameCharty, map);
 		return stats;
 
@@ -64,10 +65,12 @@ public class HUDMain {
 	}
 
 	public void setFrame() {
+		panel = new HUDStatistiques(data).getPanel();
 		frame.setContentPane(panel);
-		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		frame.pack();
-		frame.setVisible(true);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setSize(800, 500);
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
 	}
 
 }
