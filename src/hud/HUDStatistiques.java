@@ -127,7 +127,7 @@ public class HUDStatistiques {
 				int x = ((Integer) m.getValue()).intValue();
 				dataset.addValue(x, m.getKey().toString(), " ");
 			}
-			else 
+			else if(m.getValue().getClass() == Double.class)
 				dataset.addValue((Double)m.getValue(), m.getKey().toString(), " ");
 		}
 		return dataset;
