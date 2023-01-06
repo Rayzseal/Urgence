@@ -61,7 +61,9 @@ public class Statistics {
 			time.put(p.getGravity(), t);
 		}
 		for(Gravity g : Gravity.values()) {
-			int t = time.get(g).intValue() /nbPatient.get(g);
+			int t = 0;
+			if (nbPatient.get(g) > 0)
+				 t = time.get(g).intValue() /nbPatient.get(g);
 			time.put(g, t);
 		}
 		return time;
@@ -71,7 +73,7 @@ public class Statistics {
 	/**
 	 * Get the number of patients that patients spend in each states. 
 	 * @param data Data from which are extracted statistics. 
-	 * @return A map with a key = the state & a value = the average time time that a patient spent in a state. 
+	 * @return A map with a key = the state & a value = the average time time that a patient spent in a state (in minutes). 
 	 */
 	@SuppressWarnings("rawtypes")
 	public static Map<State, Integer> getAverageSpendTimeInEachState(Data data){
@@ -104,14 +106,14 @@ public class Statistics {
 			for (int i = 0 ; i < timeValuesForPatient.size()-1; i++) {
 				int patientTime = 0;
 				State patientState = null;
-				/* Substraction to know how much time a patient stayed in each state
-				   Next state begin time - atual state begin time 					*/
+				/* Subtraction to know how much time a patient stayed in each state
+				   Next state begin time - actual state begin time 					*/
 				patientTime = timeValuesForPatient.get(i+1) - timeValuesForPatient.get(i);
 				patientState = statesForPatient.get(i+1);
 				
 				int getTime = average.get(patientState);
 				
-				//Add values to hashmap
+				//Add values to map
 				average.put(patientState, patientTime + getTime);
 				int nbPatients = nbPatientsByState.get(patientState) ;
 				nbPatientsByState.put(patientState, nbPatients + 1);
@@ -128,13 +130,13 @@ public class Statistics {
 			if (nbPatientsByState.get(mapentry.getKey()) > 0)
 				time = (int)mapentry.getValue() / nbPatientsByState.get(mapentry.getKey());
 			
-			average.put((State)mapentry.getKey(), time);
+			// We divide by 60 so we have a time in minutes (it was originally in seconds)
+			average.put((State)mapentry.getKey(), time / 60);
 		}
 		
 		return average;
 	}
 	
-	//TODO TO TEST
 	/**
 	 * Get the percentage of utilization for each states. 
 	 * @param data Data from which are extracted statistics. 
@@ -214,7 +216,43 @@ public class Statistics {
 		return nbPatient;
 	}
 	
-	//TODO temps passé journée patient dans urgence
+	/**
+	 * Get the total time that a patient spent in the hospital.
+	 * @param data Data from which are extracted statistics. 
+	 * @return A map with a key = the patient & a value = total time the patient spent in the hospital. 
+	 */
+	public static Map<Patient, Integer> getTimeSpentInEmergency(Data data) {
+		Map<Patient, Integer> timeInEmergency = new HashMap<Patient, Integer>();
+		for(Patient p : data.getPatientsOver()) {
+			int time = p.getListState().get(State.OUT) - p.getArrivalDate();
+			timeInEmergency.put(p,time);
+		}
+		return timeInEmergency;
+	}
+	
+	/**
+	 * Get the percentage of patients by gravity.
+	 * @param data Data from which are extracted statistics. 
+	 * @return A map with a key = the gravity & a value = the percentage of patients by gravity. 
+	 */
+	public static Map<Gravity, Double> getPercentagePatientByGravity(Data data) {
+		Map<Gravity, Double> percentage = new TreeMap<Gravity, Double>();
+		Map<Gravity, Integer> nbPatient = new TreeMap<Gravity, Integer>();
+
+		for(Gravity g : Gravity.values()) {
+			nbPatient.put(g, 0);
+		}
+		
+		for(Patient p : data.getPatientsOver()) {
+			nbPatient.put(p.getGravity(), nbPatient.get(p.getGravity()).intValue()+1);
+		}
+
+		for(Gravity g : Gravity.values()) {
+			double valuePercentage = ((double)nbPatient.get(g).intValue() / data.getNbOfPatients()) * 100;
+			percentage.put(g, valuePercentage);
+		}
+		return percentage;
+	}
 
 }
 

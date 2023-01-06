@@ -99,6 +99,7 @@ public class Data {
 		generateData();
 		generatePatients(patients);
 	}
+	
 	/**
 	 * Generate every data : ressources, patients, waiting lists.
 	 */
@@ -319,12 +320,9 @@ public class Data {
 				newValue = (int) (Math.random() * (upper - lower)) + lower;
 				patients.get(i+1).setArrivalDate(newValue);
 			}	
-			//TODO  
 			upper = getNextValue(patients.get(i).getArrivalDate(),i);	
 			lower = patients.get(i).getArrivalDate();
-			
 		}
-		//TODO to test 
 	}
 	
 	/**

@@ -40,14 +40,24 @@ public class DataFile {
 	 * Constructor read file.
 	 */
 	public DataFile() {
-		readDataFile();
-		readTimeFile();
+		try {
+			readDataFile();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		try {
+			readTimeFile();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
 	 * The method readDataFile reads a csv file.
+	 * @throws Exception if one time read is <= 0, we throw an exception.
 	 */
-	public void readDataFile() {
+	@SuppressWarnings("resource")
+	public void readDataFile() throws Exception {
 		try {
 			File fileDir = new File("src/ressources/data.csv");
 			BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(fileDir), "UTF8"));
@@ -58,14 +68,16 @@ public class DataFile {
 			String ligne = in.readLine();
 			String[] data = ligne.split(";");
 
-			//TODO add should be > 0
 			this.nbBedrooms = Integer.parseInt(data[0]);
 			this.nbScanner = Integer.parseInt(data[1]);
 			this.nbBloc = Integer.parseInt(data[2]);
 			this.nbReceptionist = Integer.parseInt(data[3]);
 			this.nbDoctor = Integer.parseInt(data[4]);
 			this.nbNurse = Integer.parseInt(data[5]);
-
+			
+			if (nbBedrooms <= 0 || nbScanner <= 0 || nbBloc <= 0 || nbReceptionist <= 0 || nbDoctor <= 0 || nbNurse <= 0)
+				throw new Exception("We need at least 1 of each resources");	
+			
 			in.close();
 
 		} catch (IOException e) {
@@ -75,8 +87,9 @@ public class DataFile {
 
 	/**
 	 * The method readTimeFile reads a csv file.
+	 * @throws Exception if one time read is <= 0, we throw an exception.
 	 */
-	public void readTimeFile() {
+	public void readTimeFile() throws Exception {
 		try {
 			File fileDir = new File("src/ressources/time.csv");
 			BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(fileDir), "UTF8"));
@@ -93,6 +106,9 @@ public class DataFile {
 			this.timeAnalysis = Integer.parseInt(data[2]);
 			this.timeBloc = Integer.parseInt(data[3]);
 			this.timePrescription = Integer.parseInt(data[4]);
+			
+			if (timeReception <= 0 || timeScanner <= 0 || timeAnalysis <= 0 || timeBloc <= 0 || timePrescription <= 0)
+				throw new Exception("All times should be > 0");	
 
 			in.close();
 
