@@ -3,6 +3,7 @@ package hud;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -24,7 +25,7 @@ public class HUDMain {
 		this.data = data;
 		frame = new JFrame();
 		panel = new JPanel();
-		statistics = new HashMap<JMenuItem, HUDStatistiques>();
+		statistics = new LinkedHashMap<JMenuItem, HUDStatistiques>();
 		setMenu();
 		setFrame();
 	}

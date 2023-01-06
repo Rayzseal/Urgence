@@ -1,9 +1,9 @@
 package model;
 
 import java.io.Serializable;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.TreeMap;
 
 import utils.Utils;
 
@@ -61,8 +61,8 @@ public class Patient implements Serializable{
 	 * Function to initialize patient
 	 */
 	private void patient() {
-		listState = new TreeMap<>();
-		listWaitTime = new TreeMap<>();
+		listState = new LinkedHashMap<>();
+		listWaitTime = new LinkedHashMap<>();
 		int g = (int) (Math.random() * 100);
 		int critic = 2;
 
