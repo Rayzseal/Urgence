@@ -24,8 +24,7 @@ public class HUDMain {
 	private JPanel panel;
 	private Map<JMenuItem, HUDStatistiques> statistics;
 	/**
-	 * constructor of HUDMain, create a JFrame, JPanel and call the method 
-	 * to set Menu and the panel to be first display
+	 * constructor of HUDMain, create a JFrame, JPanel
 	 * @param data
 	 */
 	public HUDMain(Data data) {
@@ -33,8 +32,6 @@ public class HUDMain {
 		frame = new JFrame();
 		panel = new JPanel();
 		statistics = new LinkedHashMap<JMenuItem, HUDStatistiques>();
-		setMenu();
-		setFrame();
 	}
 	/**
 	 * set the menu bar with every statistics available
@@ -124,6 +121,7 @@ public class HUDMain {
 	 * set the JFrame and the first panel to be display
 	 */
 	public void setFrame() {
+		setMenu();
 		panel = new HUDStatistiques(data).getPanel();
 		frame.setContentPane(panel);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

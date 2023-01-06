@@ -21,6 +21,7 @@ public class MainApp {
 
 		}
 		HUDMain hud = new HUDMain(s.getData());
+		hud.setFrame();
 
 	}
 
