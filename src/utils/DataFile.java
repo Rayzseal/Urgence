@@ -15,10 +15,9 @@ import java.util.List;
 import model.Patient;
 
 /**
+ * 
  * Class to read a file that contains all of the static information of the
  * application.
- * 
- * @author chloe
  *
  */
 public class DataFile {
@@ -59,6 +58,7 @@ public class DataFile {
 			String ligne = in.readLine();
 			String[] data = ligne.split(";");
 
+			//TODO add should be > 0
 			this.nbBedrooms = Integer.parseInt(data[0]);
 			this.nbScanner = Integer.parseInt(data[1]);
 			this.nbBloc = Integer.parseInt(data[2]);
@@ -87,6 +87,7 @@ public class DataFile {
 			String ligne = in.readLine();
 			String[] data = ligne.split(";");
 
+			//TODO add should be > 0
 			this.timeReception = Integer.parseInt(data[0]);
 			this.timeScanner = Integer.parseInt(data[1]);
 			this.timeAnalysis = Integer.parseInt(data[2]);

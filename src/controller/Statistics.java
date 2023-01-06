@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import model.Gravity;
 import model.Patient;
@@ -66,6 +67,7 @@ public class Statistics {
 		return time;
 	}
 	
+	//TODO check if equal to time for a state (if we subtract waiting time for each state)
 	/**
 	 * Get the number of patients that patients spend in each states. 
 	 * @param data Data from which are extracted statistics. 
@@ -73,8 +75,8 @@ public class Statistics {
 	 */
 	@SuppressWarnings("rawtypes")
 	public static Map<State, Integer> getAverageSpendTimeInEachState(Data data){
-		Map<State, Integer> average = new HashMap<State, Integer>();
-		Map<State, Integer> nbPatientsByState = new HashMap<State, Integer>();
+		Map<State, Integer> average = new TreeMap<State, Integer>();
+		Map<State, Integer> nbPatientsByState = new TreeMap<State, Integer>();
 		
 		//Initialization
 		for (State s : State.values()) {
@@ -132,13 +134,77 @@ public class Statistics {
 		return average;
 	}
 	
+	//TODO TO TEST
+	/**
+	 * Get the percentage of utilization for each states. 
+	 * @param data Data from which are extracted statistics. 
+	 * @return A map with a key = the state & a value = percentage of utilization. 
+	 */
+	@SuppressWarnings("rawtypes")
+	public static Map<State, Double> getPercentageUtilizationStates(Data data) {
+		Map<State, Double> percentage = new TreeMap<State, Double>();
+		Map<State, Integer> nbPatientForEachState = new TreeMap<State, Integer>();
+		
+		//Initialization
+		for (State s : State.values()) {
+			percentage.put(s, 0.0);
+			nbPatientForEachState.put(s, 0);
+		}
+		
+		//For all patients
+		for(Patient p : data.getPatientsOver()) {
+			Iterator iterator = p.getListState().entrySet().iterator();
+			List<State> statesForPatient = new ArrayList<State>();
+			
+			//For each states that the patient went through
+			while (iterator.hasNext()) {
+				Map.Entry mapentry = (Map.Entry) iterator.next();
+				statesForPatient.add((State)mapentry.getKey());
+			}
+			
+			//All states of a patient values
+			for (int i = 0 ; i < statesForPatient.size()-1; i++) {
+				int nbPatientForState = nbPatientForEachState.get(statesForPatient.get(i));
+				//increment value
+				nbPatientForEachState.put(statesForPatient.get(i), nbPatientForState + 1);
+			}
+		}
+		
+		// Divide to get the percentage of utilization for each state
+		Iterator iterator = nbPatientForEachState.entrySet().iterator();
+		while (iterator.hasNext()) {
+			Map.Entry mapentry = (Map.Entry) iterator.next();
+			double time = 0.0;
+			
+			switch ((State)mapentry.getKey()) {
+				case RECEPTION : 
+					time = ((double)(nbPatientForEachState.get(mapentry.getKey()).intValue()/ data.getReceptionists().size()) * data.getTimeReception()) / Data.nbSecondsPerDay;
+				case SCANNER : 
+					time = ((double)(nbPatientForEachState.get(mapentry.getKey()).intValue() / data.getScanners().size()) * data.getTimeScanner()) / Data.nbSecondsPerDay;
+				case ANALYSIS : 
+					time = ((double)(nbPatientForEachState.get(mapentry.getKey()).intValue() / data.getNurses().size()) * data.getTimeAnalysis()) / Data.nbSecondsPerDay;
+				case BLOC : 
+					time = ((double)(nbPatientForEachState.get(mapentry.getKey()).intValue() / data.getBlocs().size()) * data.getTimeBloc()) / Data.nbSecondsPerDay;
+				case PRESCRIPTION : 
+					time =((double)(nbPatientForEachState.get(mapentry.getKey()).intValue() / data.getDoctors().size()) * data.getTimePrescription()) / Data.nbSecondsPerDay;
+				default:
+					break;
+			}
+			percentage.put((State)mapentry.getKey(), time * 100);
+		}
+		
+		Utils.showMap(percentage);
+		
+		return percentage;
+	}
+	
 	/**
 	 * Get the number of patients by path. 
 	 * @param data Data from which are extracted statistics. 
 	 * @return A map with a key = the path & a value = the number of patients. 
 	 */
 	public static Map<Gravity, Integer> getNumberOfPatientByPath(Data data){
-		HashMap<Gravity, Integer> nbPatient = new HashMap<Gravity, Integer>();
+		Map<Gravity, Integer> nbPatient = new TreeMap<Gravity, Integer>();
 		for(Gravity g : Gravity.values()) {
 			nbPatient.put(g, 0);
 		}
@@ -147,6 +213,8 @@ public class Statistics {
 		}
 		return nbPatient;
 	}
+	
+	//TODO temps passé journée patient dans urgence
 
 }
 

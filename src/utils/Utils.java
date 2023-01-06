@@ -1,6 +1,8 @@
 package utils;
 
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import model.Ressource;
 import model.State;
@@ -70,12 +72,26 @@ public class Utils {
 	}
 	
 	/**
-	 * Print the list of any object
+	 * Print the list of any object.
 	 * @param list List to display.
 	 */
 	public static void showList(List<?> list) {
 		for (int i = 0; i < list.size(); i++)
 			System.out.println(list.get(i).toString());
+	}
+	
+	/**
+	 * Print a map of any object.
+	 * @param list List to display.
+	 */
+	@SuppressWarnings("rawtypes")
+	public static void showMap(Map<?,?> list) {
+		Iterator iterator2 = list.entrySet().iterator();
+		while (iterator2.hasNext()) {
+			Map.Entry mapentry = (Map.Entry) iterator2.next();
+
+			System.out.println("Key : "+mapentry.getKey()+" Value : "+mapentry.getValue());
+		}
 	}
 	
 	

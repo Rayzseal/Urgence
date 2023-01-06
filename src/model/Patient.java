@@ -77,6 +77,11 @@ public class Patient implements Serializable{
 		GlobalWaitInSeconds = 0;
 	}
 	
+	/**
+	 * Reset patient.
+	 * @param p Patient.
+	 * @return a patient.
+	 */
 	public static Patient resetPatient(Patient p){
 		Patient patient = new Patient(p.name,p.surname,p.arrivalDate);
 		patient.gravity = p.gravity;

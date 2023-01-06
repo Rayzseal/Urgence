@@ -25,6 +25,8 @@ import model.WaitingList;
  */
 public class Data {
 	
+	public static int nbSecondsPerDay = 86400;
+	
 	private int nbOfPatients = 500;
 	
 	// --- Gaussian values --- //
@@ -84,8 +86,8 @@ public class Data {
 	 */
 	public Data(int nbPatient) {
 		nbOfPatients = nbPatient;
-		generateData();
 		generatePatients(null);
+		generateData();
 	}
 	
 	/**
@@ -101,11 +103,12 @@ public class Data {
 	 * Generate every data : ressources, patients, waiting lists.
 	 */
 	private void generateData() {
+		//patients.sort(new SortPatientArrival());
+
 		this.reduceTime = 300;
 		DataFile dataFile = new DataFile();
 		generateLists(dataFile);
 		generateTime(dataFile);
-		
 		generateWaitingList();
 	}
 	
@@ -122,7 +125,7 @@ public class Data {
 			generatePatientsPoisson(lambda);
 		}else {
 			for(Patient p : listPatients) {
-				patients.add(p);
+				patients.add(Patient.resetPatient(p));
 			}
 			patients.sort(new SortPatientArrival());
 		}
@@ -176,8 +179,6 @@ public class Data {
 	 */
 	public void generatePatientsNormal() {
 		
-		int nbSecondsPerDay = 86400;
-
 		for (int i = 0; i < nbOfPatients; i++) {
 			Random r = new Random();
 
@@ -284,6 +285,7 @@ public class Data {
 		}
 		patients.sort(new SortPatientArrival());
 		realValues();
+		patients.sort(new SortPatientArrival());
 	}
 	
 	/**
@@ -305,17 +307,24 @@ public class Data {
 	 * Used to generate random values using based on a Poisson's distribution. 
 	 * @return A list containing new value randomly generated (in an interval).
 	 */
-	private ArrayList<Integer> realValues() {
-		ArrayList<Integer> tmp = new ArrayList<>();
+	private void realValues() {
 		
 		int lower = 0;
 		int upper = patients.get(0).getArrivalDate();
-		for (int i = 0; i < patients.size(); i++) {
+		for (int i = 0; i < patients.size()-1; i++) {
 			int newValue = (int) (Math.random() * (upper - lower)) + lower;
+			patients.get(i).setArrivalDate(newValue);
+			// FOR LAST PATIENT
+			if (i == patients.size()-2) {
+				newValue = (int) (Math.random() * (upper - lower)) + lower;
+				patients.get(i+1).setArrivalDate(newValue);
+			}	
+			//TODO  
 			upper = getNextValue(patients.get(i).getArrivalDate(),i);	
-			lower = patients.get(i).getArrivalDate();;
+			lower = patients.get(i).getArrivalDate();
+			
 		}
-		return tmp;
+		//TODO to test 
 	}
 	
 	/**
