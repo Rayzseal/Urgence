@@ -92,10 +92,11 @@ public class Scheduler {
 			}
 
 		}
-		// DataFile.writeSimulationFile("PatientExemple.csv",data.getPatientsOver());
 		System.out.println("------------------");
 		System.out.println("END");
 		System.out.println("------------------");
+		// DataFile.writeSimulationFile("PatientExemple.csv",data.getPatientsOver());
+		//DataFile.writeSimulationFile("SimulationEnd.csv",data);
 	}
 
 	/**
