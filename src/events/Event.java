@@ -7,7 +7,7 @@ import model.Ressource;
 import model.State;
 import model.WaitingList;
 import utils.Data;
-import utils.Utils;
+import utils.EventsUtils;
 /**
  * Abstract method to every event
  */
@@ -48,7 +48,7 @@ public abstract class Event {
 	 */
 	public void startEvent() {
 		synchronized (ressources) {
-			objectAvailable = Utils.objectAvailable(ressources);
+			objectAvailable = EventsUtils.objectAvailable(ressources);
 			if (objectAvailable >= 0) {				
 				((Ressource) ressources.get(objectAvailable)).setState(State.OCCUPIED);
 				otherAction();

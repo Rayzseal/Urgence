@@ -4,9 +4,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import model.Ressource;
-import model.State;
-
 /**
  * 
  * Class used to generated patients (using a random name & surname).
@@ -92,20 +89,6 @@ public class Utils {
 
 			System.out.println("Key : "+mapentry.getKey()+" Value : "+mapentry.getValue());
 		}
-	}
-	
-	
-	/**
-	 * -1 if objects are not available or an index in the list of the first object available
-	 * @param list List in which we are looking for an available resource. 
-	 * @return The index of an available object, or -1 if no objects or available.
-	 */
-	public static int objectAvailable(List<?> list) {
-		for(int i = 0 ; i<list.size(); i++){
-			if(((Ressource) list.get(i)).getState()== State.AVAILABLE)
-				return i;	
-		}
-		return -1;
 	}
 
 }

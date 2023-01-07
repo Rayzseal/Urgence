@@ -6,7 +6,6 @@ import model.Ressource;
 import model.State;
 import utils.Data;
 import utils.EventsUtils;
-import utils.Utils;
 /**
  * Event of start in Analysis, it inherits the class Event
  */
@@ -47,7 +46,7 @@ public class EvAnalysis extends Event implements Runnable {
 	public void startEvent() {
 		setObjectAvailable(-1);
 		synchronized (getRessources()) {
-			setObjectAvailable(Utils.objectAvailable(getRessources()));
+			setObjectAvailable(EventsUtils.objectAvailable(getRessources()));
 			if (getObjectAvailable() >= 0) {
 				if (getPatient().getGravity() == Gravity.C) {
 					//if patients has gravity C, the patients has to be available

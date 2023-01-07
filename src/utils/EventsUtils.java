@@ -1,9 +1,12 @@
 package utils;
 
+import java.util.List;
+
 import events.EvBloc;
 import events.EvScanner;
 import model.Gravity;
 import model.Patient;
+import model.Ressource;
 import model.State;
 import events.EvPathC;
 import events.EvPrescription;
@@ -79,6 +82,18 @@ public class EventsUtils {
 		}
 		
 		return bool;
+	}
+	/**
+	 * -1 if objects are not available or an index in the list of the first object available
+	 * @param list List in which we are looking for an available resource. 
+	 * @return The index of an available object, or -1 if no object is available.
+	 */
+	public static int objectAvailable(List<?> list) {
+		for(int i = 0 ; i<list.size(); i++){
+			if(((Ressource) list.get(i)).getState()== State.AVAILABLE)
+				return i;	
+		}
+		return -1;
 	}
 	
 

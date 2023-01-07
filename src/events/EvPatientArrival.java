@@ -4,7 +4,7 @@ import model.Patient;
 import model.Ressource;
 import model.State;
 import utils.Data;
-import utils.Utils;
+import utils.EventsUtils;
 /**
  * Event of start when the patient arrives, it inherits the class Event
  */
@@ -54,7 +54,7 @@ public class EvPatientArrival extends Event implements Runnable {
 	public void startEvent() {
 		setObjectAvailable(-1);
 		synchronized (getRessources()) {
-			setObjectAvailable(Utils.objectAvailable(getRessources()));
+			setObjectAvailable(EventsUtils.objectAvailable(getRessources()));
 			if(getObjectAvailable() >= 0) { 
 				
 				((Ressource) getRessources().get(getObjectAvailable())).setState(State.OCCUPIED);
