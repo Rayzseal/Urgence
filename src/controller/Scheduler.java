@@ -13,45 +13,51 @@ import utils.DataFile;
  */
 public class Scheduler {
 	private Data data;
+
 	/**
-	 * constructor of scheduler and create an object Data with the default number of patients
+	 * constructor of scheduler and create an object Data with the default number of
+	 * patients
 	 */
 	public Scheduler() {
 		data = new Data();
 	}
+
 	/**
-	 * constructor of scheduler and create an object Data with patients in the file nameFile
+	 * constructor of scheduler and create an object Data with patients in the file
+	 * nameFile
+	 * 
 	 * @param nameFile String
 	 */
 	public Scheduler(String nameFile) {
 		data = new Data(DataFile.readPatientFile(nameFile));
 	}
+
 	/**
-	 * constructor of scheduler and create an object Data with the number of patients nbPatient
+	 * constructor of scheduler and create an object Data with the number of
+	 * patients nbPatient
+	 * 
 	 * @param nbPatient int
 	 */
 	public Scheduler(int nbPatient) {
 		data = new Data(nbPatient);
-		//DataFile.writeSimulationFile("SimulationExemple.csv",data);
-		
+		// DataFile.writeSimulationFile("SimulationExemple.csv",data);
+
 	}
+
 	/**
 	 * constructor of scheduler with the objects data
+	 * 
 	 * @param data Data
 	 */
 	public Scheduler(Data data) {
 		this.data = data;
-		
+
 	}
+
 	/**
 	 * handle time and arrival of everyPatients
 	 */
 	public void scheduler() {
-		// 1000 == 1 seconde / reduceTime
-		// with reduceTime = an accelerator
-		data.setReduceTime(200);
-
-		// Utils.showList(data.getPatients());
 		System.out.println("------------------");
 		System.out.println("BEGIN");
 		System.out.println("------------------");
@@ -60,58 +66,45 @@ public class Scheduler {
 		// every patients has been treated we stop.
 		while (data.getPatients().size() > 0 || data.getPatientsActive().size() != 0) {
 			try {
-				// Thread.sleep(1000 / data.getReduceTime());
 				Thread.sleep(1 / data.getReduceTime());
 				data.setTime(data.getTime() + 1);
-
-				// System.out.println("Time : "+ Utils.globalWaitingTime(data.getTime()));
-				/*if (data.getTime() % 5000 == 0)
-					System.out.println("Time : " + Utils.globalWaitingTime(data.getTime()));
-				*/
-				while (data.getPatients().size() > 0 && data.getPatients().get(0).getArrivalDate() == data.getTime()) {
-					// Start patient
-					// System.out.println("Arrivée patient : " + data.getPatients().get(0) +
-					// Utils.globalWaitingTime(data.getTime()));
-
-					// Add to "over" list & remove patients from waiting list
-					Patient patient;
-					synchronized (data.getPatients()) {
-						patient = data.getPatients().get(0);
-						patient.setState(State.ARRIVAL, data.getTime());
-						synchronized (data.getPatientsActive()) {
-							data.getPatientsActive().add(data.getPatients().get(0));
-						}
-						synchronized (data.getPatientsActive()) {
-							data.getPatients().remove(patient);
-						}
-					}
-					
-					if (patient.isTypeArrival()) {
-						new Thread(new EvPatientCriticArrival(data, patient)).start();						
-					}else
-						new Thread(new EvPatientArrival(data, patient)).start();
-				}
-
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			
+			while (data.getPatients().size() > 0 && data.getPatients().get(0).getArrivalDate() == data.getTime()) {
+				// Start patient
+
+				// Add to "over" list & remove patients from waiting list
+				Patient patient;
+				synchronized (data.getPatients()) {
+					patient = data.getPatients().get(0);
+					patient.setState(State.ARRIVAL, data.getTime());
+					synchronized (data.getPatientsActive()) {
+						data.getPatientsActive().add(data.getPatients().get(0));
+						data.getPatients().remove(patient);
+					}
+				}
+
+				if (patient.isTypeArrival()) {
+					new Thread(new EvPatientCriticArrival(data, patient)).start();
+				} else
+					new Thread(new EvPatientArrival(data, patient)).start();
+			}
 
 		}
-		while(data.getPatientsOver().size()<data.getNbOfPatients()) {
-			
-		}
-		//DataFile.writeSimulationFile("PatientExemple.csv",data.getPatientsOver());
+		// DataFile.writeSimulationFile("PatientExemple.csv",data.getPatientsOver());
 		System.out.println("------------------");
 		System.out.println("END");
 		System.out.println("------------------");
 	}
+
 	/**
 	 * runnable function
 	 */
 	public void run() {
 		scheduler();
 	}
+
 	/**
 	 * Setter and getter of the class
 	 */
