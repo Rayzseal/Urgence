@@ -32,6 +32,7 @@ public class Scheduler {
 	 */
 	public Scheduler(int nbPatient) {
 		data = new Data(nbPatient);
+		//DataFile.writeSimulationFile("SimulationExemple.csv",data);
 		
 	}
 	/**
@@ -48,7 +49,7 @@ public class Scheduler {
 	public void scheduler() {
 		// 1000 == 1 seconde / reduceTime
 		// with reduceTime = an accelerator
-		data.setReduceTime(1000);
+		data.setReduceTime(200);
 
 		// Utils.showList(data.getPatients());
 		System.out.println("------------------");
@@ -100,7 +101,7 @@ public class Scheduler {
 		while(data.getPatientsOver().size()<data.getNbOfPatients()) {
 			
 		}
-		//DataFile.writeSimulationFile("PatientExemple2.csv",data.getPatientsOver());
+		//DataFile.writeSimulationFile("PatientExemple.csv",data.getPatientsOver());
 		System.out.println("------------------");
 		System.out.println("END");
 		System.out.println("------------------");

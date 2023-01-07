@@ -46,9 +46,9 @@ public class EventsUtils {
 	public static Gravity setGravity() {
 		
 		int g = (int) (Math.random() * 100);
-		int statC = 45;
-		int statB = 30;
-		int statA = 5;
+		int statC = 60;
+		int statB = 40;
+		int statA = 1;
 
 		if (g < statA)
 			return Gravity.A;

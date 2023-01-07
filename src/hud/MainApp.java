@@ -9,8 +9,8 @@ public class MainApp {
 	public static void main(String[] args) {
 
 		Scheduler s = new Scheduler("PatientExemple.csv");
-		//Scheduler s = new Scheduler(DataFile.readDataFile("SimulationExemple2.csv"));
-		//Scheduler s = new Scheduler(100);
+		//Scheduler s = new Scheduler(DataFile.readDataFile("SimulationExemple.csv"));
+		//Scheduler s = new Scheduler(50);
 		//Scheduler s = new Scheduler(10);
 
 		s.run();
