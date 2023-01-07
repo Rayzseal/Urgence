@@ -48,6 +48,7 @@ public class HUDStatistiques {
 		panel = new JPanel();
 		getChartPanel(setName(nameChart, nameChartx, nameCharty, chartMatiere(map)));
 	}
+	
 	/**
 	 * create a panel with datas from de simulation like the number of ressources, ...
 	 * @param data Data
@@ -102,7 +103,7 @@ public class HUDStatistiques {
 		waitTime.setFont(new Font("italic", Font.ITALIC, 17));
 		waitTime.setHorizontalAlignment(SwingConstants.CENTER);
 		//TODO
-		JLabel spendTime = new JLabel("Temps passé aux urgences moyen : "+Utils.timeIntToString(Statistics.getAverageWaitingTime(data)));
+		JLabel spendTime = new JLabel("Temps passé aux urgences moyen : "+Utils.timeIntToString((int)Statistics.getAverageTimeSpentInEmergency(data)));
 		spendTime.setFont(new Font("italic", Font.ITALIC, 17));
 		spendTime.setHorizontalAlignment(SwingConstants.CENTER);
 		
@@ -115,9 +116,9 @@ public class HUDStatistiques {
 	}
 	
 	/**
-	 * return an object DefaultCategoryDataset of data to use in a JFreeChart
+	 * Return an object DefaultCategoryDataset of data to use in a JFreeChart
 	 * @param map Map<?,?>
-	 * @return dataset
+	 * @return dataset datas
 	 */
 	private DefaultCategoryDataset chartMatiere(Map<?, ?> map) {
 		final DefaultCategoryDataset dataset = new DefaultCategoryDataset();
@@ -129,11 +130,13 @@ public class HUDStatistiques {
 			}
 			else if(m.getValue().getClass() == Double.class)
 				dataset.addValue((Double)m.getValue(), m.getKey().toString(), " ");
+			dataset.addValue((Number) m.getValue(), m.getKey().toString(), " ");
 		}
 		return dataset;
 	}
+	
 	/**
-	 * it create a diagram with the names and data to use to create a ChartPanel
+	 * It creates a diagram with the names and data used to create a ChartPanel.
 	 * @param nameChart name of the diagram
 	 * @param nameChartx name of the axis x
 	 * @param nameCharty name of the axis y
@@ -146,7 +149,7 @@ public class HUDStatistiques {
 		return freeChart;
 	}
 	/**
-	 * add to the panel a new ChartPanel created with barChart
+	 * Add to the panel a new ChartPanel created with barChart
 	 * @param barChart JFreeChart
 	 */
 	private void getChartPanel(JFreeChart barChart) {

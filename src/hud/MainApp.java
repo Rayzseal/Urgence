@@ -1,7 +1,6 @@
 package hud;
 
 import controller.Scheduler;
-import controller.Statistics;
 import model.Patient;
 
 public class MainApp {

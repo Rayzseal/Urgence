@@ -49,10 +49,14 @@ public class HUDMain {
 	    name = "Temps moyen d'attente par gravité";
 	    statistics.put(setMenuItem(name, "Gravity"),setHUDStatistics(name, "Gravité d'un patient", "temps en minute", Statistics.getAverageWaitingTimeByGravity(data)));
 	    
+	    name = "Temps moyen passé aux urgences par gravité";
+	    statistics.put(setMenuItem(name, "Gravity"),setHUDStatistics(name, "Gravité d'un patient", "temps en minute", Statistics.getAverageTimeSpentInEmergencyByGravity(data)));
+	    
 	    name = "Temps moyen d'attente par ressource";//TODO replace method
-	    statistics.put(setMenuItem(name, "Ressource"),setHUDStatistics(name, "Ressource", "temps en minute", Statistics.getAverageWaitingTimeByGravity(data)));
+	    statistics.put(setMenuItem(name, "Ressource"),setHUDStatistics(name, "Ressource", "temps en minute", Statistics.getAverageSpendTimeInEachState(data)));
 	    
 	    name = "Taux d'utilisation des ressources";//TODO replace method
+
 	    statistics.put(setMenuItem(name, "Ressource"),setHUDStatistics(name, "Ressource", "en %", Statistics.getPercentageUtilizationStates(data)));
 	    
 	    for (Entry<JMenuItem, HUDStatistiques> i : statistics.entrySet()) {
@@ -103,6 +107,7 @@ public class HUDMain {
 		return stats;
 
 	}
+	
 	/**
 	 * set action of a JMenuItem with the HUDStatistics associated in the map statistics
 	 * @param item JMenuItem
