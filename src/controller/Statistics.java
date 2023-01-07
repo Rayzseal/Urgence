@@ -143,6 +143,49 @@ public class Statistics {
 		return average;
 	}
 	
+	public static Map<State, Double> getAverageWaitingTimeState(Data data) {
+		Map<State, Double> averageWaitTime = new TreeMap<State, Double>();
+		Map<State, Integer> nbPatientForEachState = new TreeMap<State, Integer>();
+		
+		//Initialization
+		for (State s : State.values()) {
+			averageWaitTime.put(s, 0.0);
+			nbPatientForEachState.put(s, 0);
+		}
+		
+		for(Patient p : data.getPatientsOver()) {
+			Iterator iterator = p.getListWaitTime().entrySet().iterator();
+			List<State> statesForPatient = new ArrayList<State>();
+			
+			//For each states that the patient went through
+			while (iterator.hasNext()) {
+				Map.Entry mapentry = (Map.Entry) iterator.next();
+				statesForPatient.add((State)mapentry.getKey());
+				double value = averageWaitTime.get((State)mapentry.getKey()) + (double)p.getListWaitTime().get((State)mapentry.getKey()).intValue();
+				averageWaitTime.put((State)mapentry.getKey(),value);
+			}
+			
+			//All states of a patient values
+			for (int i = 0 ; i < statesForPatient.size()-1; i++) {
+				int nbPatientForState = nbPatientForEachState.get(statesForPatient.get(i));
+				//increment value
+				nbPatientForEachState.put(statesForPatient.get(i), nbPatientForState + 1);
+			}
+		}
+	
+		Utils.showMap(nbPatientForEachState);
+		
+		Iterator iterator = averageWaitTime.entrySet().iterator();
+		//Get the average value
+		while (iterator.hasNext()) {
+			Map.Entry mapentry = (Map.Entry) iterator.next();
+			double value = averageWaitTime.get((State)mapentry.getKey());
+			value = value / nbPatientForEachState.get((State)mapentry.getKey());
+			//averageWaitTime.put((State)mapentry.getKey(), value/ 60);
+		}
+		return averageWaitTime;
+	}
+ 	
 	/**
 	 * Get the percentage of utilization for each states. 
 	 * @param data Data from which are extracted statistics. 
@@ -222,6 +265,8 @@ public class Statistics {
 			else
 				percentage.put((State)mapentry.getKey(), time * 100);
 		}
+		
+		Utils.showMap(nbPatientForEachState);
 		
 		//remove unwanted values
 		percentage.remove(State.ARRIVAL);
