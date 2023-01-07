@@ -12,6 +12,7 @@ import model.Gravity;
 import model.Patient;
 import model.State;
 import utils.Data;
+import utils.SortPatientArrival;
 import utils.Utils;
 
 /**
@@ -154,17 +155,20 @@ public class Statistics {
 		}
 		
 		for(Patient p : data.getPatientsOver()) {
-			Iterator iterator = p.getListWaitTime().entrySet().iterator();
+			Iterator iterator = p.getListState().entrySet().iterator();
+			Iterator iterator2 = p.getListWaitTime().entrySet().iterator();
 			List<State> statesForPatient = new ArrayList<State>();
 			
 			//For each states that the patient went through
 			while (iterator.hasNext()) {
 				Map.Entry mapentry = (Map.Entry) iterator.next();
 				statesForPatient.add((State)mapentry.getKey());
+			}
+			while (iterator2.hasNext()) {
+				Map.Entry mapentry = (Map.Entry) iterator2.next();
 				double value = averageWaitTime.get((State)mapentry.getKey()) + (double)p.getListWaitTime().get((State)mapentry.getKey()).intValue();
 				averageWaitTime.put((State)mapentry.getKey(),value);
 			}
-			
 			//All states of a patient values
 			for (int i = 0 ; i < statesForPatient.size()-1; i++) {
 				int nbPatientForState = nbPatientForEachState.get(statesForPatient.get(i));
@@ -172,10 +176,6 @@ public class Statistics {
 				nbPatientForEachState.put(statesForPatient.get(i), nbPatientForState + 1);
 			}
 		}
-		System.out.println("1 seul affichage");
-		Utils.showMap(nbPatientForEachState);
-		System.out.println("Fin 1 seul affichage");
-
 		
 		Iterator iterator = averageWaitTime.entrySet().iterator();
 		//Get the average value
@@ -183,8 +183,17 @@ public class Statistics {
 			Map.Entry mapentry = (Map.Entry) iterator.next();
 			double value = averageWaitTime.get((State)mapentry.getKey());
 			value = value / nbPatientForEachState.get((State)mapentry.getKey());
-			//averageWaitTime.put((State)mapentry.getKey(), value/ 60);
+			//We divide by 60 to get a time in minutes.
+			averageWaitTime.put((State)mapentry.getKey(), value/ 60);
 		}
+		
+		//remove unwanted values
+		averageWaitTime.remove(State.ARRIVAL);
+		averageWaitTime.remove(State.AVAILABLE);
+		averageWaitTime.remove(State.OCCUPIED);
+		averageWaitTime.remove(State.OUT);
+		averageWaitTime.remove(State.WAITING);
+		
 		return averageWaitTime;
 	}
  	
@@ -200,11 +209,20 @@ public class Statistics {
 		List<Integer> bedroomValue = new ArrayList<Integer>();
 		List<Integer> outValue = new ArrayList<Integer>();
 		double averageForOutBedroom = 0.0;
+		int maxTImeP = data.getPatientsOver().get(data.getPatientsOver().size()-1).getListState().get(State.OUT);
+		System.out.println(maxTImeP);
 		
 		//Initialization
 		for (State s : State.values()) {
 			percentage.put(s, 0.0);
 			nbPatientForEachState.put(s, 0);
+		}
+		
+		
+		for (Patient p : data.getPatientsOver()) {
+			if (p.getListWaitTime().size() >= 1) {
+				System.out.println(p);
+			}
 		}
 		
 		//For all patients
@@ -243,32 +261,32 @@ public class Statistics {
 		averageForOutBedroom = (double)(averageForOutBedroom / Data.nbSecondsPerDay) * 100;
 
 		
-		// Divide to get the percentage of utilization for each state
-		Iterator iterator = nbPatientForEachState.entrySet().iterator();
-		while (iterator.hasNext()) {
-			Map.Entry mapentry = (Map.Entry) iterator.next();
-			double time = 0.0;
-			switch ((State)mapentry.getKey()) {
-				case RECEPTION : 
-					time = ((double)(nbPatientForEachState.get(mapentry.getKey()).intValue()/ data.getReceptionists().size()) * data.getTimeReception()) / Data.nbSecondsPerDay;
-				case SCANNER : 
-					time = ((double)(nbPatientForEachState.get(mapentry.getKey()).intValue() / data.getScanners().size()) * data.getTimeScanner()) / Data.nbSecondsPerDay;
-				case ANALYSIS : 
-					time = ((double)(nbPatientForEachState.get(mapentry.getKey()).intValue() / data.getNurses().size()) * data.getTimeAnalysis()) / Data.nbSecondsPerDay;
-				case BLOC : 
-					time = ((double)(nbPatientForEachState.get(mapentry.getKey()).intValue() / data.getBlocs().size()) * data.getTimeBloc()) / Data.nbSecondsPerDay;
-				case PRESCRIPTION : 
-					time = ((double)(nbPatientForEachState.get(mapentry.getKey()).intValue() / data.getDoctors().size()) * data.getTimePrescription()) / Data.nbSecondsPerDay;
-				default:
-					break;
+		// Divide to get the percentage of utilization for each state	
+		for (State s : State.values()) {
+			if (s == State.RECEPTION ) {
+				double time = ((double)(nbPatientForEachState.get(s).intValue()/ data.getReceptionists().size()) * data.getTimeReception()) / maxTImeP;
+				percentage.put(s, time * 100);
 			}
-			if ((State)mapentry.getKey()==State.BEDROOM) 
-				percentage.put((State)mapentry.getKey(), averageForOutBedroom);
-			else
-				percentage.put((State)mapentry.getKey(), time * 100);
+			else if (s == State.SCANNER) {
+				double time = ((double)(nbPatientForEachState.get(s).intValue()/ data.getScanners().size()) * data.getTimeReception()) / maxTImeP;
+				percentage.put(s, time * 100);
+			}
+			else if (s == State.ANALYSIS) {
+				double time = ((double)(nbPatientForEachState.get(s).intValue()/ data.getNurses().size()) * data.getTimeReception()) / maxTImeP;
+				percentage.put(s, time * 100);
+			}
+			else if (s == State.BLOC) {
+				double time = ((double)(nbPatientForEachState.get(s).intValue()/ data.getBlocs().size()) * data.getTimeReception()) / maxTImeP;
+				percentage.put(s, time * 100);
+			}
+			else if (s == State.PRESCRIPTION) {
+				double time = ((double)(nbPatientForEachState.get(s).intValue()/ data.getDoctors().size()) * data.getTimeReception()) / maxTImeP;
+				percentage.put(s, time * 100);
+			}
+			else if (s == State.BEDROOM) {
+				percentage.put(s, averageForOutBedroom);
+			}
 		}
-		
-		Utils.showMap(nbPatientForEachState);
 		
 		//remove unwanted values
 		percentage.remove(State.ARRIVAL);
@@ -343,7 +361,7 @@ public class Statistics {
 		
 		for(Patient p : data.getPatientsOver()) {
 			nbPatientByGravity.put(p.getGravity(), nbPatientByGravity.get(p.getGravity()).intValue()+1);
-			double time = p.getListState().get(State.OUT) - p.getArrivalDate();
+			double time = averageTimeInEmergency.get(p.getGravity()) + p.getListState().get(State.OUT) - p.getListState().get(State.ARRIVAL);
 			averageTimeInEmergency.put(p.getGravity(), time);
 		}
 		
