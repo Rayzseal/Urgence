@@ -84,6 +84,7 @@ public class Patient implements Serializable{
 	 */
 	public static Patient resetPatient(Patient p){
 		Patient patient = new Patient(p.name,p.surname,p.arrivalDate);
+		patient.typeArrival = p.typeArrival;
 		patient.gravity = p.gravity;
 		return patient;
 	}

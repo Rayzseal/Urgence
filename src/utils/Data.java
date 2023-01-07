@@ -1,5 +1,6 @@
 package utils;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,8 +24,10 @@ import model.WaitingList;
  * Generates patients using a poisson's distribution. (gaussian distribution is also available)
  *
  */
-public class Data {
+public class Data implements Serializable{
 	
+	private static final long serialVersionUID = 3065201526377906093L;
+
 	public static int nbSecondsPerDay = 86400;
 	
 	private int nbOfPatients = 500;

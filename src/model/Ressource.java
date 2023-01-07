@@ -1,12 +1,16 @@
 package model;
 
+import java.io.Serializable;
+
 /**
  * 
  * Class Ressource, used to create a ressource. 
  *
  */
-public class Ressource {
+public class Ressource implements Serializable{
 	
+	private static final long serialVersionUID = -3619731778844577464L;
+
 	private String name;
 	
 	private Patient actualPatient;

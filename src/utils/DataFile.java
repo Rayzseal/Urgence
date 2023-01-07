@@ -117,12 +117,11 @@ public class DataFile {
 		}
 	}
 	/**
-	 * the methods read the file nameFile and return a list of Patient
-	 * nameFile must be a csv and contain an object List<Patient>
-	 * @param nameFile
-	 * @return
+	 * the methods read the file nameFile and return an object
+	 * @param nameFile String
+	 * @return o an Object
 	 */
-	public static List<Patient> readSimulationFile(String nameFile) {
+	public static Object readSimulationFile(String nameFile) {
 		if(!nameFile.matches("[a-zA-Z0-9]+.csv")) {
 			throw new IllegalArgumentException("Invalid name file");
 		}
@@ -130,10 +129,10 @@ public class DataFile {
 
 		try (FileInputStream fis = new FileInputStream(filename); ObjectInputStream bis = new ObjectInputStream(fis);) {
 
-			Object patients;
+			Object o;
 			try {
-				 patients = bis.readObject();
-				return (List<Patient>) patients;
+				 o = bis.readObject();
+				 return  o;
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			}
@@ -146,11 +145,37 @@ public class DataFile {
 		return null;
 	}
 	/**
-	 * the method write a list of patients to start a simulation in the file nameFile
-	 * @param nameFile
-	 * @param patients
+	 * the methods read the file nameFile and return a list of Patient
+	 * nameFile must be a csv and contain an object List<Patient>
+	 * @param nameFile String
+	 * @return patients a List<Patient>
 	 */
-	public static void writeSimulationStartFile(String nameFile, List<Patient> patients) {
+	@SuppressWarnings("unchecked")
+	public static List<Patient> readPatientFile(String nameFile) {
+		Object patients = readSimulationFile(nameFile);
+		if(patients.getClass() == ArrayList.class)
+			return (List<Patient>) patients;
+		else
+			throw new IllegalArgumentException("Invalid data in the file");
+	}
+	/**
+	 * the methods read the file nameFile and return an object Data
+	 * @param nameFile String
+	 * @return data Data
+	 */
+	public static Data readDataFile(String nameFile) {
+		Object data =  readSimulationFile(nameFile);
+		if(data.getClass() == Data.class)
+			return (Data)data;
+		else
+			throw new IllegalArgumentException("Invalid data in the file");
+	}
+	/**
+	 * the method write a list of patients to start a simulation in the file nameFile
+	 * @param nameFile String
+	 * @param patients Patient
+	 */
+	public static void writePatientStartFile(String nameFile, List<Patient> patients) {
 		List<Patient> patientsNew = new ArrayList<Patient>();
 		for(Patient p : patients) {
 			patientsNew.add(Patient.resetPatient(p));
@@ -159,11 +184,11 @@ public class DataFile {
 	}
 	
 	/**
-	 * the method write a list of patients in the file nameFile
-	 * @param nameFile
-	 * @param patients
+	 * the method write an object in the file nameFile
+	 * @param nameFile String
+	 * @param o Object
 	 */
-	public static void writeSimulationFile(String nameFile, List<Patient> patients) {
+	public static void writeSimulationFile(String nameFile, Object o) {
 		if(!nameFile.matches("[a-zA-Z0-9]+.csv")) {
 			throw new IllegalArgumentException("Invalid name file");
 		}
@@ -171,7 +196,28 @@ public class DataFile {
 		try (FileOutputStream fos = new FileOutputStream(filename);
 				ObjectOutputStream bos = new ObjectOutputStream(fos);) {
 
-			bos.writeObject(patients);
+			bos.writeObject(o);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * the method write an object data in the file nameFile
+	 * @param nameFile String
+	 * @param data Data
+	 */
+	public static void writeSimulationFile(String nameFile, Data data) {
+		if(!nameFile.matches("[a-zA-Z0-9]+.csv")) {
+			throw new IllegalArgumentException("Invalid name file");
+		}
+		String filename = "src" + sep + "ressources" + sep + nameFile;
+		try (FileOutputStream fos = new FileOutputStream(filename);
+				ObjectOutputStream bos = new ObjectOutputStream(fos);) {
+
+			bos.writeObject(data);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

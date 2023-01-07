@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import events.EvPatientLeave;
@@ -9,8 +10,9 @@ import utils.Utils;
  * Class containing all the necessary methods to create a new waiting list.
  *
  */
-public class WaitingList{
+public class WaitingList implements Serializable{
 
+	private static final long serialVersionUID = -323374299864244714L;
 	private ArrayList<Patient> listA;
 	private ArrayList<Patient> listB;
 	private ArrayList<Patient> listC;
