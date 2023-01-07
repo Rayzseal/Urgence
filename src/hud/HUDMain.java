@@ -53,7 +53,7 @@ public class HUDMain {
 	    statistics.put(setMenuItem(name, "Gravity"),setHUDStatistics(name, "Gravité d'un patient", "temps en minute", Statistics.getAverageTimeSpentInEmergencyByGravity(data)));
 	    
 	    name = "Temps moyen d'attente par ressource";//TODO replace method
-	    statistics.put(setMenuItem(name, "Ressource"),setHUDStatistics(name, "Ressource", "temps en minute", Statistics.getAverageSpendTimeInEachState(data)));
+	    statistics.put(setMenuItem(name, "Ressource"),setHUDStatistics(name, "Ressource", "temps en minute", Statistics.getAverageWaitingTimeState(data)));
 	    
 	    name = "Taux d'utilisation des ressources";//TODO replace method
 

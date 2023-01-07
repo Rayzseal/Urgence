@@ -172,7 +172,7 @@ public class Statistics {
 				nbPatientForEachState.put(statesForPatient.get(i), nbPatientForState + 1);
 			}
 		}
-	
+		System.out.println("azertyuiopmlkjhgfdsqwxcvbn");
 		Utils.showMap(nbPatientForEachState);
 		
 		Iterator iterator = averageWaitTime.entrySet().iterator();

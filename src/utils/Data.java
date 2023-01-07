@@ -109,7 +109,7 @@ public class Data implements Serializable{
 	private void generateData() {
 		//patients.sort(new SortPatientArrival());
 
-		this.reduceTime = 200;
+		this.reduceTime = 600;
 		DataFile dataFile = new DataFile();
 		generateLists(dataFile);
 		generateTime(dataFile);
