@@ -172,8 +172,10 @@ public class Statistics {
 				nbPatientForEachState.put(statesForPatient.get(i), nbPatientForState + 1);
 			}
 		}
-		System.out.println("azertyuiopmlkjhgfdsqwxcvbn");
+		System.out.println("1 seul affichage");
 		Utils.showMap(nbPatientForEachState);
+		System.out.println("Fin 1 seul affichage");
+
 		
 		Iterator iterator = averageWaitTime.entrySet().iterator();
 		//Get the average value
