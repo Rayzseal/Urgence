@@ -16,7 +16,7 @@ public class EvEndPathC extends Event implements Runnable{
 		super(d,p);
 	}
 	/**
-	 * runnable method, restart the event EvPathC if patient didn't do both required activity
+	 * runnable method, restart the events not done if patient didn't do it
 	 * else start the event Prescription
 	 */
 	@Override

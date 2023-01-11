@@ -53,7 +53,7 @@ public abstract class Event {
 	 * 
 	 * @param d               Data
 	 * @param p               Patient
-	 * @param objectAvailable index in the list of ressources used
+	 * @param objectAvailable Ressource in the list of ressources used
 	 */
 	public Event(Data d, Patient p, Ressource objectAvailable) {
 		data = d;

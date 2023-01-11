@@ -10,7 +10,13 @@ import utils.Data;
  * Event of end in Scanner, it inherits the class Event
  */
 public class EvEndScanner extends Event implements Runnable {
-
+	/**
+	 * constructor of the event
+	 * 
+	 * @param d               Data
+	 * @param p               Patient
+	 * @param objectAvailable Ressource in the list of ressources used
+	 */
 	public EvEndScanner(Data d, Patient p, Ressource objectAvailable) {
 		super(d, p, objectAvailable);
 		setState();
@@ -46,6 +52,7 @@ public class EvEndScanner extends Event implements Runnable {
 
 	/**
 	 * runnable method which call endEvent() from Event
+	 * and remove from the other list from path C
 	 */
 	@Override
 	public void run() {

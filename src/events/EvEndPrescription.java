@@ -19,7 +19,7 @@ public class EvEndPrescription extends Event implements Runnable {
 	 * 
 	 * @param d               Data
 	 * @param p               Patient
-	 * @param objectAvailable index in the list of ressources used
+	 * @param objectAvailable Ressource in the list of ressources used
 	 */
 	public EvEndPrescription(Data d, Patient p, Ressource objectAvailable) {
 		super(d, p, objectAvailable);

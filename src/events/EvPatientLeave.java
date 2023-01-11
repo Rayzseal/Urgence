@@ -34,7 +34,9 @@ public class EvPatientLeave extends Event implements Runnable {
 		getPatient().setState(State.OUT);
 		if (!getPatient().isTypeArrival())
 			getPatient().getBedroom().setState(State.AVAILABLE);
+		
 		getPatient().getListState().put(State.OUT, (Data.getTimeValue() + getData().getTimePrescription()));
+		
 		getData().getPatientsActive().remove(getPatient());
 		getData().getPatientsOver().add(getPatient());
 

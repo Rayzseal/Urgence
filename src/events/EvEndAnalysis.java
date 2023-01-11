@@ -15,7 +15,7 @@ public class EvEndAnalysis extends Event implements Runnable {
 	 * 
 	 * @param d               Data
 	 * @param p               Patient
-	 * @param objectAvailable index in the list of ressources used
+	 * @param objectAvailable Ressource in the list of ressources used
 	 */
 	public EvEndAnalysis(Data d, Patient p, Ressource objectAvailable) {
 		super(d, p, objectAvailable);
@@ -43,6 +43,7 @@ public class EvEndAnalysis extends Event implements Runnable {
 
 	/**
 	 * runnable method which call endEvent() from Event
+	 * and remove from the list from the path C
 	 */
 	@Override
 	public void run() {

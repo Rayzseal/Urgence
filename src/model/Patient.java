@@ -306,7 +306,9 @@ public class Patient implements Serializable{
 			this.state = state;
 
 	}
-
+	/**
+	 * method to print a patient
+	 */
 	@Override
 	public String toString() {
 		String str = "Patient " + "(parcours " + gravity + ") " + name + " " + surname + " : ";

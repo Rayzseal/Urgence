@@ -51,7 +51,7 @@ public class EvBedroomResearch extends Event implements Runnable {
 	}
 
 	/**
-	 * set patient to State he should be and set Occupied the ressource used
+	 * set patient to State he should be and his bedroom, and set Occupied to the ressource used
 	 */
 	public void setStateEndEvent() {
 		getPatient().setState(State.BEDROOM);
@@ -62,7 +62,7 @@ public class EvBedroomResearch extends Event implements Runnable {
 	}
 
 	/**
-	 * method to be override so events can get the list of ressources available
+	 * override so events can get the list of bedrooms available
 	 */
 	public ArrayList<?> getRessourceAvailable() {
 		return WaitingList.verifyRessourceAvailableBedroom(getData().getBedrooms());

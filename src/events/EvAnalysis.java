@@ -39,7 +39,7 @@ public class EvAnalysis extends Event implements Runnable {
 	}
 
 	/**
-	 * runnable method which call startEvent()
+	 * runnable method which call startEvent() from Event
 	 */
 	@Override
 	public void run() {

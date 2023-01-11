@@ -45,7 +45,7 @@ public class Scheduler {
 	 */
 	public Scheduler(int nbPatient) {
 		data = new Data(nbPatient);
-		// DataFile.writeSimulationFile("SimulationExemple.csv",data);
+		//DataFile.writeSimulationFile("SimulationExemple.csv",data);
 
 	}
 
@@ -107,29 +107,13 @@ public class Scheduler {
 		System.out.println("------------------");
 		System.out.println("END");
 		System.out.println("------------------");
-		// DataFile.writeSimulationFile("PatientExemple.csv",data.getPatientsOver());
+		//DataFile.writeSimulationFile("PatientExemple.csv",data.getPatientsOver());
 		//DataFile.writeSimulationFile("SimulationEnd.csv",data);
 	}
-
 	/**
-	 * runnable function
+	 * method to run events of the simulation
+	 * @param data Data
 	 */
-	public void run() {
-		scheduler();
-	}
-
-	/**
-	 * Setter and getter of the class
-	 */
-
-	public Data getData() {
-		return data;
-	}
-
-	public void setData(Data data) {
-		this.data = data;
-	}
-
 	public void setPatientToPathNonCritical(Data data) {
 		new EvPatientArrival(data, null).run();
 		
@@ -140,6 +124,27 @@ public class Scheduler {
 		new EvPathC(data, null).run();
 
 		new EvPrescription(data, null).run();
+	}
+
+	/**
+	 * runnable function
+	 */
+	public void run() {
+		scheduler();
+	}
+
+	/**
+	 * @return the data
+	 */
+	public Data getData() {
+		return data;
+	}
+
+	/**
+	 * @param data the data to set
+	 */
+	public void setData(Data data) {
+		this.data = data;
 	}
 
 }

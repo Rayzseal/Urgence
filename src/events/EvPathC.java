@@ -17,7 +17,7 @@ public class EvPathC extends Event implements Runnable{
 	}
 	/**
 	 * runnable method, add the patient in the list waiting of waitListPathC
-	 * then start analysis and/or scanner event if he didn't already realised it
+	 * then start analysis and scanner event
 	 */
 	@Override
 	public void run() {
