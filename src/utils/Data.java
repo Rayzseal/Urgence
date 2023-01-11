@@ -66,7 +66,6 @@ public class Data implements Serializable{
 	/**
 	 * Value of time
 	 */
-	private int time;
 
 	private int timeReception;
 	private int timeScanner;
@@ -119,7 +118,6 @@ public class Data implements Serializable{
 		this.patients = new ArrayList<>();
 		this.patientsActive = new ArrayList<>();
 		this.patientsOver = new ArrayList<>();
-		this.time = 0;
 		if(listPatients == null) {
 			generatePatientsPoisson(lambda);
 		}else {
@@ -453,12 +451,6 @@ public class Data implements Serializable{
 		return waitListScanner;
 	}
 	/**
-	 * @return the time
-	 */
-	public int getTime() {
-		return time;
-	}
-	/**
 	 * @return the value of timeReception
 	 */
 	public int getTimeReception() {
@@ -601,12 +593,6 @@ public class Data implements Serializable{
 	 */
 	public void setWaitListScanner(WaitingList waitListScanner) {
 		this.waitListScanner = waitListScanner;
-	}
-	/**
-	 * @param time the time to set
-	 */
-	public void setTime(int time) {
-		this.time = time;
 	}
 	/**
 	 * @param timeReception the timeReception to set
