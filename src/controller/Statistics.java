@@ -69,7 +69,6 @@ public class Statistics {
 		return time;
 	}
 
-	//TODO check if equal to time for a state (if we subtract waiting time for each state)
 	/**
 	 * Get the number of patients that patients spend in each states.
 	 * @param data Data from which are extracted statistics.
@@ -143,6 +142,11 @@ public class Statistics {
 		return average;
 	}
 
+	/**
+	 * Get the average waiting time for each states. 
+	 * @param data Data from which are extracted statistics.
+	 * @return A map with a key = the state & a value = the average waiting time for each states.
+	 */
 	public static Map<State, Double> getAverageWaitingTimeState(Data data) {
 		Map<State, Double> averageWaitTime = new TreeMap<>();
 		Map<State, Integer> nbPatientForEachState = new TreeMap<>();
@@ -216,13 +220,6 @@ public class Statistics {
 			nbPatientForEachState.put(s, 0);
 		}
 
-
-		for (Patient p : data.getPatientsOver()) {
-			if (p.getListWaitTime().size() >= 1) {
-				//System.out.println(p);
-			}
-		}
-
 		//For all patients
 		for(Patient p : data.getPatientsOver()) {
 			Iterator iterator = p.getListState().entrySet().iterator();
@@ -251,13 +248,14 @@ public class Statistics {
 		//Get the percentage of utilization of all bedrooms
 		int averageValueBedroom = 0;
 		int averageValueOut = 0;
+		int valGlobal = 0;
 		for (int i = 0; i < bedroomValue.size(); i++) {
-			averageValueBedroom += bedroomValue.get(i);
-			averageValueOut += outValue.get(i);
+			averageValueBedroom = bedroomValue.get(i);
+			averageValueOut = outValue.get(i);
+			valGlobal += averageValueOut - averageValueBedroom;
 		}
-		averageForOutBedroom = (averageValueOut - averageValueBedroom) / bedroomValue.size();
-		averageForOutBedroom = (double)(averageForOutBedroom / Data.nbSecondsPerDay) * 100;
-
+		double valTmp = valGlobal / data.getBedrooms().size();
+		double valBedroom = (double)(valTmp / Data.getTimeValue()) * 100;
 
 		// Divide to get the percentage of utilization for each state
 		for (State s : State.values()) {
@@ -282,7 +280,7 @@ public class Statistics {
 				percentage.put(s, time * 100);
 			}
 			else if (s == State.BEDROOM) {
-				percentage.put(s, averageForOutBedroom);
+				percentage.put(s, valBedroom);
 			}
 		}
 

@@ -2,6 +2,11 @@ package hud;
 
 import controller.Scheduler;
 
+/**
+ * 
+ * Class MainApp, run this class to launch the project. 
+ *
+ */
 public class MainApp {
 
 	public static void main(String[] args) {

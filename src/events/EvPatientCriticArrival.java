@@ -27,7 +27,7 @@ public class EvPatientCriticArrival extends Event implements Runnable{
 	public void run() {
 		getPatient().setBedroom(new Bedroom());
 		getPatient().setGravity(Gravity.A);
-		getPatient().setState(State.BEDROOM, getData().getTime());
+		getPatient().setState(State.BEDROOM, getPatient().getArrivalDate());
 		EventsUtils.pathChoice(getData(), getPatient());
 	}
 
