@@ -1,12 +1,12 @@
 package model;
 
 /**
- * 
- * Class bloc, used to create a bloc. 
+ *
+ * Class bloc, used to create a bloc.
  *
  */
 public class Bloc extends Ressource {
-		
+
 	private static int no = 0;
 
 	/**

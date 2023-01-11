@@ -1,11 +1,16 @@
 package controller;
 
+import events.EvBedroomResearch;
+import events.EvBloc;
+import events.EvPathC;
 import events.EvPatientArrival;
 import events.EvPatientCriticArrival;
+import events.EvPrescription;
 import model.Patient;
 import model.State;
 import utils.Data;
 import utils.DataFile;
+import utils.EventsUtils;
 
 /**
  * The class Scheduler time the arrival of every patients
@@ -25,7 +30,7 @@ public class Scheduler {
 	/**
 	 * constructor of scheduler and create an object Data with patients in the file
 	 * nameFile
-	 * 
+	 *
 	 * @param nameFile String
 	 */
 	public Scheduler(String nameFile) {
@@ -35,7 +40,7 @@ public class Scheduler {
 	/**
 	 * constructor of scheduler and create an object Data with the number of
 	 * patients nbPatient
-	 * 
+	 *
 	 * @param nbPatient int
 	 */
 	public Scheduler(int nbPatient) {
@@ -46,7 +51,7 @@ public class Scheduler {
 
 	/**
 	 * constructor of scheduler with the objects data
-	 * 
+	 *
 	 * @param data Data
 	 */
 	public Scheduler(Data data) {
@@ -65,33 +70,40 @@ public class Scheduler {
 		// While we still have patients to arrive or patients in treatment we wait, when
 		// every patients has been treated we stop.
 		while (data.getPatients().size() > 0 || data.getPatientsActive().size() != 0) {
-			try {
-				Thread.sleep(1 / data.getReduceTime());
-				data.setTime(data.getTime() + 1);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			while (data.getPatients().size() > 0 && data.getPatients().get(0).getArrivalDate() == data.getTime()) {
+
+			//Time goes on
+			Data.setTimeValue(Data.getTimeValue()+1);
+
+			while (data.getPatients().size() > 0 && data.getPatients().get(0).getArrivalDate() == Data.getTimeValue()) {
 				// Start patient
 
 				// Add to "over" list & remove patients from waiting list
 				Patient patient;
-				synchronized (data.getPatients()) {
-					patient = data.getPatients().get(0);
-					patient.setState(State.ARRIVAL, data.getTime());
-					synchronized (data.getPatientsActive()) {
-						data.getPatientsActive().add(data.getPatients().get(0));
-						data.getPatients().remove(patient);
-					}
+
+				//Get first patient in waiting list
+				patient = data.getPatients().get(0);
+
+				//test to prevent modification of the gravity data from Simulation file
+				if(patient.getGravity() == null)
+					patient.setGravity(EventsUtils.setGravity());
+
+				if (patient.getArrivalDate() == Data.getTimeValue()) {
+					patient.setState(State.ARRIVAL, Data.getTimeValue());
+					data.getPatientsActive().add(data.getPatients().get(0));
+					data.getPatients().remove(patient);
 				}
 
-				if (patient.isTypeArrival()) {
-					new Thread(new EvPatientCriticArrival(data, patient)).start();
-				} else
-					new Thread(new EvPatientArrival(data, patient)).start();
+				if (patient.isTypeArrival())  {
+					new EvPatientCriticArrival(data, patient).run();
+				}
+				else
+					data.getWaitListArrival().add(patient);
 			}
 
+
+			setPatientToPathNonCritical(data);
 		}
+
 		System.out.println("------------------");
 		System.out.println("END");
 		System.out.println("------------------");
@@ -116,6 +128,18 @@ public class Scheduler {
 
 	public void setData(Data data) {
 		this.data = data;
+	}
+
+	public void setPatientToPathNonCritical(Data data) {
+		new EvPatientArrival(data, null).run();
+		
+		new EvBedroomResearch(data, null).run();
+		
+		new EvBloc(data, null).run();
+		
+		new EvPathC(data, null).run();
+
+		new EvPrescription(data, null).run();
 	}
 
 }

@@ -1,7 +1,6 @@
 package events;
 
 import model.Patient;
-import model.State;
 import utils.Data;
 
 /**
@@ -22,16 +21,16 @@ public class EvEndPathC extends Event implements Runnable{
 	 */
 	@Override
 	public void run() {
-
-		if(!getPatient().getListState().containsKey(State.SCANNER) || !getPatient().getListState().containsKey(State.ANALYSIS)) {
-			EvPathC e = new EvPathC(getData(), getPatient());
-			e.run();
-			
-		}
-		else {
-			EvPrescription e = new EvPrescription(getData(), getPatient());
-			e.run();
-		}
+		if (getPatient().isPathCAnalysis() && getPatient().isPathCScanner())
+			getData().getWaitListPrescription().getListC().add(getPatient());
+		else if (!getPatient().isPathCScanner())
+			// If the patient did not do yet is scanner, he will be added to the waiting
+			// list now
+			getData().getWaitListScanner().getListC().add(getPatient());
+		else if (!getPatient().isPathCAnalysis())
+			// If the patient did not do yet is analysis, he will be added to the waiting
+			// list now
+			getData().getWaitListAnalysis().getListC().add(getPatient());
 		
 	}
 

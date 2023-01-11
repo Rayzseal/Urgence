@@ -31,29 +31,16 @@ public class EvPatientLeave extends Event implements Runnable {
 	 */
 	@Override
 	public void run() {
+		getPatient().setState(State.OUT);
+		if (!getPatient().isTypeArrival())
+			getPatient().getBedroom().setState(State.AVAILABLE);
+		getPatient().getListState().put(State.OUT, (Data.getTimeValue() + getData().getTimePrescription()));
+		getData().getPatientsActive().remove(getPatient());
+		getData().getPatientsOver().add(getPatient());
 
-		synchronized (getRessources()) {
-			if (getPatient().getBedroom() != null) {
-				getPatient().getBedroom().setState(State.AVAILABLE);
-				getPatient().setBedroom(null);
-			}
-			getPatient().getListState().put(State.OUT, getData().getTime());
-			
-			synchronized (getData().getPatientsActive()) {
-				getData().getPatientsActive().remove(getPatient());
-			}
-			synchronized (getData().getPatientsOver()) {
-				getData().getPatientsOver().add(getPatient());
-			}
-
-			if (getWaitingList().size() > 0) {
-				Patient nextPatient = getWaitingList().selectPatientFromArrayList();
-				synchronized (getWaitingList()) {					
-					getWaitingList().remove(nextPatient, getData().getTime());
-				}
-				new Thread(new EvBedroomResearch(getData(), nextPatient)).start();
-			}
-		}
+		// TODO remove this to not have any display
+		System.out.println(getPatient());
+		System.out.println();
 
 	}
 

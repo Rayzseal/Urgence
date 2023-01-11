@@ -8,7 +8,7 @@ import java.util.Map.Entry;
 import utils.Utils;
 
 /**
- * 
+ *
  * Class patient, generates a patient.
  *
  */
@@ -17,7 +17,9 @@ public class Patient implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private String name;
 	private String surname;
-	// private int age;
+
+	private boolean pathCAnalysis;
+	private boolean pathCScanner;
 
 	private Gravity gravity;
 
@@ -31,7 +33,8 @@ public class Patient implements Serializable{
 
 	private int arrivalDate;
 	private boolean typeArrival; // false patient arrive by himself
-	
+	private int timePatient;
+
 	/**
 	 * Default constructor, with no parameters.
 	 */
@@ -40,13 +43,13 @@ public class Patient implements Serializable{
 		name = null;
 		surname = null;
 		arrivalDate = 0;
-
+		timePatient = 0;
 	}
 
 	/**
 	 * Constructor to generate a patient with specified parameters.
-	 * @param name Name to set. 
-	 * @param surname Surname to set. 
+	 * @param name Name to set.
+	 * @param surname Surname to set.
 	 * @param arrivalDate Arrival date to set.
 	 */
 	public Patient(String name, String surname, int arrivalDate) {
@@ -54,7 +57,7 @@ public class Patient implements Serializable{
 		this.name = name;
 		this.surname = surname;
 		this.arrivalDate = arrivalDate;
-
+		this.timePatient = arrivalDate;
 	}
 
 	/**
@@ -69,14 +72,17 @@ public class Patient implements Serializable{
 		if (g < critic)
 			typeArrival = true;
 		else
-			typeArrival = false; // TODO gravité
+			typeArrival = false;
 		gravity = null;
 		state = State.AVAILABLE;
 		bedroom = null;
 
 		GlobalWaitInSeconds = 0;
+
+		pathCAnalysis = false;
+		pathCScanner = false;
 	}
-	
+
 	/**
 	 * Reset patient.
 	 * @param p Patient.
@@ -91,14 +97,14 @@ public class Patient implements Serializable{
 
 	/**
 	 * Add waiting time to a patient.
-	 * @param time Time to be added. 
+	 * @param time Time to be added.
 	 */
 	public void addWaitingTime(int time) {
 		this.GlobalWaitInSeconds += time;
 	}
 
 	/* Getters & Setters */
-	
+
 	/**
 	 * @return the name
 	 */
@@ -167,6 +173,55 @@ public class Patient implements Serializable{
 	 */
 	public boolean isTypeArrival() {
 		return typeArrival;
+	}
+
+	/**
+	 * @return the timePatient
+	 */
+	public int getTimePatient() {
+		return timePatient;
+	}
+
+	/**
+	 * @return the pathCAnalysis
+	 */
+	public boolean isPathCAnalysis() {
+		return pathCAnalysis;
+	}
+
+	/**
+	 * @return the pathCScanner
+	 */
+	public boolean isPathCScanner() {
+		return pathCScanner;
+	}
+
+	/**
+	 * @param pathCAnalysis the pathCAnalysis to set
+	 */
+	public void setPathCAnalysis(boolean pathCAnalysis) {
+		this.pathCAnalysis = pathCAnalysis;
+	}
+
+	/**
+	 * @param pathCScanner the pathCScanner to set
+	 */
+	public void setPathCScanner(boolean pathCScanner) {
+		this.pathCScanner = pathCScanner;
+	}
+
+	/**
+	 * @param timePatient the timePatient to set
+	 */
+	public void setTimePatient(int timePatient) {
+		this.timePatient = timePatient;
+	}
+
+	/**
+	 * @param time the time to add
+	 */
+	public void addTimePatient(int time) {
+		this.timePatient += time;
 	}
 
 	/**
@@ -247,9 +302,9 @@ public class Patient implements Serializable{
 		if(state != State.WAITING && state != State.AVAILABLE ) {
 			this.state = State.OCCUPIED;
 			listState.put(state, time);
-		}else			
+		}else
 			this.state = state;
-			
+
 	}
 
 	@Override

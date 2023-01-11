@@ -1,6 +1,7 @@
 package events;
 
 import model.Patient;
+import model.Ressource;
 import model.State;
 import utils.Data;
 /**
@@ -13,7 +14,7 @@ public class EvEndBloc extends Event implements Runnable {
 	 * @param p Patient
 	 * @param objectAvailable index in the list of ressources used
 	 */
-	public EvEndBloc(Data d, Patient p, int objectAvailable) {
+	public EvEndBloc(Data d, Patient p, Ressource objectAvailable) {
 		super(d, p, objectAvailable);
 		setState();
 
@@ -28,19 +29,11 @@ public class EvEndBloc extends Event implements Runnable {
 		setWaitingList(getData().getWaitListBloc());
 	}
 	/**
-	 * set the event for the nextPatient to continue when the patient finished this event
-	 */
-	@Override
-	public void sameEvent(Patient nextPatient) {
-		EvEndBloc e = new EvEndBloc(getData(), nextPatient, getObjectAvailable());
-		e.run();
-	}
-	/**
 	 * set the next event when the patient finished this event
 	 */
 	@Override
 	public void nextEvent() {
-		new Thread(new EvPrescription(getData(), getPatient())).start();
+		getData().getWaitListPrescription().add(getPatient());
 	}
 	
 	/**
@@ -49,6 +42,7 @@ public class EvEndBloc extends Event implements Runnable {
 	@Override
 	public void run() {
 		endEvent();
+		
 	}
 
 }

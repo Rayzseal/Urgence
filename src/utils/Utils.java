@@ -5,15 +5,15 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 
+ *
  * Class used to generated patients (using a random name & surname).
  * Can also format a number of seconds to DAY/HOUR/MIN/SEC format.
- * Loops through a list to find an object available. 
- * Display a list on screen. 
+ * Loops through a list to find an object available.
+ * Display a list on screen.
  *
  */
 public class Utils {
-	
+
 	public static String[] names = { "Olivia", "Amelia", "Isla", "Ava", "Mia", "Ivy", "Lily", "Oliver", "George",
 			"Arthur", "Noah", "Muhammad", "Leo", "Oscar", "Harry", "Archie", "Jack", "Liam", "Jackson", "Aiden",
 			"Grayson", "Lucas", "Emily", "Ashley", "Alyssa" };
@@ -30,25 +30,25 @@ public class Utils {
 	public static String timeIntToString(int secondsTime) {
 		if (secondsTime<0)
 			throw new IllegalArgumentException("The given argument must be >= 0.");
-		
+
 		int sec=0,hour=0,min=0,day=0;
-		
-		day = (int) secondsTime /(24*3600);
+
+		day = secondsTime /(24*3600);
 		secondsTime -= day*24*3600;
-		
-		
-		hour = (int) secondsTime/3600;
+
+
+		hour = secondsTime/3600;
 		secondsTime -= hour*3600;
 		if(hour==24)
 			hour = 0;
-		
-		min = (int) secondsTime/60;
+
+		min = secondsTime/60;
 		secondsTime -= min*60;
-		
+
 		sec = secondsTime;
-		
+
 		String str = "";
-		
+
 		if (day>0)
 			str += day+" day(s) ";
 		if(hour==0)
@@ -67,16 +67,16 @@ public class Utils {
 			str += "0";
 		return str + sec;
 	}
-	
+
 	/**
 	 * Print the list of any object.
 	 * @param list List to display.
 	 */
 	public static void showList(List<?> list) {
-		for (int i = 0; i < list.size(); i++)
-			System.out.println(list.get(i).toString());
+		for (Object element : list)
+			System.out.println(element.toString());
 	}
-	
+
 	/**
 	 * Print a map of any object.
 	 * @param list List to display.

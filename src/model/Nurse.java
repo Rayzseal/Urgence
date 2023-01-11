@@ -1,7 +1,7 @@
 package model;
 
 /**
- * 
+ *
  * Class Nurse, used to create a nurse.
  *
  */

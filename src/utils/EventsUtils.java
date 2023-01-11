@@ -1,15 +1,7 @@
 package utils;
 
-import java.util.List;
-
-import events.EvBloc;
-import events.EvScanner;
 import model.Gravity;
 import model.Patient;
-import model.Ressource;
-import model.State;
-import events.EvPathC;
-import events.EvPrescription;
 /**
  * class which contain static methods to help in different events
  */
@@ -21,33 +13,28 @@ public class EventsUtils {
 	 */
 	public static void pathChoice(Data data, Patient p) {
 		switch (p.getGravity()) {
-
 		case A:
-			EvBloc e1 = new EvBloc(data, p);
-			e1.run();
+			data.getWaitListBloc().add(p);
 			break;
-
 		case B:
-			EvScanner e2 = new EvScanner(data, p);
-			e2.run();
+			data.getWaitListScanner().add(p);
 			break;
-
 		case C:
-			EvPathC e3 = new EvPathC(data, p);
-			e3.run();
+			// The patient can either do his analysis or his scanner 
+			//(at the end, he will have to do both)
+			data.getWaitListAnalysis().getListC().add(p);
+			data.getWaitListScanner().getListC().add(p);
 			break;
 		case D:
-			EvPrescription e4 = new EvPrescription(data, p);
-			e4.run();
+			data.getWaitListPrescription().add(p);
 			break;
 		}
 	}
 	/**
-	 * The method set the gravity of a patient randomly 
+	 * The method set the gravity of a patient randomly
 	 * @return gravity Gravity generate
 	 */
 	public static Gravity setGravity() {
-		
 		int g = (int) (Math.random() * 100);
 		int statC = 60;
 		int statB = 40;
@@ -61,40 +48,6 @@ public class EventsUtils {
 			return Gravity.C;
 		return Gravity.D;
 	}
-	/**
-	 * The methods return true if a patients C is available to continue in an activity 
-	 * then he is removed from the List Waiting and WaitingList stateWaitingList
-	 * and false if the patient is not in the List waiting
-	 * @param data Data
-	 * @param p Patient
-	 * @param stateWaitList State of list to remove patient from
-	 * @return bool
-	 */
-	public static Boolean patientAvailable(Data data, Patient p, State stateWaitList) {
-		Boolean bool = false;
-		synchronized (data.getWaitListPathC()) {
-			if(data.getWaitListPathC().get(State.WAITING).contains(p)){
-				data.getWaitListPathC().get(State.WAITING).remove(p);
-				if(data.getWaitListPathC().get(stateWaitList).contains(p))
-					data.getWaitListPathC().get(stateWaitList).remove(p);
-				bool = true;
-			}
-		}
-		
-		return bool;
-	}
-	/**
-	 * -1 if objects are not available or an index in the list of the first object available
-	 * @param list List in which we are looking for an available resource. 
-	 * @return The index of an available object, or -1 if no object is available.
-	 */
-	public static int objectAvailable(List<?> list) {
-		for(int i = 0 ; i<list.size(); i++){
-			if(((Ressource) list.get(i)).getState()== State.AVAILABLE)
-				return i;	
-		}
-		return -1;
-	}
-	
+
 
 }

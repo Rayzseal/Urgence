@@ -1,7 +1,6 @@
 package events;
 
 import model.Patient;
-import model.State;
 import utils.Data;
 
 /**
@@ -22,17 +21,9 @@ public class EvPathC extends Event implements Runnable{
 	 */
 	@Override
 	public void run() {
-		//waitListPathC prevent synchronized issue between Analysis and Scanner events
-		synchronized (getData().getWaitListPathC()) {
-			getData().getWaitListPathC().get(State.WAITING).add(getPatient());
-		}
-		
-		if(!getPatient().getListState().containsKey(State.ANALYSIS)) {
-			new Thread(new EvAnalysis(getData(), getPatient())).start();
-		}
-		if(!getPatient().getListState().containsKey(State.SCANNER)) {
-			new Thread(new EvScanner(getData(), getPatient())).start();		
-		}
+		new EvAnalysis(getData(), null).run();
+
+		new EvScanner(getData(), null).run();
 	}
 
 }

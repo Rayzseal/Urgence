@@ -1,8 +1,8 @@
 package model;
 
 /**
- * 
- * Class Doctor, used to create a doctor. 
+ *
+ * Class Doctor, used to create a doctor.
  *
  */
 public class Doctor extends Ressource{

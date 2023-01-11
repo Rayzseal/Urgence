@@ -15,7 +15,7 @@ import java.util.List;
 import model.Patient;
 
 /**
- * 
+ *
  * Class to read a file that contains all of the static information of the
  * application.
  *
@@ -74,10 +74,10 @@ public class DataFile {
 			this.nbReceptionist = Integer.parseInt(data[3]);
 			this.nbDoctor = Integer.parseInt(data[4]);
 			this.nbNurse = Integer.parseInt(data[5]);
-			
+
 			if (nbBedrooms <= 0 || nbScanner <= 0 || nbBloc <= 0 || nbReceptionist <= 0 || nbDoctor <= 0 || nbNurse <= 0)
-				throw new Exception("We need at least 1 of each resources");	
-			
+				throw new Exception("We need at least 1 of each resources");
+
 			in.close();
 
 		} catch (IOException e) {
@@ -106,9 +106,9 @@ public class DataFile {
 			this.timeAnalysis = Integer.parseInt(data[2]);
 			this.timeBloc = Integer.parseInt(data[3]);
 			this.timePrescription = Integer.parseInt(data[4]);
-			
+
 			if (timeReception <= 0 || timeScanner <= 0 || timeAnalysis <= 0 || timeBloc <= 0 || timePrescription <= 0)
-				throw new Exception("All times should be > 0");	
+				throw new Exception("All times should be > 0");
 
 			in.close();
 
@@ -176,13 +176,13 @@ public class DataFile {
 	 * @param patients Patient
 	 */
 	public static void writePatientStartFile(String nameFile, List<Patient> patients) {
-		List<Patient> patientsNew = new ArrayList<Patient>();
+		List<Patient> patientsNew = new ArrayList<>();
 		for(Patient p : patients) {
 			patientsNew.add(Patient.resetPatient(p));
 		}
 		writeSimulationFile(nameFile, patientsNew);
 	}
-	
+
 	/**
 	 * the method write an object in the file nameFile
 	 * @param nameFile String
@@ -203,7 +203,7 @@ public class DataFile {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * the method write an object data in the file nameFile
 	 * @param nameFile String
@@ -379,6 +379,6 @@ public class DataFile {
 		this.timePrescription = timePrescription;
 	}
 
-	
+
 
 }

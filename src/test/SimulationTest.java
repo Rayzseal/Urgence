@@ -2,7 +2,6 @@ package test;
 
 import static org.junit.Assert.assertEquals;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import controller.Scheduler;
@@ -12,24 +11,16 @@ import model.State;
  * Test on the simulation
  */
 public class SimulationTest {
-	private int nbPatient;
-	private Scheduler s;
-
-	@Before
-	/**
-	 * Method called before every test
-	 */
-	public void testBefore() {
-		nbPatient = 50;
-		s = new Scheduler(nbPatient);
-		s.run();
-	}
+	private int nbPatient = 50;
 
 	@Test
 	/**
 	 * verify for every patient if they have the right path once they get a bedroom
 	 */
 	public void testPaths() {
+		nbPatient = 50;
+		Scheduler s = new Scheduler(nbPatient);
+		s.run();
 		int nbCorrectPath = 0;
 		for (Patient p : s.getData().getPatientsOver()) {
 			switch (p.getGravity()) {
@@ -41,6 +32,8 @@ public class SimulationTest {
 						&& p.getListState().containsKey(State.PRESCRIPTION)
 						&& p.getListState().containsKey(State.OUT)) {
 					nbCorrectPath++;
+				}else {
+					System.out.println(p);
 				}
 				break;
 
@@ -52,6 +45,8 @@ public class SimulationTest {
 						&& p.getListState().containsKey(State.PRESCRIPTION)
 						&& p.getListState().containsKey(State.OUT)) {
 					nbCorrectPath++;
+				}else {
+					System.out.println(p);
 				}
 				break;
 
@@ -63,6 +58,8 @@ public class SimulationTest {
 						&& p.getListState().containsKey(State.PRESCRIPTION)
 						&& p.getListState().containsKey(State.OUT)) {
 					nbCorrectPath++;
+				}else {
+					System.out.println(p);
 				}
 				break;
 			case D:
@@ -71,10 +68,13 @@ public class SimulationTest {
 						&& p.getListState().containsKey(State.PRESCRIPTION)
 						&& p.getListState().containsKey(State.OUT)) {
 					nbCorrectPath++;
+				}else {
+					System.out.println(p);
 				}
 				break;
 			}
 		}
+		System.out.println(nbCorrectPath);
 		assertEquals(nbCorrectPath, nbPatient);
 	}
 
@@ -83,6 +83,7 @@ public class SimulationTest {
 	 * verify for every patient if they arrive
 	 */
 	public void testArrival() {
+		nbPatient = 50;
 		Scheduler s = new Scheduler(nbPatient);
 		s.run();
 		int nbCorrectPath = 0;
@@ -100,6 +101,7 @@ public class SimulationTest {
 	 * critical arrival should go to the reception
 	 */
 	public void testReception() {
+		nbPatient = 50;
 		Scheduler s = new Scheduler(nbPatient);
 		s.run();
 		int nbCorrectPath = 0;
@@ -118,6 +120,7 @@ public class SimulationTest {
 	 * verify if every patient finished his path at the end of the simulation
 	 */
 	public void testList() {
+		nbPatient = 50;
 		Scheduler s = new Scheduler(nbPatient);
 		s.run();
 		assertEquals(s.getData().getPatientsOver().size(), nbPatient);
