@@ -23,14 +23,7 @@ public class EvEndPathC extends Event implements Runnable{
 	public void run() {
 		if (getPatient().isPathCAnalysis() && getPatient().isPathCScanner())
 			getData().getWaitListPrescription().getListC().add(getPatient());
-		else if (!getPatient().isPathCScanner())
-			// If the patient did not do yet is scanner, he will be added to the waiting
-			// list now
-			getData().getWaitListScanner().getListC().add(getPatient());
-		else if (!getPatient().isPathCAnalysis())
-			// If the patient did not do yet is analysis, he will be added to the waiting
-			// list now
-			getData().getWaitListAnalysis().getListC().add(getPatient());
+		else new EvPathC(getData(), getPatient()).run();
 		
 	}
 

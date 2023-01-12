@@ -21,9 +21,16 @@ public class EvPathC extends Event implements Runnable{
 	 */
 	@Override
 	public void run() {
-		new EvAnalysis(getData(), null).run();
-
-		new EvScanner(getData(), null).run();
+		// The patient can either do his analysis or his scanner 
+		//(at the end, he will have to do both)
+		if (!getPatient().isPathCScanner())
+			// If the patient did not do yet is scanner, he will be added to the waiting
+			// list now
+			getData().getWaitListScanner().getListC().add(getPatient());
+		if (!getPatient().isPathCAnalysis())
+			// If the patient did not do yet is analysis, he will be added to the waiting
+			// list now
+			getData().getWaitListAnalysis().getListC().add(getPatient());
 	}
 
 }

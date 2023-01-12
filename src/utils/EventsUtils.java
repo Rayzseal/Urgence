@@ -1,5 +1,6 @@
 package utils;
 
+import events.EvPathC;
 import model.Gravity;
 import model.Patient;
 /**
@@ -20,10 +21,7 @@ public class EventsUtils {
 			data.getWaitListScanner().add(p);
 			break;
 		case C:
-			// The patient can either do his analysis or his scanner 
-			//(at the end, he will have to do both)
-			data.getWaitListAnalysis().getListC().add(p);
-			data.getWaitListScanner().getListC().add(p);
+			new EvPathC(data, p).run();
 			break;
 		case D:
 			data.getWaitListPrescription().add(p);

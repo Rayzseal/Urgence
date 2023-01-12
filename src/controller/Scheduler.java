@@ -1,11 +1,13 @@
 package controller;
 
+import events.EvAnalysis;
 import events.EvBedroomResearch;
 import events.EvBloc;
 import events.EvPathC;
 import events.EvPatientArrival;
 import events.EvPatientCriticArrival;
 import events.EvPrescription;
+import events.EvScanner;
 import model.Patient;
 import model.State;
 import utils.Data;
@@ -121,7 +123,9 @@ public class Scheduler {
 		
 		new EvBloc(data, null).run();
 		
-		new EvPathC(data, null).run();
+		new EvAnalysis(data, null).run();
+
+		new EvScanner(data, null).run();
 
 		new EvPrescription(data, null).run();
 	}
