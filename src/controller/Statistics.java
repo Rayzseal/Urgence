@@ -37,12 +37,12 @@ public class Statistics {
 	 * @return Average waiting time.
 	 */
 	public static int getAverageWaitingTime(Data data) {
-		int time = 0;
+		double time = 0;
 		for(Patient p : data.getPatientsOver()) {
 			time+=p.getGlobalWaitInSeconds();
 		}
 		time = time/data.getPatientsOver().size();
-		return time;
+		return (int)time;
 	}
 
 	/**

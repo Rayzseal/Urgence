@@ -23,7 +23,7 @@ public class SortPatientTime implements Comparator<Patient>{
 		int o1lastTime = o1.getListState().get(o1lastEntry.getKey());
 
 		List<Entry<State,Integer>> o2EntryList = new ArrayList<>(o2.getListState().entrySet());
-		Entry<State, Integer> o2lastEntry = o1EntryList.get(o1EntryList.size()-1);
+		Entry<State, Integer> o2lastEntry = o2EntryList.get(o2EntryList.size()-1);
 		int o2lastTime = o2.getListState().get(o2lastEntry.getKey());
 
 		return o1lastTime - o2lastTime;

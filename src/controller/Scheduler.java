@@ -102,8 +102,7 @@ public class Scheduler {
 					data.getWaitListArrival().add(patient);
 			}
 
-
-			setPatientToPathNonCritical(data);
+			runEvents(data);
 		}
 
 		System.out.println("------------------");
@@ -116,7 +115,7 @@ public class Scheduler {
 	 * method to run events of the simulation
 	 * @param data Data
 	 */
-	public void setPatientToPathNonCritical(Data data) {
+	public void runEvents(Data data) {
 		new EvPatientArrival(data, null).run();
 		
 		new EvBedroomResearch(data, null).run();
